@@ -1,0 +1,58 @@
+{
+  "NAV": {
+    "HOME": "Inicio",
+    "DATA_CATALOG": "Catálogo de datos",
+    "DASHBOARD": "Panel de control",
+    "MY_ORGANIZATION": "Mi organización",
+    "MY_DATA_OFFERS": "Mis ofertas de datos",
+    "MY_CONNECTORS": "Mis conectores",
+    "OPERATOR_SECTION": "Sección de operador",
+    "ALL_CONNECTORS": "Todos los conectores",
+    "CENTRAL_COMPONENTS": "Componentes centrales",
+    "SERVICE_PARTNER_SECTION": "Sección de socio de servicio",
+    "PROVIDED_CONNECTORS": "Conectores proporcionados",
+    "AUTHORITY_SECTION": "Sección de autoridad",
+    "ORGANIZATIONS": "Organizaciones",
+    "SUPPORT": "Soporte"
+  },
+  "AUTH": {
+    "LOGOUT": "Cerrar sesión",
+    "LOG_IN": "Iniciar sesión",
+    "REGISTER_ORGANIZATION": "Registrar organización"
+  },
+  "COMMON": {
+    "GO_BACK": "Volver",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar"
+  },
+  "PAGES": {
+    "NOT_FOUND": {
+      "TITLE": "Página no encontrada",
+      "MESSAGE": "Lo sentimos, pero la página solicitada no se ha encontrado.",
+      "GO_BACK": "Volver"
+    },
+    "UNAUTHENTICATED": {
+      "PAGE_TITLE": "{{portalName}} - Iniciar sesión o registrarse",
+      "INVITE_MESSAGE": "Si su organización ya participa en {{dataspaceName}}, pida a su administrador que le invite."
+    },
+    "LOADING": {
+      "ERROR_TITLE": "¡Vaya! No se ha podido cargar la página",
+      "ERROR_MESSAGE": "Lo sentimos, se ha producido un error inesperado.",
+      "GO_BACK_HOME": "Volver a la página de inicio"
+    }
+  },
+  "FOOTER": {
+    "PRIVACY_POLICY": "Política de privacidad",
+    "LEGAL_NOTICE": "Aviso legal"
+  },
+  "CONTROL_CENTER": {
+    "MY_PROFILE": "Mi perfil",
+    "MY_ORGANIZATION": "Mi organización",
+    "USERS_AND_ROLES": "Usuarios y roles"
+  },
+  "LOCALE": {
+    "LABEL": "Idioma",
+    "EN": "English",
+    "ES": "Español"
+  }
+}

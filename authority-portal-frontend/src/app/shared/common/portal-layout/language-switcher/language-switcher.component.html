@@ -1,0 +1,14 @@
+<div
+  class="flex justify-center items-center border border-gray-200 rounded-full px-2 py-1 gap-2 mr-3"
+  data-testid="language-switcher">
+  <button
+    *ngFor="let locale of locales"
+    type="button"
+    class="px-3 py-1 text-gray-500 text-sm rounded-full transition-colors duration-300 ease-in-out"
+    data-testid="language-switcher-item"
+    [class.bg-brand-highlight]="isSelected(locale)"
+    [class.text-white]="isSelected(locale)"
+    (click)="selectLocale(locale)">
+    {{ 'LOCALE.' + locale.toUpperCase() | translate }}
+  </button>
+</div>

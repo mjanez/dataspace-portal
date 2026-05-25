@@ -15,36 +15,58 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component, HostBinding, Inject} from '@angular/core';
+import {Component, HostBinding, Inject, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
 import {FooterLink} from './footer-link.model';
 
 @Component({
-    selector: 'app-footer-links',
-    templateUrl: './footer-links.component.html',
-    standalone: false
+  selector: 'app-footer-links',
+  templateUrl: './footer-links.component.html',
+  standalone: false,
 })
-export class FooterLinksComponent {
+export class FooterLinksComponent implements OnInit, OnDestroy {
   @HostBinding('class.flex')
   @HostBinding('class.justify-center')
   @HostBinding('class.gap-1.5')
   @HostBinding('class.whitespace-normal')
   cls = true;
 
-  footerLinks: FooterLink[] = [
-    {
-      name: 'Privacy Policy',
-      href: this.appConfig.privacyPolicyUrl,
-    },
-    {
-      name: 'Legal Notice',
-      href: this.appConfig.legalNoticeUrl,
-    },
-  ];
+  footerLinks: FooterLink[] = [];
+  private ngOnDestroy$ = new Subject<void>();
 
-  constructor(@Inject(APP_CONFIG) public appConfig: AppConfig) {}
+  constructor(
+    @Inject(APP_CONFIG) public appConfig: AppConfig,
+    private translate: TranslateService,
+  ) {}
+
+  ngOnInit(): void {
+    this.setFooterLinks();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.setFooterLinks());
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next();
+    this.ngOnDestroy$.complete();
+  }
 
   blurFocus(event: MouseEvent) {
     (event.target as HTMLElement).blur();
+  }
+
+  private setFooterLinks(): void {
+    this.footerLinks = [
+      {
+        name: this.translate.instant('FOOTER.PRIVACY_POLICY'),
+        href: this.appConfig.privacyPolicyUrl,
+      },
+      {
+        name: this.translate.instant('FOOTER.LEGAL_NOTICE'),
+        href: this.appConfig.legalNoticeUrl,
+      },
+    ];
   }
 }

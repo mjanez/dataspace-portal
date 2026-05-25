@@ -1,0 +1,58 @@
+{
+  "NAV": {
+    "HOME": "Home",
+    "DATA_CATALOG": "Data Catalog",
+    "DASHBOARD": "Dashboard",
+    "MY_ORGANIZATION": "My Organization",
+    "MY_DATA_OFFERS": "My Data Offers",
+    "MY_CONNECTORS": "My Connectors",
+    "OPERATOR_SECTION": "Operator Section",
+    "ALL_CONNECTORS": "All Connectors",
+    "CENTRAL_COMPONENTS": "Central Components",
+    "SERVICE_PARTNER_SECTION": "Service Partner Section",
+    "PROVIDED_CONNECTORS": "Provided Connectors",
+    "AUTHORITY_SECTION": "Authority Section",
+    "ORGANIZATIONS": "Organizations",
+    "SUPPORT": "Support"
+  },
+  "AUTH": {
+    "LOGOUT": "Logout",
+    "LOG_IN": "Log In",
+    "REGISTER_ORGANIZATION": "Register Organization"
+  },
+  "COMMON": {
+    "GO_BACK": "Go Back",
+    "CANCEL": "Cancel",
+    "SAVE": "Save"
+  },
+  "PAGES": {
+    "NOT_FOUND": {
+      "TITLE": "Page Not Found",
+      "MESSAGE": "We're sorry, but the page you requested could not be found.",
+      "GO_BACK": "Go Back"
+    },
+    "UNAUTHENTICATED": {
+      "PAGE_TITLE": "{{portalName}} - Log In or Register",
+      "INVITE_MESSAGE": "If your organization is already participating in the {{dataspaceName}}, please ask your organization's administrator to invite you."
+    },
+    "LOADING": {
+      "ERROR_TITLE": "Oops! The page couldn't be loaded",
+      "ERROR_MESSAGE": "We're sorry, but an unexpected error occurred.",
+      "GO_BACK_HOME": "Go back to home page"
+    }
+  },
+  "FOOTER": {
+    "PRIVACY_POLICY": "Privacy Policy",
+    "LEGAL_NOTICE": "Legal Notice"
+  },
+  "CONTROL_CENTER": {
+    "MY_PROFILE": "My Profile",
+    "MY_ORGANIZATION": "My Organization",
+    "USERS_AND_ROLES": "Users and Roles"
+  },
+  "LOCALE": {
+    "LABEL": "Language",
+    "EN": "English",
+    "ES": "Español"
+  }
+}
