@@ -4,16 +4,16 @@
     <#elseif section = "form">
             <div class="formContainer">
                 <div class="formHeader">
-                    <h3>RESET PASSWORD</h3>
+                    <h3>${msg("resetPasswordHeading")}</h3>
                 </div>
                 <div class="formBody">
                     <form id="kc-reset-password-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="${properties.kcInputWrapperClass!}">
                                 <#if auth?has_content && auth.showUsername()>
-                                    <input type="text" id="username" name="username" placeholder="Email" class="text-input" autofocus value="${auth.attemptedUsername}" aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"/>
+                                    <input type="text" id="username" name="username" placeholder="${msg("emailResetPlaceholder")}" class="text-input" autofocus value="${auth.attemptedUsername}" aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"/>
                                 <#else>
-                                    <input type="text" style="color:black" id="username" name="username" placeholder="Email" class="text-input" autofocus aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"/>
+                                    <input type="text" style="color:black" id="username" name="username" placeholder="${msg("emailResetPlaceholder")}" class="text-input" autofocus aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"/>
                                 </#if>
                             </div>
                         </div>

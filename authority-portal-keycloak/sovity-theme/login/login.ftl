@@ -10,7 +10,7 @@
                                 <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                                     <#if !usernameHidden??>
                                         <div class="${properties.kcFormGroupClass!}">
-                                           <input tabindex="1" id="username" class="text-input" placeholder="E-mail" name="username" value="${(login.email!'')}"  type="text" autofocus autocomplete="off"
+                                           <input tabindex="1" id="username" class="text-input" placeholder="${msg("emailPlaceholder")}" name="username" value="${(login.email!'')}"  type="text" autofocus autocomplete="off"
                                                    aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                                             />
                                         </div>
@@ -22,7 +22,7 @@
                                     </#if>
 
                                     <div class="${properties.kcFormGroupClass!}">
-                                        <input tabindex="2" id="password" placeholder="Password" class="text-input" name="password" type="password" autocomplete="off"
+                                        <input tabindex="2" id="password" placeholder="${msg("passwordPlaceholder")}" class="text-input" name="password" type="password" autocomplete="off"
                                                aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                                         />
 

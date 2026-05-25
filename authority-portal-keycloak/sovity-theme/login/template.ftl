@@ -137,10 +137,10 @@
 
                     <div id="kc-info" class="${properties.kcSignUpClass!}">
                         <div id="kc-info-wrapper" class="${properties.kcInfoAreaWrapperClass!}">
-                            © 2024 sovity GmbH<br>
+                            ${msg("footerCopyright")}<br>
                             <div class="legal-notices">
-                                <p><a href=${properties.privacyPolicyUrl} target="_blank">Privacy Policy</a></p>
-                                <p><a href=${properties.legalNoticeUrl} target="_blank">Legal Notice</a></p>
+                                <p><a href=${properties.privacyPolicyUrl} target="_blank">${msg("privacyPolicy")}</a></p>
+                                <p><a href=${properties.legalNoticeUrl} target="_blank">${msg("legalNotice")}</a></p>
                             </div>
                         </div>
                     </div>

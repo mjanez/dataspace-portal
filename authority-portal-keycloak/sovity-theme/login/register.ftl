@@ -6,7 +6,7 @@
     <#elseif section = "form">
         <div class="formContainer">
             <div class="formHeader">
-                    <h3>REGISTRATION FORM</h3>
+                    <h3>${msg("registrationFormHeading")}</h3>
             </div>
             <div class="formBody">
                     <div id="kc-form">
@@ -14,7 +14,7 @@
                         <#-- First name -->
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="${properties.kcInputWrapperClass!}">
-                                <input type="text" id="first-name" placeholder="First Name"
+                                <input type="text" id="first-name" placeholder="${msg("firstNamePlaceholder")}"
                                        class="text-input"
                                        name="firstName"
                                        value="${(register.formData.firstName!'')}"
@@ -22,26 +22,26 @@
                             </div>
                         </div>
                         <span id="fe-input-error-first-name" class="${properties.kcInputErrorMessageClass!}">
-                            Please specify a first name.
+                            ${msg("validationFirstName")}
                         </span>
 
                         <#-- Last name -->
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="${properties.kcInputWrapperClass!}">
-                                <input type="text" id="last-name" placeholder="Last Name" class="text-input"
+                                <input type="text" id="last-name" placeholder="${msg("lastNamePlaceholder")}" class="text-input"
                                        name="lastName"
                                        value="${(register.formData.lastName!'')}"
                                 />
                             </div>
                         </div>
                         <span id="fe-input-error-last-name" class="${properties.kcInputErrorMessageClass!}">
-                            Please specify a last name.
+                            ${msg("validationLastName")}
                         </span>
 
                         <#-- E-mail -->
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="${properties.kcInputWrapperClass!}">
-                                <input type="email" id="email" placeholder="E-mail" class="text-input" name="email"
+                                <input type="email" id="email" placeholder="${msg("emailPlaceholder")}" class="text-input" name="email"
                                        value="${(register.formData.email!'')}" autocomplete="email"
                                 />
                             </div>
@@ -52,7 +52,7 @@
                             </#if>
                         </div>
                             <span id="fe-input-error-email" class="${properties.kcInputErrorMessageClass!}">
-                                Please specify a valid email address.
+                                ${msg("validationEmail")}
                             </span>
 
 
@@ -60,7 +60,7 @@
                         <#if !realm.registrationEmailAsUsername>
                             <div class="${properties.kcFormGroupClass!}" style="display:none">
                                 <div class="${properties.kcInputWrapperClass!}">
-                                    <input type="text" id="username"  placeholder="Username" class="text-input" name="username"
+                                    <input type="text" id="username"  placeholder="${msg("usernamePlaceholder")}" class="text-input" name="username"
                                            value="${(register.formData.username!'')}" autocomplete="username"
                                     />
                                 </div>
@@ -70,7 +70,7 @@
                         <#if passwordRequired??>
                             <div class="${properties.kcFormGroupClass!}">
                                 <div class="${properties.kcInputWrapperClass!}">
-                                    <input type="password" id="password" class="text-input" placeholder="Password" name="password"
+                                    <input type="password" id="password" class="text-input" placeholder="${msg("passwordPlaceholder")}" name="password"
                                            autocomplete="new-password"
                                            value="${(register.formData['password']!'')}"
                                     />
@@ -82,12 +82,12 @@
                                 </#if>
                             </div>
                                 <span id="fe-input-error-password" class="${properties.kcInputErrorMessageClass!}">
-                                           Please specify a password.
+                                           ${msg("validationPassword")}
                                 </span>
 
                             <div class="${properties.kcFormGroupClass!}">
                                 <div class="${properties.kcInputWrapperClass!}">
-                                    <input type="password" id="password-confirm" class="text-input" placeholder="Confirm Password"
+                                    <input type="password" id="password-confirm" class="text-input" placeholder="${msg("confirmPasswordPlaceholder")}"
                                            name="password-confirm"
                                            value="${(register.formData['password-confirm']!'')}"
                                     />
