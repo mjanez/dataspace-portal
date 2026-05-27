@@ -24,6 +24,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {MatStepper} from '@angular/material/stepper';
+import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
@@ -72,14 +73,18 @@ export class ReserveProvidedConnectorPageComponent
     public form: ReserveProvidedConnectorPageForm,
     private globalStateUtils: GlobalStateUtils,
     private router: Router,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
+    this.initializeHeaderBar();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.initializeHeaderBar());
     this.store.dispatch(GetOrganizations);
     this.store.dispatch(Reset);
     this.startListeningToState();
     this.getUserInfo();
-    this.initializeHeaderBar();
   }
 
   getUserInfo() {
@@ -92,8 +97,8 @@ export class ReserveProvidedConnectorPageComponent
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'Provide Connector',
-      subtitle: 'Register a connector for a participant organization.',
+      title: this.translate.instant('PAGES.CONNECTORS.PROVIDE_CONNECTOR_PAGE_TITLE'),
+      subtitle: this.translate.instant('PAGES.CONNECTORS.PROVIDE_CONNECTOR_SUBTITLE'),
       headerActions: [],
     };
   }

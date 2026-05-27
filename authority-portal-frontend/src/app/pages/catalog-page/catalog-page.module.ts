@@ -26,6 +26,7 @@ import {AssetCardTagListComponent} from './asset-card-tag-list/asset-card-tag-li
 import {AssetDetailDialogDataService} from './asset-detail-dialog/asset-detail-dialog-data.service';
 import {AssetDetailDialogComponent} from './asset-detail-dialog/asset-detail-dialog.component';
 import {AssetDetailDialogService} from './asset-detail-dialog/asset-detail-dialog.service';
+import {AssetNotAvailableDialogComponent} from './asset-detail-dialog/asset-not-available-dialog/asset-not-available-dialog.component';
 import {AssetPropertyGridGroupBuilder} from './asset-detail-dialog/asset-property-grid-group-builder';
 import {BrokerDataOfferCardsComponent} from './broker-data-offer-cards/broker-data-offer-cards.component';
 import {BrokerDataOfferList} from './broker-data-offer-list/broker-data-offer-list.component';
@@ -64,6 +65,7 @@ import {ViewSelectionComponent} from './view-selection/view-selection.component'
   declarations: [
     AssetCardTagListComponent,
     AssetDetailDialogComponent,
+    AssetNotAvailableDialogComponent,
     BrokerDataOfferCardsComponent,
     BrokerDataOfferList,
     CatalogPageComponent,

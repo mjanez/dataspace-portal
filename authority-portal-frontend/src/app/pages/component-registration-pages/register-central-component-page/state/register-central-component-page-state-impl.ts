@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -41,6 +42,7 @@ export class RegisterCentralComponentPageStateImpl {
     private toast: ToastService,
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -69,7 +71,7 @@ export class RegisterCentralComponentPageStateImpl {
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
       this.errorService.toastFailureRxjs(
-        'Failed registering the central component',
+        this.translate.instant('TOASTS.FAILED_REGISTER_CENTRAL_COMPONENT'),
         () => {
           ctx.patchState({state: 'error'});
           action.enableForm();

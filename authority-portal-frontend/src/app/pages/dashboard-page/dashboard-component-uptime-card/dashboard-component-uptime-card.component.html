@@ -25,7 +25,7 @@
 <div
   *ngIf="data.isReady && !data.data"
   class="flex-1 flex justify-center items-center text-gray-500 text-sm mt-2">
-  <span>No uptime data</span>
+  <span>{{ 'PAGES.DASHBOARD.NO_UPTIME_DATA' | translate }}</span>
 </div>
 <div
   *ngIf="data.isReady && data.data"

@@ -17,8 +17,8 @@
  */
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {Subject, interval} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, interval, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {ConnectorOverviewEntryDto} from '@sovity.de/authority-portal-client';
 import {GlobalStateUtils} from 'src/app/core/global-state/global-state-utils';
@@ -68,13 +68,20 @@ export class AuthorityConnectorListPageComponent implements OnInit, OnDestroy {
     private globalStateUtils: GlobalStateUtils,
     private slideOverService: SlideOverService,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('All Connectors');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
     this.initializeHeaderBar();
     this.initializeFilterBar();
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.initializeHeaderBar();
+        this.initializeFilterBar();
+        this.updateTitle();
+      });
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
@@ -85,14 +92,14 @@ export class AuthorityConnectorListPageComponent implements OnInit, OnDestroy {
       filters: [
         {
           id: 'type',
-          label: 'Type',
+          label: this.translate.instant('COMMON.TYPE'),
           icon: 'tag',
           type: 'MULTISELECT',
           options: [],
         },
         {
           id: 'status',
-          label: 'Status',
+          label: this.translate.instant('COMMON.STATUS'),
           type: 'SELECT',
           icon: 'status',
           options: [],
@@ -103,10 +110,16 @@ export class AuthorityConnectorListPageComponent implements OnInit, OnDestroy {
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'All Connectors',
-      subtitle: 'All Connectors of all organizations',
+      title: this.translate.instant('PAGES.AUTHORITY.CONNECTORS_TITLE'),
+      subtitle: this.translate.instant('PAGES.AUTHORITY.CONNECTORS_SUBTITLE'),
       headerActions: [],
     };
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.AUTHORITY.CONNECTORS_TITLE'),
+    );
   }
 
   refresh() {

@@ -17,6 +17,7 @@
  */
 import {Component, Inject} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
 
 @Component({
@@ -28,7 +29,10 @@ export class OrganizationRejectedPageComponent {
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private titleService: Title,
+    private translate: TranslateService,
   ) {
-    this.titleService.setTitle('Rejected');
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.REGISTRATION.REJECTED_TITLE'),
+    );
   }
 }

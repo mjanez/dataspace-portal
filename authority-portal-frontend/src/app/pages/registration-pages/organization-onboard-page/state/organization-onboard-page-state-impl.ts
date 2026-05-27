@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Inject, Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, combineLatest, forkJoin} from 'rxjs';
 import {
   ignoreElements,
@@ -54,6 +55,7 @@ export class OrganizationOnboardPageStateImpl {
     private actions$: Actions,
     private toast: ToastService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset, {cancelUncompleted: true})
@@ -73,7 +75,9 @@ export class OrganizationOnboardPageStateImpl {
         ]),
       ),
       map(([user, organization]) => ({user, organization})),
-      Fetched.wrap({failureMessage: 'Failed loading onboarding details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_ONBOARDING'),
+      }),
       tap((details) => {
         ctx.patchState({
           ...ctx.getState(),
@@ -111,12 +115,16 @@ export class OrganizationOnboardPageStateImpl {
 
     return forkJoin(requests).pipe(
       tap(() => {
-        this.toast.showSuccess(`Onboarding completed successfully`);
+        this.toast.showSuccess(
+          this.translate.instant('TOASTS.ONBOARDING_COMPLETED'),
+        );
         ctx.patchState({state: 'success'});
         action.success();
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
-      this.errorService.toastFailureRxjs('Onboarding Failed', () => {
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.ONBOARDING_FAILED'),
+        () => {
         ctx.patchState({state: 'error'});
         action.enableForm();
       }),

@@ -7,11 +7,10 @@
   <div class="flex flex-col justify-center items-center h-screen -mt-10">
     <div class="w-full max-w-xl mx-auto text-center">
       <h2 class="selection-page-title mb-2">
-        Do you already have a connector setup?
+        {{ 'PAGES.CONNECTOR_CHOICE.PAGE_TITLE' | translate }}
       </h2>
       <p class="selection-page-prose max-w-md mx-auto">
-        Don’t worry if you don’t. You can request a free and fully managed
-        Connector-as-a-Service.
+        {{ 'PAGES.CONNECTOR_CHOICE.PAGE_SUBTITLE' | translate }}
       </p>
       <div class="flex flex-col gap-4 lg:flex-row mt-8 justify-evenly">
         <app-selection-box
@@ -23,5 +22,4 @@
   </div>
 </div>
 
-<!-- footer -->
 <app-footer-for-full-page></app-footer-for-full-page>

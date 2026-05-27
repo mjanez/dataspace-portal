@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {filter, ignoreElements, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -47,6 +48,7 @@ export class ControlCenterOrganizationMembersPageStateImpl {
     private apiService: ApiService,
     private dialog: MatDialog,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -55,7 +57,9 @@ export class ControlCenterOrganizationMembersPageStateImpl {
       switchMap((environmentId) =>
         this.apiService.getOwnOrganizationDetails(environmentId),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((organization) => {
         ctx.patchState({
           organization,
@@ -74,10 +78,12 @@ export class ControlCenterOrganizationMembersPageStateImpl {
   ): HeaderBarConfig {
     return {
       title: organization.name,
-      subtitle: 'Your Organization Members',
+      subtitle: this.translate.instant(
+        'PAGES.CONTROL_CENTER.ORGANIZATION_MEMBERS_SUBTITLE',
+      ),
       headerActions: [
         {
-          label: 'Invite user',
+          label: this.translate.instant('PAGES.CONTROL_CENTER.INVITE_USER'),
           action: () => this.onShowInviteUserDialog(ctx),
           permissions: [UserRoleDto.Admin],
         },

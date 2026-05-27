@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable} from 'rxjs';
 import {
   filter,
@@ -53,6 +54,7 @@ export class CentralComponentListPageStateImpl {
     private toast: ToastService,
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(RefreshCentralComponents)
@@ -60,7 +62,9 @@ export class CentralComponentListPageStateImpl {
     ctx: StateContext<CentralComponentListPageState>,
   ): Observable<never> {
     return this.fetchCentralComponents().pipe(
-      Fetched.wrap({failureMessage: 'Failed loading central components'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_CENTRAL_COMPONENTS'),
+      }),
       tap((centralComponents) =>
         ctx.patchState({centralComponents: centralComponents}),
       ),
@@ -96,11 +100,15 @@ export class CentralComponentListPageStateImpl {
             filter((action) => action instanceof RefreshCentralComponents),
           ),
         ),
-        this.errorService.toastFailureRxjs("Central Component wasn't deleted"),
+        this.errorService.toastFailureRxjs(
+          this.translate.instant('TOASTS.CENTRAL_COMPONENT_NOT_DELETED'),
+        ),
         tap((data) => {
           ctx.patchState({centralComponents: Fetched.ready(data)});
           this.toast.showSuccess(
-            `Central Component ${centralComponent.name} was successfully deleted`,
+            this.translate.instant('TOASTS.CENTRAL_COMPONENT_DELETED', {
+              name: centralComponent.name,
+            }),
           );
         }),
         finalize(() =>

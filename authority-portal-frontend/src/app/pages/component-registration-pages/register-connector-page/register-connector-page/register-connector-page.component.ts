@@ -24,6 +24,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {MatStepper} from '@angular/material/stepper';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {UserInfo} from '@sovity.de/authority-portal-client';
@@ -53,7 +54,7 @@ export class RegisterConnectorPageComponent implements OnInit, OnDestroy {
   state = DEFAULT_REGISTER_CONNECTOR_PAGE_STATE;
   userInfo!: UserInfo;
 
-  createActionName = 'Register Connector';
+  createActionName = '';
   backLink = '/my-organization/connectors/new';
   exitLink = '/my-organization/connectors';
 
@@ -68,9 +69,14 @@ export class RegisterConnectorPageComponent implements OnInit, OnDestroy {
     private store: Store,
     public form: RegisterConnectorPageForm,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
+    this.refreshLabels();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.refreshLabels());
     this.store.dispatch(Reset);
     this.startListeningToState();
     this.getUserInfo();
@@ -138,6 +144,12 @@ export class RegisterConnectorPageComponent implements OnInit, OnDestroy {
           }, 200);
         },
       ),
+    );
+  }
+
+  private refreshLabels(): void {
+    this.createActionName = this.translate.instant(
+      'PAGES.CONNECTORS.REGISTER_TITLE',
     );
   }
 

@@ -17,6 +17,7 @@
  */
 import {Inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, take, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -49,6 +50,7 @@ export class ControlCenterUserProfilePageStateImpl {
     private apiService: ApiService,
     private globalStateUtils: GlobalStateUtils,
     private userDeleteDialogService: UserDeleteDialogService,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -58,7 +60,9 @@ export class ControlCenterUserProfilePageStateImpl {
       switchMap((userInfo) =>
         this.apiService.getUserDetailDto(userInfo.userId),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((user) => {
         ctx.patchState({
           user,
@@ -82,16 +86,16 @@ export class ControlCenterUserProfilePageStateImpl {
   ): HeaderBarConfig {
     return {
       title: `${user.firstName} ${user.lastName}`,
-      subtitle: 'Your User Profile',
+      subtitle: this.translate.instant('PAGES.CONTROL_CENTER.USER_PROFILE_SUBTITLE'),
       headerActions: [
         {
-          label: 'Edit',
+          label: this.translate.instant('COMMON.EDIT'),
           action: () =>
             this.router.navigate(['/control-center/my-profile/edit']),
           permissions: [UserRoleDto.User],
         },
         {
-          label: 'Delete',
+          label: this.translate.instant('COMMON.DELETE'),
           action: () => {
             this.userDeleteDialogService.showDeleteUserModal(
               {

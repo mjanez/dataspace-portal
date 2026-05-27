@@ -18,9 +18,10 @@
 import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
-import {Subject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
+import {filter} from 'rxjs/operators';
 import {Store} from '@ngxs/store';
 import {
   CentralComponentDto,
@@ -62,15 +63,21 @@ export class CentralComponentListPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('Central Components');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
     this.initializeHeaderBar();
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.initializeHeaderBar();
+        this.updateTitle();
+      });
   }
 
   refresh() {
@@ -79,11 +86,11 @@ export class CentralComponentListPageComponent implements OnInit, OnDestroy {
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'Central Components',
-      subtitle: 'List of Central Dataspace Components registered at the DAPS.',
+      title: this.translate.instant('PAGES.CONNECTORS.CENTRAL_TITLE'),
+      subtitle: this.translate.instant('PAGES.CONNECTORS.CENTRAL_SUBTITLE'),
       headerActions: [
         {
-          label: 'Provide Central Component',
+          label: this.translate.instant('PAGES.CONNECTORS.PROVIDE_CENTRAL_COMPONENT'),
           action: () =>
             this.router.navigate(['/operator/central-components/provide']),
           permissions: [UserRoleDto.OperatorAdmin],
@@ -94,12 +101,18 @@ export class CentralComponentListPageComponent implements OnInit, OnDestroy {
 
   showDeleteModal(centralComponent: CentralComponentDto) {
     const data: ConfirmationDialog = {
-      title: `Delete Central Component`,
-      messageBody: `Central Component '${centralComponent.name}' with ID '${centralComponent.centralComponentId}' will be unregistered from the DAPS.`,
+      title: this.translate.instant('PAGES.CONNECTORS.DELETE_CENTRAL_TITLE'),
+      messageBody: this.translate.instant(
+        'PAGES.CONNECTORS.DELETE_CENTRAL_MESSAGE',
+        {
+          name: centralComponent.name,
+          id: centralComponent.centralComponentId,
+        },
+      ),
       actionButtons: [
         {
           action: 'DELETE',
-          label: 'Delete',
+          label: this.translate.instant('COMMON.DELETE'),
           style: 'btn-accent-danger',
         },
       ],
@@ -114,6 +127,12 @@ export class CentralComponentListPageComponent implements OnInit, OnDestroy {
       .subscribe(() =>
         this.store.dispatch(new DeleteCentralComponent(centralComponent)),
       );
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.CONNECTORS.CENTRAL_TITLE'),
+    );
   }
 
   private startListeningToState() {

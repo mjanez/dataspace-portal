@@ -18,7 +18,9 @@
   mat-dialog-content
   style="display: block; min-width: 40rem; max-width: 40rem; max-height: 60vh">
   <div *ngIf="data.description">
-    <div class="text-[15px] font-bold">Description</div>
+    <div class="text-[15px] font-bold">
+      {{ 'PAGES.CATALOG.DESCRIPTION_LABEL' | translate }}
+    </div>
     <div>{{ data.description }}</div>
   </div>
 
@@ -34,5 +36,7 @@
 </div>
 
 <div class="w-full justify-end flex flex-row" mat-dialog-actions>
-  <button mat-button color="default" [mat-dialog-close]="null">Close</button>
+  <button mat-button color="default" [mat-dialog-close]="null">
+    {{ 'COMMON.CLOSE' | translate }}
+  </button>
 </div>

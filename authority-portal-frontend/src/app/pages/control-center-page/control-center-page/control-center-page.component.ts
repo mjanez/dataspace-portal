@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {toKebabCase} from '../../../core/utils/string-utils';
 import {CONTROL_CENTER_ROUTES} from '../control-center-routes';
 
@@ -29,13 +32,28 @@ export interface ControlCenterTab {
     templateUrl: './control-center-page.component.html',
     standalone: false
 })
-export class ControlCenterPageComponent {
-  tabs: ControlCenterTab[] = this.buildControlCenterTabs();
+export class ControlCenterPageComponent implements OnInit, OnDestroy {
+  tabs: ControlCenterTab[] = [];
+  private readonly ngOnDestroy$ = new Subject<void>();
 
-  private buildControlCenterTabs(): ControlCenterTab[] {
-    let tabs = CONTROL_CENTER_ROUTES.filter((it) => !it.data.excludeFromTabs);
-    return tabs.map((it) => ({
-      title: it.data.title,
+  constructor(private translate: TranslateService) {}
+
+  ngOnInit(): void {
+    this.buildTabs();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.buildTabs());
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next();
+    this.ngOnDestroy$.complete();
+  }
+
+  private buildTabs(): void {
+    const routes = CONTROL_CENTER_ROUTES.filter((it) => !it.data.excludeFromTabs);
+    this.tabs = routes.map((it) => ({
+      title: this.translate.instant(it.data.titleKey),
       routerLink: ['/control-center', it.path!],
     }));
   }

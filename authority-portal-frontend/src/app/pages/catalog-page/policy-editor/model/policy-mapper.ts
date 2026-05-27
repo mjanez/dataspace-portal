@@ -119,8 +119,8 @@ export class PolicyMapper {
 
     return {
       expressionType,
-      title: expressionType,
-      description: '',
+      titleKey: expressionType,
+      descriptionKey: '',
     };
   }
 

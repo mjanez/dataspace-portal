@@ -8,25 +8,33 @@
           class="select-none flex flex-col justify-center items-center my-10 w-2/3 mx-auto">
           <app-organization-select
             class="w-full"
-            label="Client Organization"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CLIENT_ORGANIZATION' | translate
+            }}"
             [ctrl]="form.connectorInfo.controls.organization"
             [organizations]="state.organizationList"></app-organization-select>
 
-          <!-- Connector Name -->
           <app-text-input
             class="w-full"
-            label="Connector Name"
+            label="{{ 'PAGES.COMPONENT_REGISTRATION.CONNECTOR_NAME' | translate }}"
             ctrlId="formRegOConName"
-            placeholder="My Connector"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_NAME_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.connectorInfo.controls.name"></app-text-input>
 
-          <!-- Connector Location -->
           <app-text-input
             class="w-full"
-            label="Connector Location"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_LOCATION' | translate
+            }}"
             ctrlId="formRegOConLocation"
-            placeholder="DE"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_LOCATION_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.connectorInfo.controls.location"></app-text-input>
         </div>
@@ -37,14 +45,14 @@
             class="btn-accent-outline"
             type="button"
             [routerLink]="exitLink">
-            Cancel
+            {{ 'COMMON.CANCEL' | translate }}
           </button>
 
           <button
             class="btn-accent"
             [disabledBtn]="!form.connectorInfo.valid"
             (click)="reserveConnector()">
-            Create Connector
+            {{ 'PAGES.COMPONENT_REGISTRATION.CREATE_CONNECTOR' | translate }}
           </button>
         </div>
       </form>
