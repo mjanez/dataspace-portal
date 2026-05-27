@@ -18,30 +18,41 @@
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
-export type PortalLocale = 'en' | 'es';
+export interface LocaleConfig {
+  code: string;
+  bcp47Prefixes: string[];
+}
+
+const LOCALE_REGISTRY: readonly LocaleConfig[] = [
+  {code: 'en', bcp47Prefixes: ['en']},
+  {code: 'es', bcp47Prefixes: ['es']},
+];
 
 const STORAGE_KEY = 'portal-locale';
-const SUPPORTED_LOCALES: PortalLocale[] = ['en', 'es'];
-export const DEFAULT_LOCALE: PortalLocale = 'en';
+export const SUPPORTED_LOCALES = LOCALE_REGISTRY.map(l => l.code);
+export const DEFAULT_LOCALE = SUPPORTED_LOCALES[0];
+
+export type PortalLocale = (typeof SUPPORTED_LOCALES)[number];
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocaleService {
   constructor(private translate: TranslateService) {
-    this.translate.addLangs(SUPPORTED_LOCALES);
+    this.translate.addLangs([...SUPPORTED_LOCALES]);
     this.translate.setFallbackLang(DEFAULT_LOCALE);
   }
 
   init(): void {
-    const saved = localStorage.getItem(STORAGE_KEY) as PortalLocale | null;
     const locale =
-      saved && SUPPORTED_LOCALES.includes(saved) ? saved : DEFAULT_LOCALE;
+      this.readSavedLocale() ??
+      this.detectBrowserLocale() ??
+      DEFAULT_LOCALE;
     this.setLocale(locale);
   }
 
   setLocale(locale: PortalLocale): void {
-    if (!SUPPORTED_LOCALES.includes(locale)) {
+    if (!this.isSupportedLocale(locale)) {
       return;
     }
     this.translate.use(locale);
@@ -50,10 +61,39 @@ export class LocaleService {
   }
 
   get currentLocale(): PortalLocale {
-    return (this.translate.currentLang as PortalLocale) || DEFAULT_LOCALE;
+    return this.isSupportedLocale(this.translate.currentLang)
+      ? this.translate.currentLang
+      : DEFAULT_LOCALE;
   }
 
-  get supportedLocales(): readonly PortalLocale[] {
+  get supportedLocales(): readonly string[] {
     return SUPPORTED_LOCALES;
+  }
+
+  private isSupportedLocale(value: unknown): value is PortalLocale {
+    return typeof value === 'string' && SUPPORTED_LOCALES.includes(value);
+  }
+
+  private readSavedLocale(): PortalLocale | null {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return this.isSupportedLocale(saved) ? saved : null;
+  }
+
+  private detectBrowserLocale(): PortalLocale | null {
+    const browserLangs =
+      typeof navigator !== 'undefined'
+        ? navigator.languages ?? [navigator.language]
+        : [];
+
+    for (const lang of browserLangs) {
+      const tag = lang.toLowerCase();
+      const match = LOCALE_REGISTRY.find(entry =>
+        entry.bcp47Prefixes.some(prefix => tag === prefix || tag.startsWith(`${prefix}-`)),
+      );
+      if (match) {
+        return match.code;
+      }
+    }
+    return null;
   }
 }
