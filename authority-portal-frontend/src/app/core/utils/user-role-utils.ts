@@ -20,9 +20,18 @@ import {nonNull} from './type-utils';
 
 export function mapRolesToReadableFormat(
   role: string | UserRoleDto | null,
+  translate?: (key: string) => string,
 ): string {
   if (!role) {
-    return 'None';
+    return translate ? translate('ROLES.NONE') : 'None';
+  }
+
+  if (translate) {
+    const key = `ROLES.${role}`;
+    const translated = translate(key);
+    if (translated !== key) {
+      return translated;
+    }
   }
 
   const words = role
@@ -105,20 +114,27 @@ export function isApplicationRole(role: UserRoleDto): boolean {
   );
 }
 
-export function getHighestRolesString(userRoles: UserRoleDto[]): string {
+export function getHighestRolesString(
+  userRoles: UserRoleDto[],
+  translate?: (key: string) => string,
+): string {
   return nonNull([
     ...getApplicationRoles(userRoles),
     getHighestParticipantRole(userRoles),
   ])
-    .map(mapRolesToReadableFormat)
+    .map((role) => mapRolesToReadableFormat(role, translate))
     .join(', ');
 }
 
-export function getHighestRoleString(userRoles: UserRoleDto[]): string {
+export function getHighestRoleString(
+  userRoles: UserRoleDto[],
+  translate?: (key: string) => string,
+): string {
   return mapRolesToReadableFormat(
     nonNull([
       getHighestApplicationRole(userRoles),
       getHighestParticipantRole(userRoles),
     ])[0],
+    translate,
   );
 }

@@ -18,6 +18,7 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {UserDeletionCheck} from '@sovity.de/authority-portal-client';
@@ -44,6 +45,7 @@ export class UserDeleteDialogComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<UserDeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserDeleteDialog,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,11 @@ export class UserDeleteDialogComponent implements OnInit, OnDestroy {
       .checkUserDeletion(this.data.userId)
       .pipe(
         takeUntil(this.ngOnDestroy$),
-        Fetched.wrap({failureMessage: 'Failed fetching user deletion check.'}),
+        Fetched.wrap({
+          failureMessage: this.translate.instant(
+            'TOASTS.FAILED_USER_DELETION_CHECK',
+          ),
+        }),
       )
       .subscribe((modalData) => {
         this.modalData = modalData;
@@ -77,7 +83,9 @@ export class UserDeleteDialogComponent implements OnInit, OnDestroy {
       .deleteUser(this.data.userId, successorId)
       .pipe(
         finalize(() => (this.isBusy = false)),
-        this.errorService.toastFailureRxjs('Failed deleting user'),
+        this.errorService.toastFailureRxjs(
+          this.translate.instant('TOASTS.FAILED_DELETE_USER'),
+        ),
       )
       .subscribe(() => {
         this.dialogRef.close(true);

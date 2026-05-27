@@ -17,13 +17,14 @@
  */
 import {Component, HostBinding, Input} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, forkJoin} from 'rxjs';
 import {finalize, ignoreElements, tap} from 'rxjs/operators';
 import {IdResponse, UserRoleDto} from '@sovity.de/authority-portal-client';
 import {ApiService} from 'src/app/core/api/api.service';
 import {ErrorService} from 'src/app/core/services/error.service';
 import {setEnabled} from 'src/app/core/utils/form-utils';
-import {mapRolesToReadableFormat} from 'src/app/core/utils/user-role-utils';
+import {mapRolesToReadableFormat, getHighestRolesString} from 'src/app/core/utils/user-role-utils';
 import {ToastService} from 'src/app/shared/common/toast-notifications/toast.service';
 import {UserDetailConfig} from './shared-user-detail.model';
 
@@ -52,6 +53,7 @@ export class SharedUserDetailComponent {
     private apiService: ApiService,
     private errorService: ErrorService,
     private toast: ToastService,
+    private translate: TranslateService,
   ) {}
 
   onRoleEditShowClick() {
@@ -107,9 +109,11 @@ export class SharedUserDetailComponent {
   onboardingType(type: string) {
     switch (type) {
       case 'INVITATION':
-        return 'Invitation';
+        return this.translate.instant('FORMS.USER_DETAIL.ONBOARDING_INVITATION');
       case 'SELF_REGISTRATION':
-        return 'Self Registration';
+        return this.translate.instant(
+          'FORMS.USER_DETAIL.ONBOARDING_SELF_REGISTRATION',
+        );
       default:
         return '';
     }
@@ -127,9 +131,13 @@ export class SharedUserDetailComponent {
     }
     return request$.pipe(
       tap(() =>
-        this.toast.showSuccess(`Successfully updated application role`),
+        this.toast.showSuccess(
+          this.translate.instant('TOASTS.APPLICATION_ROLE_UPDATED'),
+        ),
       ),
-      this.errorService.toastFailureRxjs('Failed to update application role'),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_UPDATE_APPLICATION_ROLE'),
+      ),
       ignoreElements(),
     );
   }
@@ -139,13 +147,24 @@ export class SharedUserDetailComponent {
       .updateParticipantRole(this.config.userId, newParticipantRole)
       .pipe(
         tap(() =>
-          this.toast.showSuccess(`Successfully updated participant role`),
+          this.toast.showSuccess(
+            this.translate.instant('TOASTS.PARTICIPANT_ROLE_UPDATED'),
+          ),
         ),
-        this.errorService.toastFailureRxjs('Failed to update participant role'),
+        this.errorService.toastFailureRxjs(
+          this.translate.instant('TOASTS.FAILED_UPDATE_PARTICIPANT_ROLE'),
+        ),
         ignoreElements(),
       );
   }
 
   UserRoleDto = UserRoleDto;
-  mapRolesToReadableFormat = mapRolesToReadableFormat;
+  mapRolesToReadableFormat = (role: string) =>
+    mapRolesToReadableFormat(role, (key) => this.translate.instant(key));
+
+  getReadableRoles(): string {
+    return getHighestRolesString(this.config.user.roles, (key) =>
+      this.translate.instant(key),
+    );
+  }
 }

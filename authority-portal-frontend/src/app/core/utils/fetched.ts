@@ -245,7 +245,7 @@ export function mapFetchError(failureMessage: string, error: any): FetchError {
     return {
       type: '401',
       failureIcon: 'refresh',
-      failureMessage: 'Session most likely expired. Please refresh browser.',
+      failureMessage: 'ERRORS.SESSION_EXPIRED',
       error,
     };
   }

@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {MonoTypeOperatorFunction, NEVER} from 'rxjs';
 import {finalize, tap} from 'rxjs/operators';
 import {StateContext} from '@ngxs/store';
@@ -29,6 +30,7 @@ export class CustomRxjsOperators {
     private router: Router,
     private errorService: ErrorService,
     private toast: ToastService,
+    private translate: TranslateService,
   ) {}
 
   onSuccessRedirect<T>(routerLink: string[]): MonoTypeOperatorFunction<T> {
@@ -37,11 +39,14 @@ export class CustomRxjsOperators {
     };
   }
 
-  withToastResultHandling<T>(actionName: string): MonoTypeOperatorFunction<T> {
+  withToastResultHandling<T>(
+    successKey: string,
+    failureKey: string,
+  ): MonoTypeOperatorFunction<T> {
     return (apiCall) => {
       return apiCall.pipe(
-        this.errorService.toastFailureRxjs(`${actionName} failed!`),
-        tap(() => this.toast.showSuccess(`${actionName} was successful.`)),
+        this.errorService.toastFailureRxjs(this.translate.instant(failureKey)),
+        tap(() => this.toast.showSuccess(this.translate.instant(successKey))),
       );
     };
   }

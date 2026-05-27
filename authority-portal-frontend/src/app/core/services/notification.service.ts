@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {
   MatSnackBar,
   MatSnackBarConfig,
@@ -27,7 +28,10 @@ import {Observable} from 'rxjs';
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private translate: TranslateService,
+  ) {}
 
   /**
    * Shows a snackbar message with a particular text
@@ -42,7 +46,7 @@ export class NotificationService {
     onAction?: () => any,
   ): Observable<MatSnackBarDismiss> {
     if (!action && onAction) {
-      action = 'Done';
+      action = this.translate.instant('COMMON.DONE');
     }
     const config: MatSnackBarConfig = {
       duration: onAction ? 5000 : 3000, // no auto-cancel if an action was specified
