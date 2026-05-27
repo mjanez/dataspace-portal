@@ -45,7 +45,7 @@ using [Local E2E Development](#local-e2e-development).
 The backend and the frontend can be developed separately:
 
 - [Local Backend Development](authority-portal-backend/README.md#development)
-- [Local Frontend Development](authority-portal-frontend/README.md#development)
+- [Local Frontend Development](authority-portal-frontend/README.md#development) — includes UI internationalization (i18n)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
