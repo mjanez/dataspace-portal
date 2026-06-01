@@ -17,25 +17,24 @@
  */
 
 @use '@angular/material' as mat;
-@use 'theme-sovity' as sovityColors;
+@use 'theme-default' as defaultColors;
 @use 'theme-generated-variables' as themeGeneratedVars;
 
-// Import theme and theme-dependent styles
-.theme-sovity {
-  @include mat.all-component-themes(sovityColors.$app-theme);
-  @include themeGeneratedVars.theme-vars(sovityColors.$app-theme);
+.theme-default {
+  @include mat.all-component-themes(defaultColors.$app-theme);
+  @include themeGeneratedVars.theme-vars(defaultColors.$app-theme);
 
-  --color-brand-400: #{sovityColors.$color-brand-400};
-  --color-brand-500: #{sovityColors.$color-brand-500};
-  --color-brand-primary: #{sovityColors.$color-brand-primary};
-  --color-brand-black: #{sovityColors.$color-brand-black};
-  --color-brand-highlight: #{sovityColors.$color-brand-highlight};
+  --color-brand-400: #{defaultColors.$color-brand-400};
+  --color-brand-500: #{defaultColors.$color-brand-500};
+  --color-brand-primary: #{defaultColors.$color-brand-primary};
+  --color-brand-black: #{defaultColors.$color-brand-black};
+  --color-brand-highlight: #{defaultColors.$color-brand-highlight};
 
-  --color-sidebar-bg: #{sovityColors.$color-sidebar-bg};
-  --color-sidebar-selected: #{sovityColors.$color-sidebar-selected};
-  --color-sidebar-text: #{sovityColors.$color-sidebar-text};
-  --color-sidebar-text-selected: #{sovityColors.$color-sidebar-text-selected};
-  --color-sidebar-section: #{sovityColors.$color-sidebar-section};
+  --color-sidebar-bg: #{defaultColors.$color-sidebar-bg};
+  --color-sidebar-selected: #{defaultColors.$color-sidebar-selected};
+  --color-sidebar-text: #{defaultColors.$color-sidebar-text};
+  --color-sidebar-text-selected: #{defaultColors.$color-sidebar-text-selected};
+  --color-sidebar-section: #{defaultColors.$color-sidebar-section};
 
-  --color-background: #{sovityColors.$color-background};
+  --color-background: #{defaultColors.$color-background};
 }

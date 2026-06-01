@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inferUiProfileType} from './infer-ui-profile-type';
-import {SOVITY_THEME} from './ui-theme-data';
+import {DEFAULT_THEME} from './ui-theme-data';
 
 /**
  * List of available profiles.
@@ -24,8 +24,8 @@ import {SOVITY_THEME} from './ui-theme-data';
  * This codebase supports multiple profiles since it incorporates multiple deployment targets.
  */
 export const UI_PROFILE_DATA = inferUiProfileType({
-  'sovity-open-source': {
-    ...SOVITY_THEME,
+  'default': {
+    ...DEFAULT_THEME,
     features: new Set(),
   },
 });
