@@ -300,7 +300,7 @@ AUTHORITY_PORTAL_FRONTEND_INVALIDATE_SESSION_COOKIES_URL: https://[AP_FQDN]/oaut
 AUTHORITY_PORTAL_FRONTEND_LEGAL_NOTICE_URL: https://yourdataspace.com/legal-notice # Legal Notice URL
 AUTHORITY_PORTAL_FRONTEND_PRIVACY_POLICY_URL: https://yourdataspace.com/privacy-policy # Privacy policy URL
 AUTHORITY_PORTAL_FRONTEND_SUPPORT_URL: https://support.yourdataspace.com # Support page URL
-AUTHORITY_PORTAL_FRONTEND_ACTIVE_PROFILE: sovity-open-source # UI Branding profile (sovity-open-source)
+AUTHORITY_PORTAL_FRONTEND_ACTIVE_PROFILE: default # UI Branding profile
 AUTHORITY_PORTAL_FRONTEND_DATASPACE_SHORT_NAME: ExDS # Short Dataspace name, used in some explanatory texts
 AUTHORITY_PORTAL_FRONTEND_PORTAL_DISPLAY_NAME: "Data Space Portal" # Portal name displayed in various texts
 AUTHORITY_PORTAL_FRONTEND_ENABLE_DASHBOARD: true # Enables or disables the status uptime dashboard
