@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable, OnDestroy} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject} from 'rxjs';
 import {ignoreElements, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -55,6 +56,7 @@ export class CatalogPageState implements OnDestroy {
     private catalogApiService: CatalogApiService,
     private ngxsUtils: NgxsUtils,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {
     this.ngxsUtils.sampleTime(CatalogPage.NeedFetch, CatalogPage.Fetch, 200);
   }
@@ -80,7 +82,9 @@ export class CatalogPageState implements OnDestroy {
       switchMap((deploymentEnvironmentId) =>
         this.catalogApiService.catalogPage(deploymentEnvironmentId, query),
       ),
-      Fetched.wrap({failureMessage: 'Failed fetching data offers.'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_DATA_OFFERS'),
+      }),
       this.ngxsUtils.takeUntil(CatalogPage.Reset),
       tap((fetchedData) => {
         let state = {...ctx.getState(), fetchedData};
@@ -193,7 +197,7 @@ export class CatalogPageState implements OnDestroy {
     }));
     return {
       id: 'organization',
-      title: 'Organization',
+      title: this.translate.instant('PAGES.CATALOG.ORGANIZATION_FILTER'),
       selectedItems: items,
       availableItems: items,
       searchText: '',
@@ -229,7 +233,7 @@ export class CatalogPageState implements OnDestroy {
     if (state.searchText?.trim()) {
       activeFilterItems.push({
         type: 'SEARCH_TEXT',
-        label: 'Search',
+        label: this.translate.instant('COMMON.SEARCH'),
         value: state.searchText,
       });
     }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {MemberInfo} from '@sovity.de/authority-portal-client';
 import {mapRolesToReadableFormat} from 'src/app/core/utils/user-role-utils';
 
@@ -29,8 +30,10 @@ export class OrganizationUserListComponent {
   @Input() organizationId!: string;
   @Output() onUserSelected = new EventEmitter<MemberInfo>();
 
+  constructor(private translate: TranslateService) {}
+
   mapToReadable(role: string): string {
-    return mapRolesToReadableFormat(role);
+    return mapRolesToReadableFormat(role, (key) => this.translate.instant(key));
   }
 
   selectUser(user: MemberInfo): void {

@@ -17,9 +17,9 @@
  */
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
-import {Subject, interval} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, interval, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {
   ConnectorTypeDto,
@@ -75,13 +75,20 @@ export class SpConnectorListPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private slideOverService: SlideOverService,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('Provided Connectors');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
     this.initializeHeaderBar();
     this.initializeFilterBar();
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.initializeHeaderBar();
+        this.initializeFilterBar();
+        this.updateTitle();
+      });
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
@@ -92,14 +99,14 @@ export class SpConnectorListPageComponent implements OnInit, OnDestroy {
       filters: [
         {
           id: 'type',
-          label: 'Type',
+          label: this.translate.instant('COMMON.TYPE'),
           icon: 'tag',
           type: 'MULTISELECT',
           options: [],
         },
         {
           id: 'status',
-          label: 'Status',
+          label: this.translate.instant('COMMON.STATUS'),
           type: 'SELECT',
           icon: 'status',
           options: [],
@@ -110,12 +117,11 @@ export class SpConnectorListPageComponent implements OnInit, OnDestroy {
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'Provided Connectors',
-      subtitle:
-        'List of connectors provided by you in your capacity as a Service Partner.',
+      title: this.translate.instant('PAGES.CONNECTORS.PROVIDED_TITLE'),
+      subtitle: this.translate.instant('PAGES.CONNECTORS.PROVIDED_SUBTITLE'),
       headerActions: [
         {
-          label: 'Provide Connector',
+          label: this.translate.instant('PAGES.CONNECTORS.PROVIDE_CONNECTOR'),
           action: () =>
             this.router.navigate([
               'service-partner/provided-connectors/provide-connector',
@@ -124,6 +130,12 @@ export class SpConnectorListPageComponent implements OnInit, OnDestroy {
         },
       ],
     };
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.CONNECTORS.PROVIDED_TITLE'),
+    );
   }
 
   refresh() {

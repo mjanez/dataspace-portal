@@ -7,7 +7,7 @@
         <form id="kc-passwd-update-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
                 <input type="password" id="password-new" name="password-new" class="text-input"
-                       autofocus autocomplete="new-password" placeholder="New Password"
+                       autofocus autocomplete="new-password" placeholder="${msg("newPasswordPlaceholder")}"
                        aria-invalid="<#if messagesPerField.existsError('password','password-confirm')>true</#if>"
                 />
             </div>
@@ -21,7 +21,7 @@
             <div class="${properties.kcFormGroupClass!}">
                 <input type="password" id="password-confirm" name="password-confirm"
                        class="text-input"
-                       autocomplete="new-password" placeholder="Confirm Password"
+                       autocomplete="new-password" placeholder="${msg("confirmPasswordPlaceholder")}"
                        aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>"
                 />
             </div>

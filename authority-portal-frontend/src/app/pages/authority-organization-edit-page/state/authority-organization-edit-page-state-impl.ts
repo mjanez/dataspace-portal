@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable} from 'rxjs';
 import {ignoreElements, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -54,6 +55,7 @@ export class AuthorityOrganizationEditPageStateImpl {
     private formBuilder: FormBuilder,
     private customRxjsOperators: CustomRxjsOperators,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(SetOrganizationId)
@@ -73,7 +75,9 @@ export class AuthorityOrganizationEditPageStateImpl {
           environmentId,
         ),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((organization) => {
         ctx.patchState({
           organization,
@@ -99,7 +103,8 @@ export class AuthorityOrganizationEditPageStateImpl {
       .pipe(
         this.customRxjsOperators.withBusyLock(ctx),
         this.customRxjsOperators.withToastResultHandling(
-          'Editing organization',
+          'TOASTS.EDIT_ORG_SUCCESS',
+          'TOASTS.EDIT_ORG_FAILED',
         ),
         this.customRxjsOperators.onSuccessRedirect([
           '/authority/organizations',

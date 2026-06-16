@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -39,6 +40,7 @@ export class ParticipantInviteNewUserPageStateImpl {
     private toast: ToastService,
     private actions$: Actions,
     private errorService: ErrorService,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -57,13 +59,15 @@ export class ParticipantInviteNewUserPageStateImpl {
       takeUntil(this.actions$.pipe(ofAction(Reset))),
       tap(() => {
         this.toast.showSuccess(
-          `The invitation for ${action.request.firstName} ${action.request.lastName} was sent.`,
+          this.translate.instant('TOASTS.USER_INVITED', {
+            name: `${action.request.firstName} ${action.request.lastName}`,
+          }),
         );
         ctx.patchState({state: 'success'});
         action.success();
       }),
       this.errorService.toastRegistrationErrorRxjs(
-        'Failed inviting user due to an unknown error.',
+        this.translate.instant('TOASTS.FAILED_INVITE_USER'),
         () => {
           ctx.patchState({state: 'error'});
           action.enableForm();

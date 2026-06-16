@@ -17,7 +17,8 @@
  */
 import {Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormControl} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+import {Subscription, merge} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 
 @Directive({
@@ -30,11 +31,17 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
 
   public errorMessage$!: Subscription | undefined;
 
-  constructor(private el: ElementRef) {}
+  constructor(
+    private el: ElementRef,
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit(): void {
     const formControl = this.control as FormControl;
-    this.errorMessage$ = formControl.statusChanges
+    this.errorMessage$ = merge(
+      formControl.statusChanges,
+      this.translate.onLangChange,
+    )
       .pipe(
         debounceTime(500),
         map(() => {
@@ -49,12 +56,6 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * this method generates a list of error messages based on the control errors object
-   * @param control control
-   * @param fieldName Field name to show on the error message
-   * @returns
-   */
   private getErrorMessage(
     control: FormControl | null,
     fieldName: string,
@@ -63,61 +64,64 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return '';
     }
 
+    const t = (key: string, params?: Record<string, unknown>) =>
+      this.translate.instant(key, {field: fieldName, ...params});
+
     const errors = control.errors;
 
     if (errors['required']) {
-      return `${fieldName} is required`;
+      return t('VALIDATION.REQUIRED');
     }
 
     if (errors['email']) {
-      return `${fieldName} is invalid`;
+      return t('VALIDATION.EMAIL');
     }
 
     if (errors['isNotUnique']) {
-      return `${fieldName} exists already`;
+      return t('VALIDATION.NOT_UNIQUE');
     }
 
     if (errors['mismatch']) {
-      return `${fieldName}s doesn't match`;
+      return t('VALIDATION.MISMATCH');
     }
 
     if (errors['minlength']) {
       const {requiredLength} = errors['minlength'];
-      return `${fieldName} minimum length is ${requiredLength} character${
-        requiredLength !== 1 ? 's' : ''
-      }`;
+      return requiredLength === 1
+        ? t('VALIDATION.MIN_LENGTH', {length: requiredLength})
+        : t('VALIDATION.MIN_LENGTH_PLURAL', {length: requiredLength});
     }
 
     if (errors['invalidUrl']) {
-      return `${fieldName} invalid, Please ensure it adheres to the following format: https://www.example.com`;
+      return t('VALIDATION.INVALID_URL');
     }
 
     if (errors['invalidSubdomain']) {
-      return `${fieldName} needs to be a valid subdomain`;
+      return t('VALIDATION.INVALID_SUBDOMAIN');
     }
 
     if (errors['errorMessage']) {
-      return `Invalid Identification Credentials`;
+      return t('VALIDATION.INVALID_CREDENTIALS');
     }
 
     if (errors['pattern']) {
-      return `${fieldName} invalid pattern`;
+      return t('VALIDATION.INVALID_PATTERN');
     }
 
     if (errors['hasNumber']) {
-      return `${fieldName} should contain at least one number (0-9)`;
+      return t('VALIDATION.HAS_NUMBER');
     }
 
     if (errors['hasCapitalCase']) {
-      return `${fieldName} should contain at least one uppercase character (A-Z)`;
+      return t('VALIDATION.HAS_UPPERCASE');
     }
 
     if (errors['hasSmallCase']) {
-      return `${fieldName} should contain at least one lowercase character (a-z)`;
+      return t('VALIDATION.HAS_LOWERCASE');
     }
 
     if (errors['hasSpecialCharacters']) {
-      return `${fieldName} should contain at least one special character !“#$%&()*+,-./:;<=>?@[\\]^_{|}~`;
+      return t('VALIDATION.HAS_SPECIAL');
     }
 
     return '';

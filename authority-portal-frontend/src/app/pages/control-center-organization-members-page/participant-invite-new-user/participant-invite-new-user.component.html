@@ -14,8 +14,12 @@
   <!-- Title Section -->
   <div class="flex justify-start mx-4 lg:mx-8">
     <div>
-      <h3 class="form-dialog-title">Invite a User</h3>
-      <p class="form-dialog-prose">Invite a participant user to the portal</p>
+      <h3 class="form-dialog-title">
+        {{ 'PAGES.CONTROL_CENTER.INVITE_USER_TITLE' | translate }}
+      </h3>
+      <p class="form-dialog-prose">
+        {{ 'PAGES.CONTROL_CENTER.INVITE_USER_PROSE' | translate }}
+      </p>
     </div>
   </div>
   <!-- Title Section -->
@@ -61,7 +65,9 @@
         <!-- User Roles -->
         <div class="flex flex-col justify-start items-start">
           <div class="flex items-center mb-2">
-            <h4 class="text-sm">User Role</h4>
+            <h4 class="text-sm">
+              {{ 'PAGES.CONTROL_CENTER.USER_ROLE' | translate }}
+            </h4>
             <app-organization-roles-tooltip></app-organization-roles-tooltip>
           </div>
           <mat-form-field class="w-full" appearance="outline">

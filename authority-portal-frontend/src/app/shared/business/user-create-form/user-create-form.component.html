@@ -68,6 +68,7 @@
       class="flex-1"
       required
       data-testid="formRegConfirmPassword"
+      [label]="'FORMS.PASSWORD.CONFIRM_LABEL' | translate"
       [ctrl]="userForm.controls.confirmPassword"
       [parentFormGroup]="userForm"></app-password-repeat-input>
   </div>

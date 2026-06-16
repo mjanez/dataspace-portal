@@ -7,7 +7,7 @@
         <div class="cardContainer">
             <div class="formContainer">
                 <div class="formHeader">
-                    <h3>REGISTRATION FORM</h3>
+                    <h3>${msg("registrationFormHeading")}</h3>
                 </div>
                 <div class="formBody">
                     <div id="kc-form">

@@ -2,7 +2,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">corporate_fare</mat-icon>
-    Organization
+    {{ 'FORMS.USER_DETAIL.ORGANIZATION' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-organization">
     {{ config.user.organizationName }}, {{ config.user.organizationId }}
@@ -13,7 +13,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">person</mat-icon>
-    Position
+    {{ 'FORMS.USER_DETAIL.POSITION' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-position">
     {{ config.user.position }}
@@ -24,12 +24,12 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">admin_panel_settings</mat-icon>
-    Portal Role
+    {{ 'FORMS.USER_DETAIL.PORTAL_ROLE' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-portalrole">
     <div *ngIf="!roleFormToggled" class="flex justify-between">
       <div>
-        <span>{{ config.roles.readableRolesAsString }} </span>
+        <span>{{ getReadableRoles() }} </span>
       </div>
       <mat-icon
         *ngIf="config.roles.canEdit"
@@ -41,12 +41,12 @@
     <ng-container *ngIf="roleFormToggled">
       <div *ngIf="config.roles.canChangeApplicationRole" class="px-4">
         <div class="flex flex-row justify-start items-start w-full">
-          <label>Choose an Application Role</label>
+          <label>{{ 'FORMS.USER_DETAIL.CHOOSE_APPLICATION_ROLE' | translate }}</label>
           <app-application-roles-tooltip></app-application-roles-tooltip>
         </div>
         <mat-form-field class="w-full" appearance="outline">
           <mat-select
-            placeholder="None"
+            [placeholder]="'ROLES.NONE' | translate"
             multiple
             [formControl]="applicationRoleCtrl">
             <mat-option
@@ -59,7 +59,7 @@
       </div>
       <div class="px-4">
         <div class="flex flex-row justify-start items-start w-full">
-          <label>Choose an Organization Role</label>
+          <label>{{ 'FORMS.USER_DETAIL.CHOOSE_ORGANIZATION_ROLE' | translate }}</label>
           <app-organization-roles-tooltip></app-organization-roles-tooltip>
         </div>
         <mat-form-field class="w-full" appearance="outline">
@@ -81,7 +81,7 @@
           type="button"
           [disabledBtn]="roleEditBusy"
           (click)="onRoleEditCancel()">
-          Cancel
+          {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button
           class="btn-accent"
@@ -90,7 +90,7 @@
             roleEditBusy
           "
           (click)="onRoleEditSubmitClick()">
-          Save
+          {{ 'COMMON.SAVE' | translate }}
         </button>
       </div>
     </div>
@@ -102,7 +102,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">mail</mat-icon>
-    Email
+    {{ 'COMMON.EMAIL' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-email">
     {{ config.user.email }}
@@ -113,7 +113,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">phone_iphone</mat-icon>
-    Phone
+    {{ 'COMMON.PHONE' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-phone">
     {{ config.user.phone }}
@@ -124,7 +124,7 @@
 <div *ngIf="config.user.invitingUserId" class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">person </mat-icon>
-    Invited By
+    {{ 'FORMS.USER_DETAIL.INVITED_BY' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-invitedby">
     {{ config.user.invitingUserFirstName ?? '' }}
@@ -136,7 +136,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">sell</mat-icon>
-    Onboarding Type
+    {{ 'FORMS.USER_DETAIL.ONBOARDING_TYPE' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-onboardingtype">
     {{ onboardingType(config.user.onboardingType) }}
@@ -147,7 +147,7 @@
 <div class="details-row">
   <div class="details-row-key">
     <mat-icon class="material-icons-outlined">calendar_month</mat-icon>
-    Onboarded Since
+    {{ 'FORMS.USER_DETAIL.ONBOARDED_SINCE' | translate }}
   </div>
   <div class="details-row-value" data-testid="user-details-onboardedsince">
     {{ config.user.creationDate | date : 'mediumDate' }}

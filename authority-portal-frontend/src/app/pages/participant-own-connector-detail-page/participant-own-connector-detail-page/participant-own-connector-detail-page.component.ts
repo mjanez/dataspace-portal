@@ -17,6 +17,7 @@
  */
 import {Clipboard} from '@angular/cdk/clipboard';
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {
   Subject,
   distinctUntilChanged,
@@ -69,6 +70,7 @@ export class ParticipantOwnConnectorDetailPageComponent
     @Inject('childComponentInput') childComponentInput: ChildComponentInput,
     private globalStateUtils: GlobalStateUtils,
     private clipboard: Clipboard,
+    private translate: TranslateService,
   ) {
     this.connectorId = childComponentInput.id;
   }
@@ -109,7 +111,9 @@ export class ParticipantOwnConnectorDetailPageComponent
                   id: 'actionMenu',
                   menuOptions: [
                     {
-                      label: 'Delete Connector',
+                      label: this.translate.instant(
+                        'DIALOGS.DELETE_CONNECTOR.TITLE',
+                      ),
                       icon: 'delete',
                       event: () => this.deleteConnector(),
                       isDisabled: false,

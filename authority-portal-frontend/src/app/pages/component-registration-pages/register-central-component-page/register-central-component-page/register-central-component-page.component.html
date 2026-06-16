@@ -1,70 +1,88 @@
 <div class="flex justify-center items-center">
   <mat-stepper class="w-full lg:w-2/3" labelPosition="bottom" #stepper linear>
-    <!-- Central Component Tab -->
     <mat-step
       color="accent"
       [editable]="state.state === 'editing' || state.state === 'error'"
       [completed]="state.state === 'success' || form.componentTab.valid">
       <form class="flex flex-col w-full justify-center">
-        <ng-template matStepLabel>Add Component Details</ng-template>
+        <ng-template matStepLabel>{{
+          'PAGES.COMPONENT_REGISTRATION.ADD_COMPONENT_DETAILS' | translate
+        }}</ng-template>
         <div
           class="select-none flex flex-col justify-center items-center my-10 w-2/3 mx-auto">
-          <!-- Central Component Name -->
           <app-text-input
             class="w-full"
-            label="Name"
+            label="{{ 'PAGES.COMPONENT_REGISTRATION.COMPONENT_NAME' | translate }}"
             ctrlId="formRegCcName"
-            placeholder="Broker"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_NAME_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.componentTab.controls.name"></app-text-input>
 
-          <!-- Central Component Location -->
           <app-text-input
             class="w-full"
-            label="Component Location"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_LOCATION' | translate
+            }}"
             ctrlId="formRegCcLocation"
-            placeholder="DE"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_LOCATION_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.componentTab.controls.location"></app-text-input>
 
-          <!-- Use custom URLs toggle -->
           <div class="w-full justify-start my-4">
             <mat-slide-toggle
               name="useCustomUrls"
               [formControl]="form.componentTab.controls.useCustomUrls"
-              >Overwrite default URLs
+              >{{
+                'PAGES.COMPONENT_REGISTRATION.OVERWRITE_DEFAULT_URLS' | translate
+              }}
             </mat-slide-toggle>
           </div>
 
-          <!-- Central Component Base URL -->
           <app-text-input
             *ngIf="!useCustomUrls"
             class="w-full"
-            label="Component Base URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_BASE_URL' | translate
+            }}"
             ctrlId="formRegCcConBaseUrl"
-            placeholder="https://my-broker.my-org.com"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_BASE_URL_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.componentTab.controls.baseUrl"></app-text-input>
 
-          <!-- Central Component Frontend URL -->
           <app-text-input
             *ngIf="useCustomUrls"
             class="w-full"
-            label="Component Frontend URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_FRONTEND_URL' | translate
+            }}"
             ctrlId="formRegCcFrontendUrl"
-            placeholder="https://my-broker.my-org.com"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_BASE_URL_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.componentTab.controls.frontendUrl"></app-text-input>
 
-          <!-- Central Component Endpoint URL -->
           <app-text-input
             *ngIf="useCustomUrls"
             class="w-full"
-            label="Component Endpoint URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_ENDPOINT_URL' | translate
+            }}"
             ctrlId="formRegCcEndpointUrl"
             required
             [placeholder]="
-              'https://my-broker.my-org.com' + edcConfig.defaultPaths.dspApi
+              'PAGES.COMPONENT_REGISTRATION.COMPONENT_BASE_URL_PLACEHOLDER'
+                | translate
             "
             [ctrl]="form.componentTab.controls.endpointUrl"></app-text-input>
         </div>
@@ -75,26 +93,26 @@
             class="btn-accent-outline"
             type="button"
             [routerLink]="exitLink">
-            Cancel
+            {{ 'COMMON.CANCEL' | translate }}
           </button>
 
           <button
             class="btn-accent"
             [disabledBtn]="!form.componentTab.valid"
             (click)="stepper.next()">
-            Next
+            {{ 'COMMON.NEXT' | translate }}
           </button>
         </div>
       </form>
     </mat-step>
-    <!-- Central Component details Step -->
 
-    <!-- Generate Certificate Step-->
     <mat-step
       color="accent"
       [editable]="state.state === 'editing' || state.state === 'error'"
       [completed]="state.state === 'success'">
-      <ng-template matStepLabel>Generate Certificate</ng-template>
+      <ng-template matStepLabel>{{
+        'PAGES.COMPONENT_REGISTRATION.GENERATE_CERTIFICATE' | translate
+      }}</ng-template>
 
       <div class="flex justify-center items-center">
         <app-certificate-input-form
@@ -110,7 +128,7 @@
       <div
         class="border-t border-gray-900/10 pt-6 mt-6 flex items-center justify-end gap-x-6">
         <button class="btn-accent-outline" type="button" matStepperPrevious>
-          Back
+          {{ 'COMMON.BACK' | translate }}
         </button>
         <button
           class="btn-accent"
@@ -124,16 +142,19 @@
         </button>
       </div>
     </mat-step>
-    <!-- Generate Certificate Step-->
 
-    <!-- Final Step -->
     <mat-step color="accent" [editable]="false">
-      <ng-template matStepLabel>Setup Central Component</ng-template>
+      <ng-template matStepLabel>{{
+        'PAGES.COMPONENT_REGISTRATION.SETUP_CENTRAL_COMPONENT' | translate
+      }}</ng-template>
       <div class="my-12 flex flex-col justify-center items-center text-center">
-        <h2 class="wizard-end-title">Finish setting up your component!</h2>
+        <h2 class="wizard-end-title">
+          {{ 'PAGES.COMPONENT_REGISTRATION.SETUP_COMPONENT_HEADING' | translate }}
+        </h2>
         <p class="wizard-end-prose">
-          The central component has been successfully registered. <br />
-          Your Participant ID:
+          {{ 'PAGES.COMPONENT_REGISTRATION.SETUP_COMPONENT_MESSAGE' | translate }}
+          <br />
+          {{ 'PAGES.COMPONENT_REGISTRATION.PARTICIPANT_ID' | translate }}
           <strong>{{ state.createdCentralComponentId }}</strong>
           <button
             mat-icon-button
@@ -142,9 +163,10 @@
             <mat-icon>content_copy</mat-icon>
           </button>
         </p>
-        <button class="btn-accent" [routerLink]="exitLink">Finish</button>
+        <button class="btn-accent" [routerLink]="exitLink">
+          {{ 'COMMON.FINISH' | translate }}
+        </button>
       </div>
     </mat-step>
-    <!-- Final Step -->
   </mat-stepper>
 </div>

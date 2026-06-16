@@ -2,10 +2,10 @@
   <!-- Website -->
   <app-text-input
     class="flex-1"
-    label="Website"
+    label="{{ 'FORMS.ORGANIZATION.WEBSITE' | translate }}"
     ctrlId="formEditWebsite"
     data-testid="formEditWebsite"
-    placeholder="https://www.my-org.com"
+    placeholder="{{ 'FORMS.ORGANIZATION.WEBSITE_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.website"></app-text-input>
 </div>
@@ -14,10 +14,10 @@
   <!-- Business Unit -->
   <app-text-input
     class="flex-1"
-    label="Business Unit"
+    label="{{ 'FORMS.ORGANIZATION.BUSINESS_UNIT' | translate }}"
     ctrlId="formEditBusinessUnit"
     data-testid="formEditBusinessUnit"
-    placeholder="My Department"
+    placeholder="{{ 'FORMS.ORGANIZATION.BUSINESS_UNIT_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.businessUnit"></app-text-input>
 </div>
@@ -26,14 +26,15 @@
   <app-industry-select
     class="flex-1"
     required
+    [label]="'FORMS.INDUSTRY.LABEL' | translate"
     [ctrl]="orgForm.controls.industry"></app-industry-select>
 </div>
 
 <div class="flex flex-col">
   <app-text-area
     class="flex-1"
-    label="Main Adddress"
-    placeholder="Example Street 10b, 12345 Frankfurt am Main, Germany"
+    label="{{ 'FORMS.ORGANIZATION.MAIN_ADDRESS' | translate }}"
+    placeholder="{{ 'FORMS.ORGANIZATION.MAIN_ADDRESS_PLACEHOLDER' | translate }}"
     ctrlId="formEditMainAddress"
     data-testid="formEditMainAddress"
     required
@@ -44,7 +45,9 @@
     class="mb-2"
     [formControl]="orgForm.controls.billingAddressSameAsMain"
     ><div class="flex gap-2 items-center">
-      <span class="text-sm">Billing address is same as main address</span>
+      <span class="text-sm">{{
+        'FORMS.ORGANIZATION.BILLING_SAME_AS_MAIN' | translate
+      }}</span>
     </div>
   </mat-checkbox>
 </div>
@@ -54,8 +57,8 @@
   class="flex flex-col gap-4">
   <app-text-area
     class="flex-1"
-    label="Billing Adddress"
-    placeholder="Example Street 10b, 12345 Frankfurt am Main, Germany"
+    label="{{ 'FORMS.ORGANIZATION.BILLING_ADDRESS' | translate }}"
+    placeholder="{{ 'FORMS.ORGANIZATION.BILLING_ADDRESS_PLACEHOLDER' | translate }}"
     ctrlId="formEditBillingAddress"
     data-testid="formEditBillingAddress"
     required
@@ -66,33 +69,37 @@
   <!-- Description -->
   <app-text-area
     class="flex-1"
-    label="Organization Description"
+    label="{{ 'FORMS.ORGANIZATION.DESCRIPTION' | translate }}"
     ctrlId="formEditOrganizationDescription"
     data-testid="formEditOrganizationDescription"
-    placeholder="What does Your organization do?"
+    placeholder="{{ 'FORMS.ORGANIZATION.DESCRIPTION_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.description"></app-text-area>
 </div>
 
-<h3 class="wizard-step-title pb-6">Contacts</h3>
+<h3 class="wizard-step-title pb-6">
+  {{ 'FORMS.ORGANIZATION.CONTACTS' | translate }}
+</h3>
 
 <div class="flex flex-col gap-4">
   <!-- Main Contact Form -->
   <div class="flex gap-4 flex-wrap">
-    <h3 class="wizard-step-title">Main Contact</h3>
+    <h3 class="wizard-step-title">
+      {{ 'FORMS.ORGANIZATION.MAIN_CONTACT' | translate }}
+    </h3>
     <mat-icon
       fontIcon="info"
-      matTooltip="Main Contact is needed for purposes such as use cases, events, membership etc."
+      matTooltip="{{ 'FORMS.ORGANIZATION.MAIN_CONTACT_TOOLTIP' | translate }}"
       matTooltipClass="text-sm"></mat-icon>
   </div>
 
   <!-- User Full Name -->
   <app-text-input
     class="flex-1"
-    label="Main Full Name"
+    label="{{ 'FORMS.ORGANIZATION.MAIN_FULL_NAME' | translate }}"
     ctrlId="formEditMainName"
     data-testid="formEditMainName"
-    placeholder="John Doe"
+    placeholder="{{ 'FORMS.ORGANIZATION.MAIN_FULL_NAME_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.mainContactName"></app-text-input>
 
@@ -100,20 +107,20 @@
     <!-- User PhoneNumber -->
     <app-text-input
       class="flex-1"
-      label="Phone Number"
+      label="{{ 'FORMS.ORGANIZATION.PHONE_NUMBER' | translate }}"
       ctrlId="formEditMainPhoneNumber"
       data-testid="formEditMainPhoneNumber"
-      placeholder="+49 1234 567890"
+      placeholder="{{ 'FORMS.ORGANIZATION.PHONE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactPhoneNumber"></app-text-input>
 
     <!-- User Email -->
     <app-text-input
       class="flex-1"
-      label="Email"
+      label="{{ 'COMMON.EMAIL' | translate }}"
       ctrlId="formEditMainEmail"
       data-testid="formEditMainEmail"
-      placeholder="john.doe@my-org.com"
+      placeholder="{{ 'FORMS.ORGANIZATION.EMAIL_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactEmail"></app-text-input>
   </div>
@@ -122,10 +129,12 @@
 <!-- Technical Contact Form -->
 <div class="flex flex-col gap-4">
   <div class="flex gap-4 flex-wrap">
-    <h3 class="wizard-step-title">Technical Contact</h3>
+    <h3 class="wizard-step-title">
+      {{ 'FORMS.ORGANIZATION.TECHNICAL_CONTACT' | translate }}
+    </h3>
     <mat-icon
       fontIcon="info"
-      matTooltip="A technical contact will get notified in case of IT related topics"
+      matTooltip="{{ 'FORMS.ORGANIZATION.TECHNICAL_CONTACT_TOOLTIP' | translate }}"
       matTooltipClass="text-sm"></mat-icon>
   </div>
   <mat-checkbox
@@ -133,7 +142,9 @@
     class="mb-2"
     [formControl]="orgForm.controls.technicalContactSameAsMain"
     ><div class="flex gap-2 items-center">
-      <span class="text-sm">Same as Main Contact</span>
+      <span class="text-sm">{{
+        'FORMS.ORGANIZATION.SAME_AS_MAIN_CONTACT' | translate
+      }}</span>
     </div>
   </mat-checkbox>
 
@@ -141,10 +152,10 @@
     <!-- User Full Name -->
     <app-text-input
       class="flex-1"
-      label="Technical Full Name"
+      label="{{ 'FORMS.ORGANIZATION.TECHNICAL_FULL_NAME' | translate }}"
       ctrlId="formEditTechnicalName"
       data-testid="formEditTechnicalName"
-      placeholder="John Doe"
+      placeholder="{{ 'FORMS.ORGANIZATION.TECHNICAL_FULL_NAME_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.technicalContactName"></app-text-input>
 
@@ -152,20 +163,20 @@
       <!-- User PhoneNumber -->
       <app-text-input
         class="flex-1"
-        label="Phone Number"
+        label="{{ 'FORMS.ORGANIZATION.PHONE_NUMBER' | translate }}"
         ctrlId="formEditTechnicalPhoneNumber"
         data-testid="formEditTechnicalPhoneNumber"
-        placeholder="+49 1234 567890"
+        placeholder="{{ 'FORMS.ORGANIZATION.PHONE_PLACEHOLDER' | translate }}"
         required
         [ctrl]="orgForm.controls.technicalContactPhoneNumber"></app-text-input>
 
       <!-- User Email -->
       <app-text-input
         class="flex-1"
-        label="Email"
+        label="{{ 'COMMON.EMAIL' | translate }}"
         ctrlId="formEditTechnicalEmail"
         data-testid="formEditTechnicalEmail"
-        placeholder="john.doe@my-org.com"
+        placeholder="{{ 'FORMS.ORGANIZATION.EMAIL_PLACEHOLDER' | translate }}"
         required
         [ctrl]="orgForm.controls.technicalContactEmail"></app-text-input>
     </div>

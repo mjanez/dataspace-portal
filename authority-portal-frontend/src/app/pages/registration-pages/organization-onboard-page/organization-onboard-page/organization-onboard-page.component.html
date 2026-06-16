@@ -30,9 +30,13 @@
         [editable]="state.state === 'editing' || state.state === 'error'"
         [completed]="userForm.valid || state.state === 'success'">
         <div class="flex flex-col px-1 md:px-8 w-full">
-          <ng-template matStepLabel>User Profile</ng-template>
+          <ng-template matStepLabel>{{
+            'PAGES.REGISTRATION.USER_PROFILE_STEP' | translate
+          }}</ng-template>
 
-          <h2 class="wizard-step-title">User Profile</h2>
+          <h2 class="wizard-step-title">
+            {{ 'PAGES.REGISTRATION.USER_PROFILE_STEP' | translate }}
+          </h2>
           <div class="flex-grow my-4">
             <app-user-onboard-form
               [userForm]="userOnboardForm"></app-user-onboard-form>
@@ -52,7 +56,7 @@
               data-testid="user-onboarding-next-btn"
               matStepperNext
               [disabledBtn]="!userForm.valid">
-              Next
+              {{ 'COMMON.NEXT' | translate }}
             </button>
             <button
               *ngIf="state.onboardingType === 'USER_ONBOARDING'"
@@ -60,7 +64,7 @@
               data-testid="user-onboarding-submit-btn"
               [disabledBtn]="!userForm.valid || state.state === 'submitting'"
               (click)="submit()">
-              Submit
+              {{ 'COMMON.SUBMIT' | translate }}
             </button>
           </div>
         </div>
@@ -74,9 +78,13 @@
         [editable]="state.state === 'editing' || state.state === 'error'"
         [completed]="state.state === 'success'">
         <div class="flex flex-col px-1 md:px-8 w-full">
-          <ng-template matStepLabel>Organization Profile</ng-template>
+          <ng-template matStepLabel>{{
+            'PAGES.REGISTRATION.ORGANIZATION_PROFILE_STEP' | translate
+          }}</ng-template>
 
-          <h2 class="wizard-step-title">Organization Profile</h2>
+          <h2 class="wizard-step-title">
+            {{ 'PAGES.REGISTRATION.ORGANIZATION_PROFILE_HEADING' | translate }}
+          </h2>
           <app-organization-create-form
             class="flex-grow my-4"
             [orgForm]="orgProfileForm"></app-organization-create-form>
@@ -90,7 +98,7 @@
               matStepperPrevious
               type="button"
               data-testid="org-onboarding-back-btn">
-              Back
+              {{ 'COMMON.BACK' | translate }}
             </button>
 
             <button
@@ -102,7 +110,7 @@
                 state.state === 'submitting'
               "
               (click)="submit()">
-              Submit
+              {{ 'COMMON.SUBMIT' | translate }}
             </button>
           </div>
         </div>
@@ -111,23 +119,26 @@
 
       <!-- final step -->
       <mat-step [editable]="false" [stepControl]="parentFormGroup">
-        <ng-template matStepLabel>Confirmation</ng-template>
+        <ng-template matStepLabel>{{
+          'PAGES.REGISTRATION.CONFIRMATION_STEP' | translate
+        }}</ng-template>
         <div class="my-12 flex flex-col justify-center items-center">
           <h3 class="wizard-end-title text-center">
-            Thank you for onboarding on the {{ appConfig.portalName }}!
+            {{
+              'PAGES.REGISTRATION.ONBOARD_SUCCESS_HEADING'
+                | translate : {portalName: appConfig.portalName}
+            }}
           </h3>
           <p
             class="wizard-end-prose max-w-3xl text-center"
             data-testid="onboarding-success-message">
-            Congratulations on successfully onboarding to our platform! We're
-            thrilled to have you as part of our community. Explore our platform
-            and discover services tailored just for you.
+            {{ 'PAGES.REGISTRATION.ONBOARD_SUCCESS_MESSAGE' | translate }}
           </p>
           <button
             class="btn-accent"
             routerLink="/"
             data-testid="onboarding-success-finish-btn">
-            Finish
+            {{ 'COMMON.FINISH' | translate }}
           </button>
         </div>
       </mat-step>

@@ -17,6 +17,7 @@
  */
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {OrganizationDeletionCheck} from '@sovity.de/authority-portal-client';
@@ -39,6 +40,7 @@ export class OrganizationDeleteDialogComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private dialogRef: MatDialogRef<OrganizationDeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: OrganizationDeleteDialog,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -47,7 +49,9 @@ export class OrganizationDeleteDialogComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.ngOnDestroy$),
         Fetched.wrap({
-          failureMessage: 'Failed fetching organization deletion check.',
+          failureMessage: this.translate.instant(
+            'TOASTS.FAILED_ORG_DELETION_CHECK',
+          ),
         }),
       )
       .subscribe((modalData) => {
@@ -65,7 +69,9 @@ export class OrganizationDeleteDialogComponent implements OnInit, OnDestroy {
       .deleteOrganization(this.data.organizationId)
       .pipe(
         finalize(() => (this.isBusy = false)),
-        this.errorService.toastFailureRxjs('Failed deleting organization'),
+        this.errorService.toastFailureRxjs(
+          this.translate.instant('TOASTS.FAILED_DELETE_ORGANIZATION'),
+        ),
       )
       .subscribe(() => {
         this.dialogRef.close(true);

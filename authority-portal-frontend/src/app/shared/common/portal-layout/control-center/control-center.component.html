@@ -39,7 +39,7 @@
       data-testid="control-center-my-profile-link"
       routerLink="control-center/my-profile">
       <mat-icon svgIcon="user"></mat-icon>
-      <span>My Profile</span>
+      <span>{{ 'CONTROL_CENTER.MY_PROFILE' | translate }}</span>
     </a>
   </div>
   <div>
@@ -48,14 +48,14 @@
       data-testid="control-center-my-organization-link"
       routerLink="control-center/my-organization">
       <mat-icon svgIcon="briefcase"></mat-icon>
-      <span>My Organization</span>
+      <span>{{ 'CONTROL_CENTER.MY_ORGANIZATION' | translate }}</span>
     </a>
     <a
       class="flex gap-2 justify-start items-center p-2 hover:text-brand-highlight"
       data-testid="control-center-users-and-roles-link"
       routerLink="control-center/users-and-roles">
       <mat-icon svgIcon="users"></mat-icon>
-      <span>Users and Roles</span>
+      <span>{{ 'CONTROL_CENTER.USERS_AND_ROLES' | translate }}</span>
     </a>
   </div>
   <hr class="my-2" />
@@ -66,7 +66,7 @@
       data-testid="control-center-logout-link"
       [href]="logoutUrl">
       <mat-icon svgIcon="arrow-left-on-rectangle"></mat-icon>
-      <span>Logout</span>
+      <span>{{ 'AUTH.LOGOUT' | translate }}</span>
     </a>
   </div>
 </mat-menu>

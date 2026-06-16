@@ -72,7 +72,7 @@ For workflows use a Personal Access Token with the `read:packages` scope. For CI
 The backend and the frontend can be developed separately:
 
 - [Local Backend Development](authority-portal-backend/README.md#development)
-- [Local Frontend Development](authority-portal-frontend/README.md#development)
+- [Local Frontend Development](authority-portal-frontend/README.md#development) — includes UI internationalization (i18n)
 
 ### Local E2E Development
 

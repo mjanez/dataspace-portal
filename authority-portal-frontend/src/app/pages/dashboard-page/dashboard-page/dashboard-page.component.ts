@@ -17,8 +17,9 @@
  */
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 import {
   ComponentStatusOverview,
   UptimeStatusDto,
@@ -36,11 +37,8 @@ import {ConnectorData} from '../dashboard-connector-card/dashboard-connector-car
     standalone: false
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
-  headerConfig: HeaderBarConfig = {
-    title: 'Dashboard',
-    subtitle: 'Uptime statistics of components',
-    headerActions: [],
-  };
+  headerConfig: HeaderBarConfig = this.buildHeaderConfig();
+
   dapsData: Fetched<UptimeStatusDto | undefined> = Fetched.empty();
   loggingHouseData: Fetched<UptimeStatusDto | undefined> = Fetched.empty();
   connectorData: Fetched<ConnectorData> = Fetched.empty();
@@ -51,12 +49,30 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     private globalStateUtils: GlobalStateUtils,
     private apiService: ApiService,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('Dashboard');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit(): void {
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.headerConfig = this.buildHeaderConfig();
+        this.updateTitle();
+      });
     this.fetchDashboardPageData();
+  }
+
+  private buildHeaderConfig(): HeaderBarConfig {
+    return {
+      title: this.translate.instant('PAGES.DASHBOARD.TITLE'),
+      subtitle: this.translate.instant('PAGES.DASHBOARD.SUBTITLE'),
+      headerActions: [],
+    };
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(this.translate.instant('PAGES.DASHBOARD.TITLE'));
   }
 
   fetchDashboardPageData() {
@@ -66,7 +82,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         switchMap((deploymentEnvironmentId) =>
           this.apiService.getComponentsStatus(deploymentEnvironmentId).pipe(
             Fetched.wrap({
-              failureMessage: 'Failed fetching dashboard data',
+              failureMessage: this.translate.instant('TOASTS.FAILED_DASHBOARD'),
             }),
           ),
         ),

@@ -1,6 +1,7 @@
 <div
   class="container mx-auto h-screen flex flex-col justify-center items-center">
-  <div class="fixed top-10 right-10">
+  <div class="fixed top-10 right-10 flex items-center gap-4">
+    <app-language-switcher></app-language-switcher>
     <logout-button></logout-button>
   </div>
   <img
@@ -8,12 +9,12 @@
     [attr.src]="appConfig.brandLogoUnauthenticatedPage.src"
     [class]="appConfig.brandLogoUnauthenticatedPage.class" />
   <div class="max-w-2xl mx-auto text-center">
-    <h1 class="full-screen-end-title">Thank you for signing up!</h1>
-    <p class="full-screen-end-prose">
-      Our team will review your profile and confirm your access
-      <b>as soon as possible</b>. You will receive a confirmation email with a
-      link to the portal where you can sign in using your credentials.
-    </p>
+    <h1 class="full-screen-end-title">
+      {{ 'PAGES.REGISTRATION.PENDING_HEADING' | translate }}
+    </h1>
+    <p
+      class="full-screen-end-prose"
+      [innerHTML]="'PAGES.REGISTRATION.PENDING_MESSAGE' | translate"></p>
   </div>
 </div>
 <!-- footer -->

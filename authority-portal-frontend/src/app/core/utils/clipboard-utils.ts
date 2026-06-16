@@ -16,17 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {ToastService} from 'src/app/shared/common/toast-notifications/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClipboardUtils {
-  constructor(private toastService: ToastService) {}
+  constructor(
+    private toastService: ToastService,
+    private translate: TranslateService,
+  ) {}
 
   copyToClipboard(text: string | undefined) {
     if (!text) {
-      this.toastService.showDanger('Nothing to copy');
+      this.toastService.showDanger(
+        this.translate.instant('TOASTS.NOTHING_TO_COPY'),
+      );
       return;
     }
 
@@ -38,10 +44,14 @@ export class ClipboardUtils {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        this.toastService.showSuccess('Copied to clipboard');
+        this.toastService.showSuccess(
+          this.translate.instant('TOASTS.CLIPBOARD_COPIED'),
+        );
       })
       .catch(() => {
-        this.toastService.showDanger('Failed to copy to clipboard');
+        this.toastService.showDanger(
+          this.translate.instant('TOASTS.FAILED_COPY_CLIPBOARD'),
+        );
       });
 
     document.body.removeChild(textarea);

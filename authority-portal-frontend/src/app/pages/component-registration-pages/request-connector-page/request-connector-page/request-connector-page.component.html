@@ -1,49 +1,61 @@
 <div
   class="flex flex-col min-h-screen justify-center items-center max-w-4xl mx-auto py-4 sm:py-8">
-  <h1 class="selection-page-title">Request a Connector-as-a-Service</h1>
+  <h1 class="selection-page-title">
+    {{ 'PAGES.COMPONENT_REGISTRATION.REQUEST_CAAS_TITLE' | translate }}
+  </h1>
   <p class="selection-page-prose text-center">
-    As {{ inferArticle(appConfig.brandDataspaceName) }}
-    {{ appConfig.brandDataspaceName }} member, you have the option to request
-    {{ sponsoredCaasAmount }}
-    free CaaS per environment.
+    {{
+      'PAGES.COMPONENT_REGISTRATION.REQUEST_CAAS_INTRO'
+        | translate
+          : {
+              article: inferArticle(appConfig.brandDataspaceName),
+              dataspaceName: appConfig.brandDataspaceName,
+              amount: sponsoredCaasAmount
+            }
+    }}
   </p>
   <div class="h-3"></div>
   <form class="flex flex-col w-full justify-center">
     <div
       class="select-none flex flex-col justify-center items-center my-10 gap-y-4">
-      <!-- Connector Title -->
       <app-text-input
         class="w-full"
         ctrlId="titleInput"
-        label="Connector Title"
-        placeholder="My Connector"
+        label="{{ 'PAGES.COMPONENT_REGISTRATION.CONNECTOR_TITLE' | translate }}"
+        placeholder="{{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_NAME_PLACEHOLDER' | translate
+        }}"
         required
         [ctrl]="requestConnectorPageForm.connectorTitle">
       </app-text-input>
 
-      <!-- Subdomain -->
       <app-text-input
         class="w-full"
         ctrlId="subdomainInput"
-        label="Connector Subdomain"
+        label="{{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUBDOMAIN' | translate
+        }}"
         placeholder="pallene-123456"
-        invalidPatternMessage="Not a valid subdomain. Only lowercase latin characters, numbers and dashes."
+        invalidPatternMessage="{{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUBDOMAIN_INVALID' | translate
+        }}"
         required
         [ctrl]="requestConnectorPageForm.connectorSubdomain"></app-text-input>
 
-      <!-- Description -->
       <app-text-area
         class="w-full"
         ctrlId="descriptionInput"
-        label="Description"
-        placeholder="This connector is used to..."
+        label="{{ 'PAGES.COMPONENT_REGISTRATION.DESCRIPTION' | translate }}"
+        placeholder="{{
+          'PAGES.COMPONENT_REGISTRATION.DESCRIPTION_PLACEHOLDER' | translate
+        }}"
         required
         [ctrl]="requestConnectorPageForm.connectorDescription"></app-text-area>
     </div>
 
     <div class="flex items-center justify-end gap-x-6">
       <a class="btn-accent-outline" type="button" [routerLink]="backLink">
-        Back
+        {{ 'COMMON.BACK' | translate }}
       </a>
 
       <button
@@ -55,6 +67,5 @@
     </div>
   </form>
 
-  <!-- footer -->
   <app-footer-for-full-page></app-footer-for-full-page>
 </div>

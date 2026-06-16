@@ -10,63 +10,75 @@
       [editable]="state.state === 'editing' || state.state === 'error'"
       [completed]="state.state === 'success' || form.connectorTab.valid">
       <form class="flex flex-col w-full justify-center">
-        <ng-template matStepLabel>Add Connector Details</ng-template>
+        <ng-template matStepLabel>{{
+          'PAGES.COMPONENT_REGISTRATION.ADD_CONNECTOR_DETAILS' | translate
+        }}</ng-template>
         <div
           class="select-none flex flex-col justify-center items-center my-10 w-2/3 mx-auto">
-          <!-- Connector Name -->
           <app-text-input
             class="w-full"
-            label="Connector Name"
+            label="{{ 'PAGES.COMPONENT_REGISTRATION.CONNECTOR_NAME' | translate }}"
             ctrlId="formRegOConName"
-            placeholder="My Connector"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_NAME_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.connectorTab.controls.name"></app-text-input>
 
-          <!-- Connector Location -->
           <app-text-input
             class="w-full"
-            label="Connector Location"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_LOCATION' | translate
+            }}"
             ctrlId="formRegOConLocation"
-            placeholder="DE"
+            placeholder="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_LOCATION_PLACEHOLDER'
+                | translate
+            }}"
             required
             [ctrl]="form.connectorTab.controls.location"></app-text-input>
 
-          <!-- Use custom URLs toggle -->
           <div class="w-full justify-start my-4">
             <mat-slide-toggle
               name="useCustomUrls"
               [formControl]="form.connectorTab.controls.useCustomUrls"
-              >Overwrite default URLs
+              >{{
+                'PAGES.COMPONENT_REGISTRATION.OVERWRITE_DEFAULT_URLS' | translate
+              }}
             </mat-slide-toggle>
           </div>
 
-          <!-- Base URL -->
           <app-connector-url-input
             *ngIf="!useCustomUrls"
             class="w-full"
-            label="Connector Base URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_BASE_URL' | translate
+            }}"
             ctrlId="formRegOConBaseUrl"
             required
             [ctrl]="
               form.connectorTab.controls.baseUrl
             "></app-connector-url-input>
 
-          <!-- Frontend URL -->
           <app-connector-url-input
             *ngIf="useCustomUrls"
             class="w-full"
-            label="Connector Frontend URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_FRONTEND_URL' | translate
+            }}"
             ctrlId="formRegOConFrontendUrl"
             required
             [ctrl]="
               form.connectorTab.controls.frontendUrl
             "></app-connector-url-input>
 
-          <!-- Endpoint URL -->
           <app-connector-url-input
             *ngIf="useCustomUrls"
             class="w-full"
-            label="Connector Endpoint URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_ENDPOINT_URL' | translate
+            }}"
             ctrlId="formRegOConEndpointUrl"
             required
             [urlSuffix]="edcConfig.defaultPaths.dspApi"
@@ -74,11 +86,12 @@
               form.connectorTab.controls.endpointUrl
             "></app-connector-url-input>
 
-          <!-- Management URL -->
           <app-connector-url-input
             *ngIf="useCustomUrls"
             class="w-full"
-            label="Connector Management URL"
+            label="{{
+              'PAGES.COMPONENT_REGISTRATION.CONNECTOR_MANAGEMENT_URL' | translate
+            }}"
             ctrlId="formRegOConManagementUrl"
             required
             [urlSuffix]="edcConfig.defaultPaths.managementApi"
@@ -93,26 +106,26 @@
             class="btn-accent-outline"
             type="button"
             [routerLink]="backLink">
-            Back
+            {{ 'COMMON.BACK' | translate }}
           </button>
 
           <button
             class="btn-accent"
             [disabledBtn]="!form.connectorTab.valid"
             (click)="stepper.next()">
-            Next
+            {{ 'COMMON.NEXT' | translate }}
           </button>
         </div>
       </form>
     </mat-step>
-    <!-- connector details Step -->
 
-    <!-- Generate Certificate Step-->
     <mat-step
       color="accent"
       [editable]="state.state === 'editing' || state.state === 'error'"
       [completed]="state.state === 'success'">
-      <ng-template matStepLabel>Generate Certificate</ng-template>
+      <ng-template matStepLabel>{{
+        'PAGES.COMPONENT_REGISTRATION.GENERATE_CERTIFICATE' | translate
+      }}</ng-template>
 
       <div class="flex justify-center items-center">
         <app-certificate-input-form
@@ -128,7 +141,7 @@
       <div
         class="border-t border-gray-900/10 pt-6 mt-6 flex items-center justify-end gap-x-6">
         <button class="btn-accent-outline" type="button" matStepperPrevious>
-          Back
+          {{ 'COMMON.BACK' | translate }}
         </button>
         <button
           class="btn-accent"
@@ -142,11 +155,11 @@
         </button>
       </div>
     </mat-step>
-    <!-- Generate Certificate Step-->
 
-    <!-- Final Step -->
     <mat-step color="accent" [editable]="false">
-      <ng-template matStepLabel>Setup Connector</ng-template>
+      <ng-template matStepLabel>{{
+        'PAGES.COMPONENT_REGISTRATION.SETUP_CONNECTOR' | translate
+      }}</ng-template>
 
       <app-connector-registering-success-message-page
         [connectorConfig]="
@@ -155,12 +168,12 @@
 
       <div
         class="border-t border-gray-900/10 pt-6 mt-6 flex items-center justify-end gap-x-6">
-        <button class="btn-accent" [routerLink]="exitLink">Finish</button>
+        <button class="btn-accent" [routerLink]="exitLink">
+          {{ 'COMMON.FINISH' | translate }}
+        </button>
       </div>
     </mat-step>
-    <!-- Final Step -->
   </mat-stepper>
 </div>
 
-<!-- footer -->
 <app-footer-for-full-page></app-footer-for-full-page>

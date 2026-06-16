@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -52,6 +53,7 @@ export class ReserveProvidedConnectorPageStateImpl {
     private toast: ToastService,
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -86,7 +88,9 @@ export class ReserveProvidedConnectorPageStateImpl {
         switch (res.status) {
           case 'OK':
             this.toast.showSuccess(
-              `Connector ${action.request.connectorInfo.name} was successfully reserved`,
+              this.translate.instant('TOASTS.CONNECTOR_RESERVED', {
+                name: action.request.connectorInfo.name,
+              }),
             );
             ctx.patchState({state: 'success'});
             action.success();
@@ -94,20 +98,25 @@ export class ReserveProvidedConnectorPageStateImpl {
           case 'WARNING':
             this.toast.showWarning(
               res?.message ||
-                'A problem occurred while reserving the connector.',
+                this.translate.instant('TOASTS.CONNECTOR_RESERVE_WARNING'),
             );
             ctx.patchState({state: 'success'});
             action.success();
             break;
           case 'ERROR':
-            this.toast.showDanger(res?.message || 'Failed reserving connector');
+            this.toast.showDanger(
+              res?.message ||
+                this.translate.instant('TOASTS.FAILED_RESERVE_CONNECTOR'),
+            );
             ctx.patchState({state: 'error'});
             action.enableForm();
             break;
         }
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
-      this.errorService.toastFailureRxjs('Failed reserving connector', () => {
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_RESERVE_CONNECTOR'),
+        () => {
         ctx.patchState({state: 'error'});
         action.enableForm();
       }),
@@ -126,7 +135,9 @@ export class ReserveProvidedConnectorPageStateImpl {
         ),
       ),
       map((result) => result.organizations),
-      Fetched.wrap({failureMessage: 'Failed loading organizations'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_ORGANIZATIONS'),
+      }),
       tap((organizations) => this.organizationsRefreshed(ctx, organizations)),
       ignoreElements(),
     );

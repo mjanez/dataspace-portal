@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable, forkJoin} from 'rxjs';
 import {
   filter,
@@ -64,6 +65,7 @@ export class AuthorityOrganizationDetailPageStateImpl {
     private toast: ToastService,
     private globalStateUtils: GlobalStateUtils,
     private slideOverService: SlideOverService,
+    private translate: TranslateService,
   ) {}
 
   // Organization  State Implementation
@@ -95,7 +97,9 @@ export class AuthorityOrganizationDetailPageStateImpl {
           deploymentEnvironmentId,
         ),
       ),
-      Fetched.wrap({failureMessage: 'Failed loading organizations'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_ORGANIZATIONS'),
+      }),
       tap((organization) =>
         this.organizationRefreshed(ctx, organization, action.cb),
       ),
@@ -149,14 +153,16 @@ export class AuthorityOrganizationDetailPageStateImpl {
           filter((action) => action instanceof RefreshOrganization),
         ),
       ),
-      this.errorService.toastFailureRxjs("Organization wasn't approved"),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.ORGANIZATION_NOT_APPROVED'),
+      ),
       tap((data) => {
         this.organizationRefreshed(ctx, Fetched.ready(data));
         ctx.dispatch(new RefreshOrganizations());
         this.toast.showSuccess(
-          `Organization ${
-            ctx.getState().organizationDetail.organizationId
-          } was successfully approved`,
+          this.translate.instant('TOASTS.ORGANIZATION_APPROVED', {
+            id: ctx.getState().organizationDetail.organizationId,
+          }),
         );
       }),
       finalize(() =>
@@ -200,12 +206,14 @@ export class AuthorityOrganizationDetailPageStateImpl {
           filter((action) => action instanceof RefreshOrganization),
         ),
       ),
-      this.errorService.toastFailureRxjs("Organization wasn't rejected"),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.ORGANIZATION_NOT_REJECTED'),
+      ),
       tap((data) => {
         this.toast.showSuccess(
-          `Organization ${
-            ctx.getState().organizationDetail.organizationId
-          } was successfully rejected`,
+          this.translate.instant('TOASTS.ORGANIZATION_REJECTED', {
+            id: ctx.getState().organizationDetail.organizationId,
+          }),
         );
         this.organizationRefreshed(ctx, Fetched.ready(data));
         ctx.dispatch(new RefreshOrganizations());
@@ -245,7 +253,9 @@ export class AuthorityOrganizationDetailPageStateImpl {
     return this.apiService
       .getOrganizationUser(ctx.getState().openedUserDetail.userId)
       .pipe(
-        Fetched.wrap({failureMessage: 'Failed loading user'}),
+        Fetched.wrap({
+          failureMessage: this.translate.instant('TOASTS.FAILED_USER'),
+        }),
         tap((user) => this.organizationUserRefreshed(ctx, user)),
         ignoreElements(),
       );
@@ -288,9 +298,13 @@ export class AuthorityOrganizationDetailPageStateImpl {
           filter((action) => action instanceof RefreshOrganizationUser),
         ),
       ),
-      this.errorService.toastFailureRxjs('Failed deactivating user'),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_DEACTIVATE_USER'),
+      ),
       tap((data) => {
-        this.toast.showSuccess(`User deactivated successfully`);
+        this.toast.showSuccess(
+          this.translate.instant('TOASTS.USER_DEACTIVATED'),
+        );
         this.organizationUserRefreshed(ctx, Fetched.ready(data));
       }),
       finalize(() => {
@@ -329,9 +343,13 @@ export class AuthorityOrganizationDetailPageStateImpl {
           filter((action) => action instanceof RefreshOrganizationUser),
         ),
       ),
-      this.errorService.toastFailureRxjs('Failed re-activating user'),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_REACTIVATE_USER'),
+      ),
       tap((data) => {
-        this.toast.showSuccess(`User re-activated successfully`);
+        this.toast.showSuccess(
+          this.translate.instant('TOASTS.USER_REACTIVATED'),
+        );
         this.organizationUserRefreshed(ctx, Fetched.ready(data));
       }),
       finalize(() => {

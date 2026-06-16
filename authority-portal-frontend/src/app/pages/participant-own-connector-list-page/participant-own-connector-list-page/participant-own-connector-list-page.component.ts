@@ -17,9 +17,9 @@
  */
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
-import {Subject, interval} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, interval, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {
   ConnectorOverviewEntryDto,
@@ -77,13 +77,20 @@ export class ParticipantOwnConnectorListPageComponent
     private router: Router,
     private slideOverService: SlideOverService,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('Connectors');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
     this.initializeHeaderBar();
     this.initializeFilterBar();
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.initializeHeaderBar();
+        this.initializeFilterBar();
+        this.updateTitle();
+      });
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
@@ -94,14 +101,14 @@ export class ParticipantOwnConnectorListPageComponent
       filters: [
         {
           id: 'type',
-          label: 'Type',
+          label: this.translate.instant('COMMON.TYPE'),
           icon: 'tag',
           type: 'MULTISELECT',
           options: [],
         },
         {
           id: 'status',
-          label: 'Status',
+          label: this.translate.instant('COMMON.STATUS'),
           type: 'SELECT',
           icon: 'status',
           options: [],
@@ -112,17 +119,23 @@ export class ParticipantOwnConnectorListPageComponent
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'Connectors',
-      subtitle: 'List of all connectors of your organization',
+      title: this.translate.instant('PAGES.CONNECTORS.OWN_TITLE'),
+      subtitle: this.translate.instant('PAGES.CONNECTORS.OWN_SUBTITLE'),
       headerActions: [
         {
-          label: 'Add Connector',
+          label: this.translate.instant('PAGES.CONNECTORS.ADD_CONNECTOR'),
           action: () =>
             this.router.navigate(['/my-organization/connectors/new']),
           permissions: [UserRoleDto.KeyUser],
         },
       ],
     };
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.CONNECTORS.OWN_TITLE'),
+    );
   }
 
   refresh() {

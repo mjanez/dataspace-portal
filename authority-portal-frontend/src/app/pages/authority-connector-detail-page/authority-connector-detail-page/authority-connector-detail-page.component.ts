@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, HostBinding, Inject, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {
@@ -67,6 +68,7 @@ export class AuthorityConnectorDetailPageComponent
     private store: Store,
     @Inject('childComponentInput') childComponentInput: ChildComponentInput,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {
     this.connectorId = childComponentInput.id;
   }
@@ -100,7 +102,7 @@ export class AuthorityConnectorDetailPageComponent
           id: 'actionMenu',
           menuOptions: [
             {
-              label: 'Delete Connector',
+              label: this.translate.instant('DIALOGS.DELETE_CONNECTOR.TITLE'),
               icon: 'delete',
               event: () => this.deleteConnectorMenuItemClick(),
               isDisabled: !(
