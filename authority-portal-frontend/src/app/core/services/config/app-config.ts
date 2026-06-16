@@ -86,6 +86,10 @@ export interface AppConfigEnv {
   AUTHORITY_PORTAL_FRONTEND_DATASPACE_SHORT_NAME: string;
   AUTHORITY_PORTAL_FRONTEND_PORTAL_DISPLAY_NAME: string;
   AUTHORITY_PORTAL_FRONTEND_ENABLE_DASHBOARD: string;
+  AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_URL: string;
+  AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_SMALL_URL: string;
+  AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_LOGIN_URL: string;
+  AUTHORITY_PORTAL_FRONTEND_BRAND_COPYRIGHT: string;
 }
 
 /**
@@ -97,7 +101,13 @@ export function buildAppConfig(envVars: AppConfigEnv): AppConfig {
     envVars.AUTHORITY_PORTAL_FRONTEND_ACTIVE_PROFILE,
   );
 
-  return {
+  const logoUrl = envVars.AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_URL;
+  const logoSmallUrl =
+    envVars.AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_SMALL_URL || logoUrl;
+  const logoLoginUrl =
+    envVars.AUTHORITY_PORTAL_FRONTEND_BRAND_LOGO_LOGIN_URL || logoUrl;
+
+  const config: AppConfig = {
     profile,
     ...profileConfig,
 
@@ -119,4 +129,28 @@ export function buildAppConfig(envVars: AppConfigEnv): AppConfig {
     enableDashboard:
       envVars.AUTHORITY_PORTAL_FRONTEND_ENABLE_DASHBOARD === 'true',
   };
+
+  if (logoUrl) {
+    config.brandLogo = {src: logoUrl, class: profileConfig.brandLogo.class};
+    config.brandLogoUnauthenticatedPage = {
+      src: logoLoginUrl,
+      class: profileConfig.brandLogoUnauthenticatedPage.class,
+    };
+    config.brandLogoOnboardingPage = {
+      src: logoLoginUrl,
+      class: profileConfig.brandLogoOnboardingPage.class,
+    };
+  }
+  if (logoSmallUrl) {
+    config.brandLogoSmall = {
+      src: logoSmallUrl,
+      class: profileConfig.brandLogoSmall.class,
+    };
+  }
+  if (envVars.AUTHORITY_PORTAL_FRONTEND_BRAND_COPYRIGHT) {
+    config.copyrightCompanyName =
+      envVars.AUTHORITY_PORTAL_FRONTEND_BRAND_COPYRIGHT;
+  }
+
+  return config;
 }

@@ -34,7 +34,7 @@ export function getProfileOrFallback(profile?: string | null): {
     };
   }
 
-  const fallback: UiProfile = 'sovity-open-source';
+  const fallback: UiProfile = 'default';
 
   const availableProfiles = Object.keys(UI_PROFILE_DATA)
     .map((s) => `"${s}"`)

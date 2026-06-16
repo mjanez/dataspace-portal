@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none">
+  <path d="M20 10 L35 30 L20 50 L5 30 Z" fill="#3b82f6" opacity="0.85"/>
+  <path d="M25 15 L35 30 L25 45" stroke="#1d4ed8" stroke-width="2.5" fill="none"/>
+  <text x="45" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Data Space Portal</text>
+</svg>

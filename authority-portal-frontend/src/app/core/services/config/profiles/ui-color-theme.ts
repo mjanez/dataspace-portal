@@ -16,4 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export type UiColorTheme = 'theme-sovity';
+export type UiColorTheme = 'theme-default';

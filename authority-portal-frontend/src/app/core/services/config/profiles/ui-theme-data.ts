@@ -17,25 +17,24 @@
  */
 import {UiThemeConfig} from './ui-theme-config';
 
-export const SOVITY_THEME: UiThemeConfig = {
-  theme: 'theme-sovity',
-  brandFaviconSrc: 'assets/images/sovity_caas_logo.svg',
-  brandLogo: {src: 'assets/images/sovity_logo.svg', class: 'scale-[1.1]'},
+export const DEFAULT_THEME: UiThemeConfig = {
+  theme: 'theme-default',
+  brandFaviconSrc: 'favicon.ico',
+  brandLogo: {src: 'assets/images/logo-placeholder.svg', class: 'scale-[1.1]'},
   brandLogoSmall: {
-    src: '/assets/images/sovity_logo_no_text.svg',
+    src: 'assets/images/logo-placeholder.svg',
     class: 'scale-[0.6]',
   },
   brandLogoUnauthenticatedPage: {
-    src: 'assets/images/sovity_logo.svg',
+    src: 'assets/images/logo-placeholder.svg',
     class: 'w-[15%] h-[15%]',
   },
   brandLogoOnboardingPage: {
-    src: 'assets/images/sovity_logo.svg',
+    src: 'assets/images/logo-placeholder.svg',
     class: 'w-[10%] h-[10%]',
   },
-  connectorSelfOwnedIconSrc:
-    'assets/images/sovity_self-hosted-connector_logo.svg',
-  connectorCaasIconSrc: 'assets/images/sovity_request-caas_logo.svg',
-  caasResellerBrandLogoSrc: 'assets/images/sovity_caas_logo.svg',
-  copyrightCompanyName: 'sovity GmbH',
+  connectorSelfOwnedIconSrc: 'assets/images/self-hosted-connector.svg',
+  connectorCaasIconSrc: 'assets/images/request-caas.svg',
+  caasResellerBrandLogoSrc: 'assets/images/request-caas.svg',
+  copyrightCompanyName: '',
 };

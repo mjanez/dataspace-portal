@@ -6,9 +6,9 @@
 <p align="center" style="padding-bottom:16px">
 Custom Keycloak Theme
 <br />
-<a href="https://github.com/sovity/dataspace-portal/issues/new?template=bug_report.md">Report Bug</a>
+<a href="https://github.com/mjanez/dataspace-portal/issues/new?template=bug_report.md">Report Bug</a>
 ·
-<a href="https://github.com/sovity/dataspace-portal/issues/new?template=feature_request.md">Request Feature</a>
+<a href="https://github.com/mjanez/dataspace-portal/issues/new?template=feature_request.md">Request Feature</a>
 </p>
 </div>
 
@@ -37,6 +37,6 @@ See [`LICENSE`](../LICENSE) for more information.
 
 ## Contact
 
-contact@sovity.de
+See repository issue tracker.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
