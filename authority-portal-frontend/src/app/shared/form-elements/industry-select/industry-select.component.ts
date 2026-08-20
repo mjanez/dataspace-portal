@@ -30,7 +30,7 @@ export class IndustrySelectComponent {
   cls = true;
 
   @Input()
-  label: string = 'Industry';
+  label = '';
 
   @Input()
   ctrl: FormControl<string | null> = new FormControl();

@@ -20,69 +20,76 @@ import {OperatorDto} from '@sovity.de/authority-portal-client';
 export interface PolicyOperatorConfig {
   id: OperatorDto;
   title: string;
-  description: string;
+  descriptionKey: string;
+  titleKey?: string;
 }
 
 export const SUPPORTED_POLICY_OPERATORS: PolicyOperatorConfig[] = [
   {
     id: 'EQ',
     title: '=',
-    description: 'Equal to',
+    descriptionKey: 'POLICY.OPERATOR.EQ_DESC',
   },
   {
     id: 'NEQ',
     title: '≠',
-    description: 'Not equal to',
+    descriptionKey: 'POLICY.OPERATOR.NEQ_DESC',
   },
   {
     id: 'GEQ',
     title: '≥',
-    description: 'Greater than or equal to',
+    descriptionKey: 'POLICY.OPERATOR.GEQ_DESC',
   },
   {
     id: 'GT',
     title: '>',
-    description: 'Greater than',
+    descriptionKey: 'POLICY.OPERATOR.GT_DESC',
   },
   {
     id: 'LEQ',
     title: '≤',
-    description: 'Less than or equal to',
+    descriptionKey: 'POLICY.OPERATOR.LEQ_DESC',
   },
   {
     id: 'LT',
     title: '<',
-    description: 'Less than',
+    descriptionKey: 'POLICY.OPERATOR.LT_DESC',
   },
   {
     id: 'IN',
     title: 'IN',
-    description: 'In',
+    titleKey: 'POLICY.OPERATOR.IN',
+    descriptionKey: 'POLICY.OPERATOR.IN_DESC',
   },
   {
     id: 'HAS_PART',
     title: 'HAS PART',
-    description: 'Has Part',
+    titleKey: 'POLICY.OPERATOR.HAS_PART',
+    descriptionKey: 'POLICY.OPERATOR.HAS_PART_DESC',
   },
   {
     id: 'IS_A',
     title: 'IS A',
-    description: 'Is a',
+    titleKey: 'POLICY.OPERATOR.IS_A',
+    descriptionKey: 'POLICY.OPERATOR.IS_A_DESC',
   },
   {
     id: 'IS_NONE_OF',
     title: 'IS NONE OF',
-    description: 'Is none of',
+    titleKey: 'POLICY.OPERATOR.IS_NONE_OF',
+    descriptionKey: 'POLICY.OPERATOR.IS_NONE_OF_DESC',
   },
   {
     id: 'IS_ANY_OF',
     title: 'IS ANY OF',
-    description: 'Is any of',
+    titleKey: 'POLICY.OPERATOR.IS_ANY_OF',
+    descriptionKey: 'POLICY.OPERATOR.IS_ANY_OF_DESC',
   },
   {
     id: 'IS_ALL_OF',
     title: 'IS ALL OF',
-    description: 'Is all of',
+    titleKey: 'POLICY.OPERATOR.IS_ALL_OF',
+    descriptionKey: 'POLICY.OPERATOR.IS_ALL_OF_DESC',
   },
 ];
 export const defaultPolicyOperatorConfig = (
@@ -90,5 +97,5 @@ export const defaultPolicyOperatorConfig = (
 ): PolicyOperatorConfig => ({
   id: operator,
   title: operator,
-  description: '',
+  descriptionKey: '',
 });

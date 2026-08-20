@@ -17,7 +17,8 @@
  */
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {GlobalState} from 'src/app/core/global-state/global-state';
 import {GlobalStateImpl} from 'src/app/core/global-state/global-state-impl';
@@ -32,12 +33,24 @@ export class LoadingPageComponent implements OnInit, OnDestroy {
 
   private ngOnDestroy$ = new Subject();
 
-  constructor(private store: Store, private titleService: Title) {
-    this.titleService.setTitle('Error');
-  }
+  constructor(
+    private store: Store,
+    private titleService: Title,
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.updateTitle());
     this.startListeningToGlobalState();
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.LOADING.PAGE_TITLE'),
+    );
   }
 
   private startListeningToGlobalState() {

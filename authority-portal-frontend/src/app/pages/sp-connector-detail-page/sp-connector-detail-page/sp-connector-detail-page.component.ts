@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {ConnectorDetailsDto} from '@sovity.de/authority-portal-client';
@@ -51,6 +52,7 @@ export class SpConnectorDetailPageComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     @Inject('childComponentInput') childComponentInput: ChildComponentInput,
+    private translate: TranslateService,
   ) {
     this.connectorId = childComponentInput.id;
   }
@@ -88,7 +90,7 @@ export class SpConnectorDetailPageComponent implements OnInit, OnDestroy {
         id: 'actionMenu',
         menuOptions: [
           {
-            label: 'Delete Connector',
+            label: this.translate.instant('DIALOGS.DELETE_CONNECTOR.TITLE'),
             icon: 'delete',
             event: () => this.deleteConnector(),
             isDisabled: false,

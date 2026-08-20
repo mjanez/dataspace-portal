@@ -17,11 +17,12 @@
  */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {SharedModule} from '../../../shared/shared.module';
 import {LoadingPageComponent} from './loading-page/loading-page.component';
 
 @NgModule({
   declarations: [LoadingPageComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   exports: [LoadingPageComponent],
 })
 export class LoadingPageModule {}

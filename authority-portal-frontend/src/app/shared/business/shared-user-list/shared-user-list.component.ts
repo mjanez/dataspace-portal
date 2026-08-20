@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
 import {MemberInfo} from '@sovity.de/authority-portal-client';
 import {getOrganizationUserRegistrationStatusClasses} from 'src/app/core/utils/ui-utils';
 import {
@@ -34,7 +36,7 @@ export interface Members extends MemberInfo {
     templateUrl: './shared-user-list.component.html',
     standalone: false
 })
-export class SharedUserListComponent implements OnInit {
+export class SharedUserListComponent implements OnInit, OnDestroy {
   @Input() organizationId!: string;
   @Input() members!: MemberInfo[];
   @Output() selectUserEvent = new EventEmitter<MemberInfo>();
@@ -45,16 +47,35 @@ export class SharedUserListComponent implements OnInit {
     getOrganizationUserRegistrationStatusClasses;
   selectedRole: any;
 
+  private ngOnDestroy$ = new Subject();
+
+  constructor(private translate: TranslateService) {}
+
   ngOnInit(): void {
+    this.buildModifiedMembers();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.buildModifiedMembers());
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next(null);
+    this.ngOnDestroy$.complete();
+  }
+
+  private buildModifiedMembers(): void {
     this.modifiedMembers = this.members.map((member: MemberInfo) => {
       let highestApplicationRole = getHighestApplicationRole(member.roles);
       return {
         ...member,
         applicationRole: highestApplicationRole
-          ? mapRolesToReadableFormat(highestApplicationRole)
+          ? mapRolesToReadableFormat(highestApplicationRole, (key) =>
+              this.translate.instant(key),
+            )
           : '',
         participantRole: mapRolesToReadableFormat(
           getHighestParticipantRole(member.roles),
+          (key) => this.translate.instant(key),
         ),
       };
     });

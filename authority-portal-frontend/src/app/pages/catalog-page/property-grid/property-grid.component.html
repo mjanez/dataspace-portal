@@ -28,7 +28,7 @@
       class="link break-all"
       href="javascript:void(0)"
       (click)="prop.hideFieldValue = false"
-      >Show {{ prop.label }}</a
+      >{{ 'PAGES.CATALOG.SHOW_ITEM' | translate: {label: prop.label} }}</a
     >
 
     <ng-container *ngIf="!prop.hideFieldValue">

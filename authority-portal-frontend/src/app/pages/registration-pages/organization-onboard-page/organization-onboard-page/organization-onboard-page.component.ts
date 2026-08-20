@@ -19,6 +19,7 @@ import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatStepper} from '@angular/material/stepper';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, take, takeUntil} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {Store} from '@ngxs/store';
@@ -95,8 +96,11 @@ export class OrganizationOnboardPageComponent implements OnInit {
     private store: Store,
     private formBuilder: FormBuilder,
     private titleService: Title,
+    private translate: TranslateService,
   ) {
-    this.titleService.setTitle('Onboarding');
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.REGISTRATION.ONBOARDING_TITLE'),
+    );
   }
 
   ngOnInit(): void {

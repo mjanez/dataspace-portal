@@ -21,7 +21,9 @@
         [editable]="state.state === 'editing' || state.state === 'error'"
         [completed]="userForm.valid || state.state === 'success'">
         <div class="flex flex-col px-1 md:px-8 w-full">
-          <ng-template matStepLabel>User Details</ng-template>
+          <ng-template matStepLabel>{{
+            'PAGES.REGISTRATION.USER_DETAILS_STEP' | translate
+          }}</ng-template>
           <app-user-create-form
             class="flex-grow my-4"
             [userForm]="userForm"></app-user-create-form>
@@ -32,7 +34,7 @@
               type="button"
               routerLink="/"
               data-testid="register-org-user-details-cancel-btn">
-              Cancel
+              {{ 'COMMON.CANCEL' | translate }}
             </button>
 
             <button
@@ -40,7 +42,7 @@
               data-testid="register-org-user-details-next-btn"
               matStepperNext
               [disabledBtn]="!userForm.valid">
-              Next
+              {{ 'COMMON.NEXT' | translate }}
             </button>
           </div>
         </div>
@@ -54,8 +56,12 @@
         [editable]="state.state === 'editing' || state.state === 'error'"
         [completed]="state.state === 'success'">
         <div class="flex flex-col px-1 md:px-8 w-full">
-          <ng-template matStepLabel>Organization Profile</ng-template>
-          <h3 class="wizard-step-title">Organization Profile</h3>
+          <ng-template matStepLabel>{{
+            'PAGES.REGISTRATION.ORGANIZATION_PROFILE_STEP' | translate
+          }}</ng-template>
+          <h3 class="wizard-step-title">{{
+            'PAGES.REGISTRATION.ORGANIZATION_PROFILE_HEADING' | translate
+          }}</h3>
           <app-organization-create-form
             class="flex-grow my-4"
             [orgForm]="orgProfileForm"></app-organization-create-form>
@@ -69,7 +75,7 @@
               type="button"
               routerLink="/"
               data-testId="register-org-page-cancel-btn">
-              Cancel
+              {{ 'COMMON.CANCEL' | translate }}
             </button>
 
             <button
@@ -77,7 +83,7 @@
               data-testId="register-org-page-register-btn"
               [disabledBtn]="!userForm.valid || !orgForm.valid || loading"
               (click)="submit()">
-              Register
+              {{ 'COMMON.REGISTER' | translate }}
             </button>
           </div>
         </div>
@@ -86,19 +92,25 @@
 
       <!-- final step -->
       <mat-step [editable]="false">
-        <ng-template matStepLabel>Email Verification</ng-template>
+        <ng-template matStepLabel>{{
+          'PAGES.REGISTRATION.EMAIL_VERIFICATION_STEP' | translate
+        }}</ng-template>
         <div
           class="my-12 flex flex-col justify-center items-center text-center">
-          <h3 class="wizard-end-title">Please verify your email!</h3>
+          <h3 class="wizard-end-title">
+            {{ 'PAGES.REGISTRATION.VERIFY_EMAIL_HEADING' | translate }}
+          </h3>
           <p class="wizard-end-prose max-w-md">
-            You will need to verify your email to complete registration. An
-            email has been sent to {{ state.email }} with a verification link.
+            {{
+              'PAGES.REGISTRATION.VERIFY_EMAIL_MESSAGE'
+                | translate : {email: state.email}
+            }}
           </p>
           <button
             class="btn-accent"
             data-testid="register-org-page-finish-btn"
             (click)="finish()">
-            Finish
+            {{ 'COMMON.FINISH' | translate }}
           </button>
         </div>
       </mat-step>

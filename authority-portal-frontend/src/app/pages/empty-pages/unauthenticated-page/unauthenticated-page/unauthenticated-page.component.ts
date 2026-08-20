@@ -15,26 +15,49 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
 
 @Component({
-    selector: 'app-unauthenticated-page',
-    templateUrl: './unauthenticated-page.component.html',
-    standalone: false
+  selector: 'app-unauthenticated-page',
+  templateUrl: './unauthenticated-page.component.html',
+  standalone: false,
 })
-export class UnauthenticatedPageComponent {
+export class UnauthenticatedPageComponent implements OnInit, OnDestroy {
+  private ngOnDestroy$ = new Subject<void>();
+
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle(`${appConfig.portalName} - Log In or Register`);
+    private translate: TranslateService,
+  ) {}
+
+  ngOnInit(): void {
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.updateTitle());
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next();
+    this.ngOnDestroy$.complete();
   }
 
   get loginUrl(): string {
     const url = new URL(this.appConfig.loginUrl);
     url.searchParams.set('redirect_uri', location.href);
     return url.toString();
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.UNAUTHENTICATED.PAGE_TITLE', {
+        portalName: this.appConfig.portalName,
+      }),
+    );
   }
 }

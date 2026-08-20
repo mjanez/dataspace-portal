@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, map, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -42,6 +43,7 @@ export class AuthorityOrganizationListPageStateImpl {
   constructor(
     private apiService: ApiService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(RefreshOrganizations, {cancelUncompleted: true})
@@ -53,7 +55,9 @@ export class AuthorityOrganizationListPageStateImpl {
         this.apiService.getOrganizationsForAuthority(deploymentEnvironmentId),
       ),
       map((result) => result.organizations),
-      Fetched.wrap({failureMessage: 'Failed loading organizations'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_ORGANIZATIONS'),
+      }),
       tap((organizations) => this.organizationsRefreshed(ctx, organizations)),
       ignoreElements(),
     );

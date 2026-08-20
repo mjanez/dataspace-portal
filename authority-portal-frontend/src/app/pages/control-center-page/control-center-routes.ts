@@ -28,7 +28,7 @@ import {PageNotFoundPageComponent} from '../empty-pages/page-not-found-page/page
 export type ControlCenterRoute = Route & {
   data:
     | {
-        title: string;
+        titleKey: string;
       }
     | {
         excludeFromTabs: true;
@@ -41,7 +41,7 @@ export const CONTROL_CENTER_ROUTES: ControlCenterRoute[] = [
     path: 'my-profile',
     component: ControlCenterUserProfilePageComponent,
     data: {
-      title: 'My Profile',
+      titleKey: 'CONTROL_CENTER.MY_PROFILE',
     },
   },
   {
@@ -55,7 +55,7 @@ export const CONTROL_CENTER_ROUTES: ControlCenterRoute[] = [
     path: 'my-organization',
     component: ControlCenterOrganizationProfilePageComponent,
     data: {
-      title: 'My Organization',
+      titleKey: 'CONTROL_CENTER.MY_ORGANIZATION',
     },
   },
   {
@@ -70,7 +70,7 @@ export const CONTROL_CENTER_ROUTES: ControlCenterRoute[] = [
     path: 'users-and-roles',
     component: ControlCenterOrganizationMembersPageComponent,
     data: {
-      title: 'Users and Roles',
+      titleKey: 'CONTROL_CENTER.USERS_AND_ROLES',
     },
   },
   {

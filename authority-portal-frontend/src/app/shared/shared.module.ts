@@ -46,6 +46,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {RouterModule} from '@angular/router';
+import {TranslateModule} from '@ngx-translate/core';
 import {SvgIconServiceService} from 'src/app/core/services/svg-icon.service.service';
 import {ConnectorRegisteringSuccessMessagePageComponent} from './business/connector-registering-success-message-page/connector-registering-success-message-page.component';
 import {ConnectorStatusLedComponent} from './business/connector-status-led/connector-status-led.component';
@@ -77,6 +78,7 @@ import {ControlCenterComponent} from './common/portal-layout/control-center/cont
 import {FooterCopyrightComponent} from './common/portal-layout/footer-copyright/footer-copyright.component';
 import {FooterForFullPageComponent} from './common/portal-layout/footer-for-full-page/footer-for-full-page.component';
 import {FooterLinksComponent} from './common/portal-layout/footer-links/footer-links.component';
+import {LanguageSwitcherComponent} from './common/portal-layout/language-switcher/language-switcher.component';
 import {PortalLayoutComponent} from './common/portal-layout/portal-layout/portal-layout.component';
 import {SidebarElementComponent} from './common/portal-layout/sidebar-element/sidebar-element.component';
 import {SidebarComponent} from './common/portal-layout/sidebar/sidebar.component';
@@ -156,6 +158,7 @@ const COMPONENTS = [
   FooterCopyrightComponent,
   FooterForFullPageComponent,
   FooterLinksComponent,
+  LanguageSwitcherComponent,
   PortalLayoutComponent,
   SidebarComponent,
   SidebarElementComponent,
@@ -244,9 +247,10 @@ const MODULES = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule,
     ...MODULES,
   ],
-  exports: [...COMPONENTS, ...MODULES],
+  exports: [...COMPONENTS, ...MODULES, TranslateModule],
   providers: [UserDeleteDialogService, OrganizationDeleteDialogService],
 })
 export class SharedModule {

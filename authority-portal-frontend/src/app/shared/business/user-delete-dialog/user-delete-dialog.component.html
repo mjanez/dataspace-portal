@@ -1,5 +1,7 @@
 <mat-dialog-content class="p-4 !flex flex-col">
-  <p class="confirmation-dialog-title">Delete User</p>
+  <p class="confirmation-dialog-title">
+    {{ 'DIALOGS.DELETE_USER.TITLE' | translate }}
+  </p>
 
   <app-loading-element
     *ngIf="modalData.isLoading"
@@ -12,38 +14,37 @@
 
   <div *ngIf="modalData.isReady" class="px-4 py-3 confirmation-dialog-prose">
     <div *ngIf="!modalData.data.canBeDeleted" class="space-y-1">
-      <p>This user cannot be deleted.</p>
+      <p>{{ 'DIALOGS.DELETE_USER.CANNOT_DELETE' | translate }}</p>
     </div>
     <div
       *ngIf="modalData.data.canBeDeleted && isLastParticipantAdmin"
       class="space-y-1">
       <p>
-        You are trying to delete the last Participant Admin of
-        <span class="italic">{{ data.userOrganizationName }}</span
-        >.
+        {{ 'DIALOGS.DELETE_USER.LAST_ADMIN_INTRO' | translate }}
+        <span class="italic">{{ data.userOrganizationName }}</span>.
       </p>
-      <p>
-        This will result in irreversibly deleting the whole organization,
-        including all of its users, connectors and central components.
-      </p>
-      <p>Are you sure you want to proceed?</p>
+      <p>{{ 'DIALOGS.DELETE_USER.LAST_ADMIN_WARNING' | translate }}</p>
+      <p>{{ 'DIALOGS.DELETE_USER.LAST_ADMIN_CONFIRM' | translate }}</p>
     </div>
     <div *ngIf="modalData.data.canBeDeleted && !isLastParticipantAdmin">
       <div *ngIf="isOrganizationCreator" class="space-y-1">
         <p>
-          You are trying to delete the creator of
-          <span class="italic">{{ data.userOrganizationName }}</span
-          >.
+          {{ 'DIALOGS.DELETE_USER.CREATOR_INTRO' | translate }}
+          <span class="italic">{{ data.userOrganizationName }}</span>.
         </p>
-        <p>Please select a successor.</p>
+        <p>{{ 'DIALOGS.DELETE_USER.SELECT_SUCCESSOR' | translate }}</p>
         <form class="!mt-5" [formGroup]="deleteOrganizationCreatorForm">
-          <label class="w-full mb-2 text-sm">Successor</label>
+          <label class="w-full mb-2 text-sm">{{
+            'DIALOGS.DELETE_USER.SUCCESSOR' | translate
+          }}</label>
           <mat-form-field
             class="w-full text-sm"
             appearance="outline"
             color="accent">
             <mat-select
-              placeholder="Select Successor"
+              [placeholder]="
+                'DIALOGS.DELETE_USER.SELECT_SUCCESSOR_PLACEHOLDER' | translate
+              "
               data-testid="delete-user-successor-selector"
               [formControl]="deleteOrganizationCreatorForm.controls.successor">
               <mat-option
@@ -57,19 +58,18 @@
             </mat-select>
           </mat-form-field>
           <p class="text-[13px] !-mt-4">
-            Connectors and central components of
-            <span class="italic">{{ data.userFullName }}</span>
-            will be linked to this successor
+            {{
+              'DIALOGS.DELETE_USER.SUCCESSOR_LINKED'
+                | translate: {userName: data.userFullName}
+            }}
           </p>
         </form>
       </div>
       <div *ngIf="!modalData.data.isOrganizationCreator" class="space-y-1">
-        <p>Are you sure, you want to delete this user?</p>
+        <p>{{ 'DIALOGS.DELETE_USER.CONFIRM' | translate }}</p>
         <p>
-          All connectors, the user is associated with, will be linked to the
-          creator of
-          <span class="italic"> {{ data.userOrganizationName }}</span
-          >.
+          {{ 'DIALOGS.DELETE_USER.LINK_TO_CREATOR' | translate }}
+          <span class="italic"> {{ data.userOrganizationName }}</span>.
         </p>
       </div>
     </div>
@@ -81,7 +81,7 @@
       type="button"
       data-testid="delete-user-dialog-cancel-btn"
       (click)="onDismiss()">
-      Cancel
+      {{ 'COMMON.CANCEL' | translate }}
     </button>
     <button
       class="btn-accent-danger flex items-center gap-1.5"
@@ -99,7 +99,7 @@
       <div
         *ngIf="isBusy"
         class="border-4 border-gray-300 border-t-0 border-l-0 rounded-full w-4 h-4 animate-spin"></div>
-      Delete
+      {{ 'COMMON.DELETE' | translate }}
     </button>
   </div>
 </mat-dialog-content>

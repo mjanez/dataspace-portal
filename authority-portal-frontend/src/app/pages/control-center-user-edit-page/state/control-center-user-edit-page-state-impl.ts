@@ -18,6 +18,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, take, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -54,6 +55,7 @@ export class ControlCenterUserEditPageStateImpl {
     private globalStateUtils: GlobalStateUtils,
     private router: Router,
     @Inject(APP_CONFIG) private appConfig: AppConfig,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -63,7 +65,9 @@ export class ControlCenterUserEditPageStateImpl {
       switchMap((userInfo) =>
         this.apiService.getUserDetailDto(userInfo.userId),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((user) => {
         ctx.patchState({
           user,
@@ -86,7 +90,10 @@ export class ControlCenterUserEditPageStateImpl {
       .updateUser(ctx.getState().user.data.userId, request)
       .pipe(
         this.customRxjsOperators.withBusyLock(ctx),
-        this.customRxjsOperators.withToastResultHandling('Editing profile'),
+        this.customRxjsOperators.withToastResultHandling(
+          'TOASTS.EDIT_PROFILE_SUCCESS',
+          'TOASTS.EDIT_PROFILE_FAILED',
+        ),
         this.customRxjsOperators.onSuccessRedirect([
           '/control-center/my-profile',
         ]),
@@ -97,10 +104,10 @@ export class ControlCenterUserEditPageStateImpl {
   private buildHeaderBarConfig(user: UserDetailDto): HeaderBarConfig {
     return {
       title: `${user.firstName} ${user.lastName}`,
-      subtitle: 'Edit Your Profile Information',
+      subtitle: this.translate.instant('PAGES.CONTROL_CENTER.EDIT_PROFILE_SUBTITLE'),
       headerActions: [
         {
-          label: 'Change Password',
+          label: this.translate.instant('PAGES.CONTROL_CENTER.CHANGE_PASSWORD'),
           action: () => {
             this.router.navigate(
               [

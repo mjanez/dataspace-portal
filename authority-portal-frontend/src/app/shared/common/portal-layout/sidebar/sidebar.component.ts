@@ -22,8 +22,9 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {Subject, distinctUntilChanged, takeUntil} from 'rxjs';
+import {Subject, distinctUntilChanged, merge, takeUntil} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 import {GlobalStateUtils} from 'src/app/core/global-state/global-state-utils';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
 import {ActiveFeatureSet} from '../../../../core/services/config/active-feature-set';
@@ -37,16 +38,24 @@ import {SidebarSection} from './sidebar.model';
 export class SidebarComponent implements OnInit, OnDestroy {
   isExpandedMenu: boolean = true;
   sidebarSections: SidebarSection[] = [];
+  private organizationName = '';
   private ngOnDestroy$ = new Subject();
 
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private globalStateUtils: GlobalStateUtils,
     private activeFeatureSet: ActiveFeatureSet,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
+    this.checkWindowWidth();
     this.startListeningToEnvironmentChanges();
+    merge(this.translate.onLangChange, this.translate.onTranslationChange)
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.setSideBarSections(this.organizationName);
+      });
   }
 
   startListeningToEnvironmentChanges(): void {
@@ -57,7 +66,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
         takeUntil(this.ngOnDestroy$),
       )
       .subscribe((organizationName) => {
-        this.setSideBarSections(organizationName);
+        this.organizationName = organizationName ?? '';
+        this.setSideBarSections(this.organizationName);
       });
   }
 
@@ -77,18 +87,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   setSideBarSections(organizationName: string): void {
+    const t = (key: string) => this.translate.instant(key);
     this.sidebarSections = [
       {
-        title: 'Home',
+        title: t('NAV.HOME'),
         userRoles: ['USER'],
         menus: [
           {
-            title: 'Data Catalog',
+            title: t('NAV.DATA_CATALOG'),
             icon: 'tag',
             rLink: '/catalog',
           },
           {
-            title: 'Dashboard',
+            title: t('NAV.DASHBOARD'),
             icon: 'dashboard',
             rLink: '/dashboard',
             isDisabled: !this.activeFeatureSet.isDashboardEnabled(),
@@ -96,75 +107,75 @@ export class SidebarComponent implements OnInit, OnDestroy {
         ],
       },
       {
-        title: organizationName ?? 'My Organization',
+        title: organizationName || t('NAV.MY_ORGANIZATION'),
         userRoles: ['USER'],
         menus: [
           {
-            title: 'My Organization',
+            title: t('NAV.MY_ORGANIZATION'),
             icon: 'home',
             rLink: '/control-center/my-organization',
           },
           {
-            title: 'My Data Offers',
+            title: t('NAV.MY_DATA_OFFERS'),
             icon: 'tag',
             rLink: `/my-organization/data-offers`,
           },
           {
-            title: 'My Connectors',
+            title: t('NAV.MY_CONNECTORS'),
             icon: 'connector',
             rLink: '/my-organization/connectors',
           },
         ],
       },
       {
-        title: 'Operator Section',
+        title: t('NAV.OPERATOR_SECTION'),
         userRoles: ['OPERATOR_ADMIN'],
         menus: [
           {
-            title: 'All Connectors',
+            title: t('NAV.ALL_CONNECTORS'),
             icon: 'connector',
             rLink: '/operator/connectors',
           },
           {
-            title: 'Central Components',
+            title: t('NAV.CENTRAL_COMPONENTS'),
             icon: 'extension',
             rLink: '/operator/central-components',
           },
         ],
       },
       {
-        title: 'Service Partner Section',
+        title: t('NAV.SERVICE_PARTNER_SECTION'),
         userRoles: ['SERVICE_PARTNER_ADMIN'],
         menus: [
           {
-            title: 'Provided Connectors',
+            title: t('NAV.PROVIDED_CONNECTORS'),
             icon: 'connector',
             rLink: '/service-partner/provided-connectors',
           },
         ],
       },
       {
-        title: 'Authority Section',
+        title: t('NAV.AUTHORITY_SECTION'),
         userRoles: ['AUTHORITY_USER'],
         menus: [
           {
-            title: 'Organizations',
+            title: t('NAV.ORGANIZATIONS'),
             icon: 'building-office-2',
             rLink: '/authority/organizations',
           },
           {
-            title: 'All Connectors',
+            title: t('NAV.ALL_CONNECTORS'),
             icon: 'connector',
             rLink: '/authority/connectors',
           },
         ],
       },
       {
-        title: 'Support',
+        title: t('NAV.SUPPORT'),
         userRoles: ['USER'],
         menus: [
           {
-            title: 'Support',
+            title: t('NAV.SUPPORT'),
             icon: 'question-mark-circle',
             rLink: this.appConfig.supportUrl,
             isExternalLink: true,

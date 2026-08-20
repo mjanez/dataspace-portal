@@ -18,9 +18,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Observable, Subject, combineLatest, merge, withLatestFrom} from 'rxjs';
-import {filter, skip, take, takeUntil} from 'rxjs/operators';
+import {Observable, Subject, combineLatest, merge, withLatestFrom, takeUntil} from 'rxjs';
+import {filter, skip, take} from 'rxjs/operators';
 import {Store} from '@ngxs/store';
 import {
   OrganizationOverviewEntryDto,
@@ -84,13 +85,20 @@ export class AuthorityOrganizationListPageComponent
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {
-    this.titleService.setTitle('Participant Management');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit() {
     this.initializeHeaderBar();
     this.initializeFilterBar();
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.initializeHeaderBar();
+        this.initializeFilterBar();
+        this.updateTitle();
+      });
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
@@ -100,11 +108,11 @@ export class AuthorityOrganizationListPageComponent
 
   initializeHeaderBar() {
     this.headerConfig = {
-      title: 'Participant Management',
-      subtitle: 'Manage all organizations and their users here',
+      title: this.translate.instant('PAGES.AUTHORITY.ORGANIZATIONS_TITLE'),
+      subtitle: this.translate.instant('PAGES.AUTHORITY.ORGANIZATIONS_SUBTITLE'),
       headerActions: [
         {
-          label: 'Invite Organization',
+          label: this.translate.instant('PAGES.AUTHORITY.INVITE_ORGANIZATION'),
           action: () => this.inviteOrganization(),
           permissions: [UserRoleDto.AuthorityAdmin, UserRoleDto.AuthorityUser],
         },
@@ -117,7 +125,7 @@ export class AuthorityOrganizationListPageComponent
       filters: [
         {
           id: 'status',
-          label: 'Status',
+          label: this.translate.instant('COMMON.STATUS'),
           type: 'SELECT',
           icon: 'status',
           options: Object.values(OrganizationRegistrationStatusDto).map(
@@ -128,6 +136,12 @@ export class AuthorityOrganizationListPageComponent
         },
       ],
     };
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.AUTHORITY.ORGANIZATIONS_TITLE'),
+    );
   }
 
   refresh() {

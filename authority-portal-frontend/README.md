@@ -70,6 +70,9 @@ AUTHORITY_PORTAL_FRONTEND_BACKEND_URL=https://my-portal.sovity.io
 All available configuration options can be found in
 [app-config.ts](src/app/core/services/config/app-config.ts)
 
+> [!TIP]
+> For local development, `npm run start` runs [config-generator.js](config-generator.js) before `ng serve`. It writes `src/assets/config/app-configuration.json` from variables prefixed with `AUTHORITY_PORTAL_FRONTEND_`. By default it loads [`.env.local-dev`](.env.local-dev) (unless `ENV` selects another file).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Development
@@ -97,6 +100,24 @@ or
 # Always re-builds the API Client Library
 npm run cold-start
 ```
+
+#### Internationalization (i18n)
+
+The UI uses [ngx-translate](https://github.com/ngx-translate/core) with JSON files in [`src/assets/i18n/`](src/assets/i18n/) (`en.json`, `es.json`).
+
+[`LocaleService`](src/app/core/services/locale.service.ts) manages the active locale (persisted in `localStorage`). Users switch language via [`LanguageSwitcherComponent`](src/app/shared/common/portal-layout/language-switcher/language-switcher.component.ts) in the toolbar and on unauthenticated pages.
+
+**Adding a language:** Copy `en.json`, translate values, add the locale to `SUPPORTED_LOCALES` in `LocaleService`, and expose it in `LanguageSwitcherComponent`.
+
+**Templates:** `{{ 'SOME.KEY' | translate }}` or `{{ 'KEY' | translate: {param: value} }}`. Brand-specific strings often pass `dataspaceName: appConfig.brandDataspaceName` — see [Configuration](#configuration).
+
+**TypeScript:** Inject `TranslateService` and use `translate.instant('KEY')`. Subscribe to `translate.onLangChange` when rebuilding dynamic labels (table headers, tabs, charts).
+
+**Testing locally:** Run `npm run start`, open the unauthenticated landing page, and use the language switcher (top right) to toggle EN/ES. Interpolated strings should show the configured dataspace name (e.g. "sovity Dataspace"), not `{{dataspaceName}}`.
+
+**Keycloak (login & emails):** Theme messages live under `authority-portal-keycloak/sovity-theme/login/messages/` and `.../email/messages/` (`messages_en.properties`, `messages_es.properties`). Configure Keycloak realm internationalization / supported locales for the theme to pick them up.
+
+**Note:** Catalog metadata language (asset `language` field) is separate from UI locale and is handled by `LanguageService` — do not change that for UI translations.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

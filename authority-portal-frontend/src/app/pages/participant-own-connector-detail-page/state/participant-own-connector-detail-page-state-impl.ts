@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError, ignoreElements, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -38,7 +39,10 @@ import {
 })
 @Injectable()
 export class ParticipantOwnConnectorDetailPageStateImpl {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private translate: TranslateService,
+  ) {}
 
   @Action(RefreshConnector, {cancelUncompleted: true})
   onRefreshConnector(
@@ -48,7 +52,9 @@ export class ParticipantOwnConnectorDetailPageStateImpl {
     return this.apiService
       .getOwnOrganizationConnectorDetails(ctx.getState().connectorId)
       .pipe(
-        Fetched.wrap({failureMessage: 'Failed loading Connector'}),
+        Fetched.wrap({
+          failureMessage: this.translate.instant('TOASTS.FAILED_CONNECTOR'),
+        }),
         tap((connector) => this.connectorRefreshed(ctx, connector)),
         ignoreElements(),
       );

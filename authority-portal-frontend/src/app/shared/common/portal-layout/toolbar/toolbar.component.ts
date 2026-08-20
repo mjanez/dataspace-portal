@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, Inject} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, merge, takeUntil} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 import {UserInfo} from '@sovity.de/authority-portal-client';
 import {GlobalStateUtils} from 'src/app/core/global-state/global-state-utils';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
@@ -35,10 +36,18 @@ export class ToolbarComponent {
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
     this.startListeningToUserInfo();
+    merge(this.translate.onLangChange, this.translate.onTranslationChange)
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        if (this.userInfo) {
+          this.updateUserAvatarData(this.userInfo);
+        }
+      });
   }
 
   startListeningToUserInfo() {
@@ -46,12 +55,18 @@ export class ToolbarComponent {
       .pipe(takeUntil(this.ngOnDestroy$))
       .subscribe((userInfo) => {
         this.userInfo = userInfo;
-        this.userAvatarData = {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          roleString: getHighestRoleString(userInfo.roles),
-        };
+        this.updateUserAvatarData(userInfo);
       });
+  }
+
+  private updateUserAvatarData(userInfo: UserInfo): void {
+    this.userAvatarData = {
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      roleString: getHighestRoleString(userInfo.roles, (key) =>
+        this.translate.instant(key),
+      ),
+    };
   }
 
   ngOnDestroy$ = new Subject();

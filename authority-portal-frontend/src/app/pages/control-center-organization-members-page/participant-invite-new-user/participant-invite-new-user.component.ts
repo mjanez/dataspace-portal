@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {
@@ -46,7 +47,7 @@ import {ParticipantInviteNewUserPageStateImpl} from './state/participant-invite-
     templateUrl: './participant-invite-new-user.component.html',
     standalone: false
 })
-export class ParticipantInviteNewUserComponent {
+export class ParticipantInviteNewUserComponent implements OnInit {
   state = DEFAULT_PARTICIPANT_INVITE_NEW_USER_PAGE_STATE;
   group = this.buildFormGroup();
   assignableRoles: string[] = getParticipantRoles();
@@ -57,6 +58,7 @@ export class ParticipantInviteNewUserComponent {
     private store: Store,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<ParticipantInviteNewUserComponent>,
+    private translate: TranslateService,
   ) {}
 
   get value(): ParticipantInviteNewUserPageFormValue {
@@ -102,7 +104,7 @@ export class ParticipantInviteNewUserComponent {
   }
 
   mapToReadable(role: string): string {
-    return mapRolesToReadableFormat(role);
+    return mapRolesToReadableFormat(role, (key) => this.translate.instant(key));
   }
 
   submit(): void {

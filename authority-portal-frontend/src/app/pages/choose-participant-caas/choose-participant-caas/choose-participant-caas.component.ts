@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject, switchMap, takeUntil} from 'rxjs';
 import {CaasAvailabilityResponse} from '@sovity.de/authority-portal-client';
 import {ApiService} from 'src/app/core/api/api.service';
@@ -32,39 +33,28 @@ import {inferArticle} from '../../../core/utils/string-utils';
 export class ChooseParticipantCaasComponent implements OnInit, OnDestroy {
   sponsoredCaasAmount: number = 1;
 
-  selectionBox: SelectionBoxModel = {
-    title: 'Start Sponsored CaaS',
-    subTitle: 'Managed EDC Connector to begin your journey in Data Spaces',
-    icon: this.appConfig.caasResellerBrandLogoSrc,
-    bulletPoints: [
-      `CaaS sponsored by ${this.appConfig.brandDataspaceName} for their participants`,
-      'Easiest access to our dataspace',
-      'Easiest access via web browser',
-      'Hosted & maintained solution',
-      '2 actively consumed data contracts included',
-      'User & Access Management with 1 user',
-    ],
-    action: {
-      label: 'Loading...',
-      url: 'my-organization/connectors/new/provided',
-      isLoading: true,
-      isDisabled: true,
-    },
-  };
-  private ngOnDestroy$ = new Subject();
+  selectionBox!: SelectionBoxModel;
+
+  private caasLimits?: {current: number; limit: number};
+  private ngOnDestroy$ = new Subject<void>();
 
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private apiService: ApiService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
+    this.selectionBox = this.buildInitialSelectionBox();
     this.fetchCaasLimits();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.refreshSelectionBox());
   }
 
   ngOnDestroy() {
-    this.ngOnDestroy$.next(null);
+    this.ngOnDestroy$.next();
     this.ngOnDestroy$.complete();
   }
 
@@ -80,8 +70,11 @@ export class ChooseParticipantCaasComponent implements OnInit, OnDestroy {
       )
       .subscribe((x) => {
         if (x.current === undefined || x.limit === undefined) {
+          this.caasLimits = undefined;
           this.selectionBox.action = {
-            label: 'Error loading CaaS limit',
+            label: this.translate.instant(
+              'PAGES.CONNECTOR_CHOICE.CAAS_LOAD_ERROR',
+            ),
             url: 'my-organization/connectors/new/provided',
             isDisabled: true,
           };
@@ -89,23 +82,83 @@ export class ChooseParticipantCaasComponent implements OnInit, OnDestroy {
         }
 
         this.sponsoredCaasAmount = x.limit;
-        const isLimitReached = x.current >= x.limit;
-        const isUnconfigured = x.limit == 0;
-
-        this.selectionBox.action = {
-          label: isUnconfigured
-            ? 'Unavailable'
-            : `Request CaaS (${x.current}/${x.limit})`,
-          url: 'my-organization/connectors/new/provided',
-          isDisabled: isLimitReached || isUnconfigured,
-          hint: isUnconfigured
-            ? 'Your dataspace authority has not configured this feature'
-            : isLimitReached
-            ? 'The existing CaaS connector needs to be removed before requesting a new one'
-            : '',
-        };
+        this.caasLimits = {current: x.current, limit: x.limit};
+        this.refreshSelectionBox();
       });
   }
 
   protected readonly inferArticle = inferArticle;
+
+  private buildInitialSelectionBox(): SelectionBoxModel {
+    return {
+      title: this.translate.instant(
+        'PAGES.CONNECTOR_CHOICE.SPONSORED_CAAS_TITLE',
+      ),
+      subTitle: this.translate.instant(
+        'PAGES.CONNECTOR_CHOICE.SPONSORED_CAAS_SUBTITLE',
+      ),
+      icon: this.appConfig.caasResellerBrandLogoSrc,
+      bulletPoints: this.buildBulletPoints(),
+      action: {
+        label: this.translate.instant('COMMON.LOADING'),
+        url: 'my-organization/connectors/new/provided',
+        isLoading: true,
+        isDisabled: true,
+      },
+    };
+  }
+
+  private buildBulletPoints(): string[] {
+    return [
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_1', {
+        dataspaceName: this.appConfig.brandDataspaceName,
+      }),
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_2'),
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_3'),
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_4'),
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_5'),
+      this.translate.instant('PAGES.CONNECTOR_CHOICE.SPONSORED_BULLET_6'),
+    ];
+  }
+
+  private refreshSelectionBox(): void {
+    const limits = this.caasLimits;
+    const isLimitReached =
+      limits != null && limits.current >= limits.limit;
+    const isUnconfigured = limits != null && limits.limit === 0;
+
+    this.selectionBox = {
+      title: this.translate.instant(
+        'PAGES.CONNECTOR_CHOICE.SPONSORED_CAAS_TITLE',
+      ),
+      subTitle: this.translate.instant(
+        'PAGES.CONNECTOR_CHOICE.SPONSORED_CAAS_SUBTITLE',
+      ),
+      icon: this.appConfig.caasResellerBrandLogoSrc,
+      bulletPoints: this.buildBulletPoints(),
+      action: {
+        label: isUnconfigured
+          ? this.translate.instant('COMMON.UNAVAILABLE')
+          : limits != null
+          ? this.translate.instant('PAGES.CONNECTOR_CHOICE.CAAS_REQUEST', {
+              current: limits.current,
+              limit: limits.limit,
+            })
+          : this.translate.instant('COMMON.LOADING'),
+        url: 'my-organization/connectors/new/provided',
+        isDisabled:
+          limits == null || isLimitReached || isUnconfigured,
+        isLoading: limits == null,
+        hint: isUnconfigured
+          ? this.translate.instant(
+              'PAGES.CONNECTOR_CHOICE.CAAS_UNCONFIGURED_HINT',
+            )
+          : isLimitReached
+          ? this.translate.instant(
+              'PAGES.CONNECTOR_CHOICE.CAAS_LIMIT_REACHED_HINT',
+            )
+          : '',
+      },
+    };
+  }
 }

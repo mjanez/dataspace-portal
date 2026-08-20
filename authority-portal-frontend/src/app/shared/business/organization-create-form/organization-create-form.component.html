@@ -2,10 +2,10 @@
   <!-- Legal Name -->
   <app-text-input
     class="flex-1"
-    label="Organization Legal Name"
+    label="{{ 'FORMS.ORGANIZATION.LEGAL_NAME' | translate }}"
     ctrlId="formRegLegalName"
     data-testid="formRegLegalName"
-    placeholder="My Org LLC"
+    placeholder="{{ 'FORMS.ORGANIZATION.LEGAL_NAME_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.legalName"></app-text-input>
 
@@ -16,10 +16,10 @@
   <!-- Website -->
   <app-text-input
     class="flex-1"
-    label="Website"
+    label="{{ 'FORMS.ORGANIZATION.WEBSITE' | translate }}"
     ctrlId="formRegWebsite"
     data-testid="formRegWebsite"
-    placeholder="https://www.my-org.com"
+    placeholder="{{ 'FORMS.ORGANIZATION.WEBSITE_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.website"></app-text-input>
   <!-- Website -->
@@ -29,10 +29,10 @@
   <!-- Business Unit -->
   <app-text-input
     class="flex-1"
-    label="Business Unit"
+    label="{{ 'FORMS.ORGANIZATION.BUSINESS_UNIT' | translate }}"
     ctrlId="formRegBusinessUnit"
     data-testid="formRegBusinessUnit"
-    placeholder="My Department"
+    placeholder="{{ 'FORMS.ORGANIZATION.BUSINESS_UNIT_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.businessUnit"></app-text-input>
   <!-- Business Unit -->
@@ -42,6 +42,7 @@
     class="flex-1"
     data-testid="industry-selector"
     required
+    [label]="'FORMS.INDUSTRY.LABEL' | translate"
     [ctrl]="orgForm.controls.industry"></app-industry-select>
   <!-- Industry -->
 </div>
@@ -51,10 +52,10 @@
     <!-- Street -->
     <app-text-input
       class="flex-1"
-      label="Street"
+      label="{{ 'FORMS.ORGANIZATION.STREET' | translate }}"
       ctrlId="formRegStreet"
       data-testid="formRegStreet"
-      placeholder="Example Street"
+      placeholder="{{ 'FORMS.ORGANIZATION.STREET_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainAddressStreet"></app-text-input>
     <!-- Street -->
@@ -62,10 +63,10 @@
     <!-- House No -->
     <app-text-input
       class="flex-1"
-      label="House No."
+      label="{{ 'FORMS.ORGANIZATION.HOUSE_NO' | translate }}"
       ctrlId="formRegHouseNo"
       data-testid="formRegHouseNo"
-      placeholder="10b"
+      placeholder="{{ 'FORMS.ORGANIZATION.HOUSE_NO_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainAddressHouseNo"></app-text-input>
     <!-- House No -->
@@ -75,10 +76,10 @@
     <!-- ZIP Code -->
     <app-text-input
       class="flex-1"
-      label="ZIP code"
+      label="{{ 'FORMS.ORGANIZATION.ZIP_CODE' | translate }}"
       ctrlId="formRegZipCode"
       data-testid="formRegZipCode"
-      placeholder="12345"
+      placeholder="{{ 'FORMS.ORGANIZATION.ZIP_CODE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainAddressZipCode"></app-text-input>
     <!-- ZIP Code -->
@@ -86,10 +87,10 @@
     <!-- City  -->
     <app-text-input
       class="flex-1"
-      label="City"
+      label="{{ 'FORMS.ORGANIZATION.CITY' | translate }}"
       ctrlId="formRegCity"
       data-testid="formRegCity"
-      placeholder="Frankfurt am Main"
+      placeholder="{{ 'FORMS.ORGANIZATION.CITY_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainAddressCity"></app-text-input>
     <!-- City  -->
@@ -99,10 +100,10 @@
     <!-- Country  -->
     <app-text-input
       class="flex-1"
-      label="Country"
+      label="{{ 'FORMS.ORGANIZATION.COUNTRY' | translate }}"
       ctrlId="formRegCountry"
       data-testid="formRegCountry"
-      placeholder="Germany"
+      placeholder="{{ 'FORMS.ORGANIZATION.COUNTRY_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainAddressCountry"></app-text-input>
     <!-- Country  -->
@@ -114,7 +115,9 @@
     data-testid="formRegBillingDifferent"
     [formControl]="orgForm.controls.billingAddressSameAsMain"
     ><div class="flex gap-2 items-center">
-      <span class="text-sm">Billing address is same as main address</span>
+      <span class="text-sm">{{
+        'FORMS.ORGANIZATION.BILLING_SAME_AS_MAIN' | translate
+      }}</span>
     </div>
   </mat-checkbox>
 </div>
@@ -126,10 +129,10 @@
     <!-- Street -->
     <app-text-input
       class="flex-1"
-      label="Street"
+      label="{{ 'FORMS.ORGANIZATION.STREET' | translate }}"
       ctrlId="formRegBillingStreet"
       data-testid="formRegBillingStreet"
-      placeholder="Example Street"
+      placeholder="{{ 'FORMS.ORGANIZATION.STREET_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.billingAddressStreet"></app-text-input>
     <!-- Street -->
@@ -137,10 +140,10 @@
     <!-- House No -->
     <app-text-input
       class="flex-1"
-      label="House No."
+      label="{{ 'FORMS.ORGANIZATION.HOUSE_NO' | translate }}"
       ctrlId="formRegBillingHouseNo"
       data-testid="formRegBillingHouseNo"
-      placeholder="10b"
+      placeholder="{{ 'FORMS.ORGANIZATION.HOUSE_NO_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.billingAddressHouseNo"></app-text-input>
     <!-- House No -->
@@ -150,10 +153,10 @@
     <!-- ZIP Code -->
     <app-text-input
       class="flex-1"
-      label="ZIP code"
+      label="{{ 'FORMS.ORGANIZATION.ZIP_CODE' | translate }}"
       ctrlId="formRegBillingZipCode"
       data-testid="formRegBillingZipCode"
-      placeholder="12345"
+      placeholder="{{ 'FORMS.ORGANIZATION.ZIP_CODE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.billingAddressZipCode"></app-text-input>
     <!-- ZIP Code -->
@@ -161,10 +164,10 @@
     <!-- City  -->
     <app-text-input
       class="flex-1"
-      label="City"
+      label="{{ 'FORMS.ORGANIZATION.CITY' | translate }}"
       ctrlId="formRegBillingCity"
       data-testid="formRegBillingCity"
-      placeholder="Frankfurt am Main"
+      placeholder="{{ 'FORMS.ORGANIZATION.CITY_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.billingAddressCity"></app-text-input>
     <!-- City  -->
@@ -174,10 +177,10 @@
     <!-- Country  -->
     <app-text-input
       class="flex-1"
-      label="Country"
+      label="{{ 'FORMS.ORGANIZATION.COUNTRY' | translate }}"
       ctrlId="formRegBillingCountry"
       data-testid="formRegBillingCountry"
-      placeholder="Germany"
+      placeholder="{{ 'FORMS.ORGANIZATION.COUNTRY_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.billingAddressCountry"></app-text-input>
     <!-- Country  -->
@@ -188,10 +191,10 @@
   <!-- Description -->
   <app-text-area
     class="flex-1"
-    label="Organization Description"
+    label="{{ 'FORMS.ORGANIZATION.DESCRIPTION' | translate }}"
     ctrlId="formRegDescription"
     data-testid="formRegDescription"
-    placeholder="What does Your organization do?"
+    placeholder="{{ 'FORMS.ORGANIZATION.DESCRIPTION_PLACEHOLDER' | translate }}"
     required
     [ctrl]="orgForm.controls.description"></app-text-area>
 </div>
@@ -200,13 +203,15 @@
   <div class="flex gap-4 flex-wrap mt-2">
     <!-- ID Type -->
     <div class="flex flex-col flex-1">
-      <label class="w-full mb-2 text-sm">Legal ID Type</label>
+      <label class="w-full mb-2 text-sm">{{
+        'FORMS.ORGANIZATION.LEGAL_ID_TYPE' | translate
+      }}</label>
       <mat-form-field appearance="outline">
         <mat-select
           data-testid="formLegalIdTypeSelector"
           [formControl]="orgForm.controls.legalIdType">
           <mat-option *ngFor="let type of idTypes" [value]="type.value">
-            {{ type.viewValue }}
+            {{ type.viewValueKey | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -216,14 +221,14 @@
     <!-- ID Number -->
     <app-text-input
       class="flex-1"
-      label="Legal ID Number"
+      label="{{ 'FORMS.ORGANIZATION.LEGAL_ID_NUMBER' | translate }}"
       ctrlId="formRegIdNumber"
       data-testid="formRegIdNumber"
       required
       [placeholder]="
         orgForm.controls.legalIdType.value === 'TAX_ID'
-          ? 'Tax ID Number'
-          : 'Commerce Register Number'
+          ? ('FORMS.ORGANIZATION.TAX_ID_PLACEHOLDER' | translate)
+          : ('FORMS.ORGANIZATION.COMMERCE_REGISTER_PLACEHOLDER' | translate)
       "
       [ctrl]="orgForm.controls.legalId"></app-text-input>
     <!-- ID Number -->
@@ -232,35 +237,41 @@
     <app-text-input
       *ngIf="orgForm.controls.legalIdType.value === 'COMMERCE_REGISTER_INFO'"
       class="flex-1"
-      label="Commerce Register Location"
+      label="{{ 'FORMS.ORGANIZATION.COMMERCE_REGISTER_LOCATION' | translate }}"
       ctrlId="formRegCommerceRegisterLocation"
       data-testid="formRegCommerceRegisterLocation"
-      placeholder="Commerce Register Location"
+      placeholder="{{
+        'FORMS.ORGANIZATION.COMMERCE_REGISTER_LOCATION' | translate
+      }}"
       required
       [ctrl]="orgForm.controls.commerceRegisterLocation"></app-text-input>
     <!-- Commerce Register Location -->
   </div>
 </div>
 
-<h3 class="wizard-step-title pb-6">Contacts</h3>
+<h3 class="wizard-step-title pb-6">
+  {{ 'FORMS.ORGANIZATION.CONTACTS' | translate }}
+</h3>
 
 <div class="flex flex-col gap-4">
   <!-- Main Contact Form -->
   <div class="flex gap-4 flex-wrap">
-    <h3 class="wizard-step-title">Main Contact</h3>
+    <h3 class="wizard-step-title">{{
+      'FORMS.ORGANIZATION.MAIN_CONTACT' | translate
+    }}</h3>
     <mat-icon
       fontIcon="info"
-      matTooltip="Main Contact is needed for purposes such as use cases, events, membership etc."
+      [matTooltip]="'FORMS.ORGANIZATION.MAIN_CONTACT_TOOLTIP' | translate"
       matTooltipClass="text-sm"></mat-icon>
   </div>
   <div class="flex gap-4 flex-wrap">
     <!-- User First Name -->
     <app-text-input
       class="flex-1"
-      label="Main First Name"
+      label="{{ 'FORMS.ORGANIZATION.MAIN_FIRST_NAME' | translate }}"
       ctrlId="formRegMainFirstName"
       data-testid="formRegMainFirstName"
-      placeholder="John"
+      placeholder="{{ 'FORMS.ORGANIZATION.MAIN_FIRST_NAME_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactFirstName"></app-text-input>
     <!-- User First Name -->
@@ -268,10 +279,10 @@
     <!-- User Last Name -->
     <app-text-input
       class="flex-1"
-      label="Main Last Name"
+      label="{{ 'FORMS.ORGANIZATION.MAIN_LAST_NAME' | translate }}"
       ctrlId="formRegMainLastName"
       data-testid="formRegMainLastName"
-      placeholder="Doe"
+      placeholder="{{ 'FORMS.ORGANIZATION.MAIN_LAST_NAME_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactLastName"></app-text-input>
     <!-- User Last Name -->
@@ -281,10 +292,10 @@
     <!-- User PhoneNumber -->
     <app-text-input
       class="flex-1"
-      label="Phone Number"
+      label="{{ 'FORMS.ORGANIZATION.PHONE_NUMBER' | translate }}"
       ctrlId="formRegMainPhoneNumber"
       data-testid="formRegMainPhoneNumber"
-      placeholder="+49 1234 567890"
+      placeholder="{{ 'FORMS.ORGANIZATION.PHONE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactPhoneNumber"></app-text-input>
 
@@ -293,10 +304,10 @@
     <!-- User Email -->
     <app-text-input
       class="flex-1"
-      label="Email"
+      label="{{ 'COMMON.EMAIL' | translate }}"
       ctrlId="formRegMainEmail"
       data-testid="formRegMainEmail"
-      placeholder="john.doe@my-org.com"
+      placeholder="{{ 'FORMS.ORGANIZATION.EMAIL_PLACEHOLDER' | translate }}"
       required
       [ctrl]="orgForm.controls.mainContactEmail"></app-text-input>
     <!-- User Email -->
@@ -307,10 +318,12 @@
 <!-- Technical Contact Form -->
 <div class="flex flex-col gap-4 mt-4">
   <div class="flex gap-4 flex-wrap">
-    <h3 class="wizard-step-title">Technical Contact</h3>
+    <h3 class="wizard-step-title">{{
+      'FORMS.ORGANIZATION.TECHNICAL_CONTACT' | translate
+    }}</h3>
     <mat-icon
       fontIcon="info"
-      matTooltip="A technical contact will get notified in case of IT related topics"
+      [matTooltip]="'FORMS.ORGANIZATION.TECHNICAL_CONTACT_TOOLTIP' | translate"
       matTooltipClass="text-sm"></mat-icon>
   </div>
   <mat-checkbox
@@ -319,7 +332,9 @@
     data-testid="formRegMcSameAsTc"
     [formControl]="orgForm.controls.technicalContactSameAsMain"
     ><div class="flex gap-2 items-center">
-      <span class="text-sm">Same as Main Contact</span>
+      <span class="text-sm">{{
+        'FORMS.ORGANIZATION.SAME_AS_MAIN_CONTACT' | translate
+      }}</span>
     </div>
   </mat-checkbox>
 
@@ -328,23 +343,19 @@
       <!-- User First Name -->
       <app-text-input
         class="flex-1"
-        label="Technical First Name"
+        label="{{ 'FORMS.ORGANIZATION.TECHNICAL_FIRST_NAME' | translate }}"
         ctrlId="formRegTechnicalFirstName"
         data-testid="formRegTechnicalFirstName"
-        placeholder="John"
-        required
-        [ctrl]="orgForm.controls.technicalContactFirstName"></app-text-input>
+        placeholder="{{ 'FORMS.ORGANIZATION.TECHNICAL_FIRST_NAME_PLACEHOLDER' | translate }}"></app-text-input>
       <!-- User First Name -->
 
       <!-- User Last Name -->
       <app-text-input
         class="flex-1"
-        label="Technical Last Name"
+        label="{{ 'FORMS.ORGANIZATION.TECHNICAL_LAST_NAME' | translate }}"
         ctrlId="formRegTechnicalLastName"
         data-testid="formRegTechnicalLastName"
-        placeholder="Doe"
-        required
-        [ctrl]="orgForm.controls.technicalContactLastName"></app-text-input>
+        placeholder="{{ 'FORMS.ORGANIZATION.TECHNICAL_LAST_NAME_PLACEHOLDER' | translate }}"></app-text-input>
       <!-- User Last Name -->
     </div>
 
@@ -352,10 +363,10 @@
       <!-- User PhoneNumber -->
       <app-text-input
         class="flex-1"
-        label="Phone Number"
+        label="{{ 'FORMS.ORGANIZATION.PHONE_NUMBER' | translate }}"
         ctrlId="formRegTechnicalPhoneNumber"
         data-testid="formRegTechnicalPhoneNumber"
-        placeholder="+49 1234 567890"
+        placeholder="{{ 'FORMS.ORGANIZATION.PHONE_PLACEHOLDER' | translate }}"
         required
         [ctrl]="orgForm.controls.technicalContactPhoneNumber"></app-text-input>
       <!-- User PhoneNumber -->
@@ -363,10 +374,10 @@
       <!-- User Email -->
       <app-text-input
         class="flex-1"
-        label="Email"
+        label="{{ 'COMMON.EMAIL' | translate }}"
         ctrlId="formRegTechnicalEmail"
         data-testid="formRegTechnicalEmail"
-        placeholder="john.doe@my-org.com"
+        placeholder="{{ 'FORMS.ORGANIZATION.EMAIL_PLACEHOLDER' | translate }}"
         required
         [ctrl]="orgForm.controls.technicalContactEmail"></app-text-input>
       <!-- User Email -->

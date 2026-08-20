@@ -24,6 +24,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {MatStepper} from '@angular/material/stepper';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {
@@ -56,7 +57,7 @@ export class RegisterCentralComponentPageComponent
   state = DEFAULT_REGISTER_CENTRAL_COMPONENT_PAGE_STATE;
   userInfo!: UserInfo;
 
-  createActionName = 'Register Central Component';
+  createActionName = '';
   exitLink = '/operator/central-components';
 
   edcConfig = EDC_CONFIG;
@@ -75,9 +76,14 @@ export class RegisterCentralComponentPageComponent
     public form: RegisterCentralComponentPageForm,
     private globalStateUtils: GlobalStateUtils,
     private clipboardUtils: ClipboardUtils,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
+    this.refreshLabels();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.refreshLabels());
     this.store.dispatch(Reset);
     this.startListeningToState();
     this.getUserInfo();
@@ -140,6 +146,12 @@ export class RegisterCentralComponentPageComponent
           }, 300);
         },
       ),
+    );
+  }
+
+  private refreshLabels(): void {
+    this.createActionName = this.translate.instant(
+      'PAGES.CONNECTORS.REGISTER_CENTRAL_COMPONENT',
     );
   }
 

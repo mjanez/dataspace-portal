@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -46,6 +47,7 @@ export class ControlCenterOrganizationProfilePageStateImpl {
     private apiService: ApiService,
     private router: Router,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -54,7 +56,9 @@ export class ControlCenterOrganizationProfilePageStateImpl {
       switchMap((environmentId) =>
         this.apiService.getOwnOrganizationDetails(environmentId),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((organization) => {
         ctx.patchState({
           organization,
@@ -72,10 +76,12 @@ export class ControlCenterOrganizationProfilePageStateImpl {
   ): HeaderBarConfig {
     return {
       title: organization.name,
-      subtitle: 'Your Organization Profile',
+      subtitle: this.translate.instant(
+        'PAGES.CONTROL_CENTER.ORGANIZATION_PROFILE_SUBTITLE',
+      ),
       headerActions: [
         {
-          label: 'Edit',
+          label: this.translate.instant('COMMON.EDIT'),
           action: () =>
             this.router.navigate(['/control-center/my-organization/edit']),
           permissions: [UserRoleDto.Admin],

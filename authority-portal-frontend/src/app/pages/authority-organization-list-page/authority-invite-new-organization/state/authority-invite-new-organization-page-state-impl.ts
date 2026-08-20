@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, takeUntil, tap} from 'rxjs/operators';
 import {
@@ -51,6 +52,7 @@ export class AuthorityInviteNewOrganizationPageStateImpl {
     private actions$: Actions,
     private store: Store,
     private errorService: ErrorService,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -68,14 +70,16 @@ export class AuthorityInviteNewOrganizationPageStateImpl {
     return this.apiService.inviteOrganization(action.request).pipe(
       tap(() => {
         this.toast.showSuccess(
-          `The invitation for ${action.request.orgName} was sent.`,
+          this.translate.instant('TOASTS.ORGANIZATION_INVITED', {
+            name: action.request.orgName,
+          }),
         );
         ctx.patchState({state: 'success'});
         this.store.dispatch(RefreshOrganizations);
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
       this.errorService.toastRegistrationErrorRxjs(
-        'Failed inviting organization due to an unknown error.',
+        this.translate.instant('TOASTS.FAILED_INVITE_ORGANIZATION'),
         () => {
           ctx.patchState({state: 'error'});
           action.enableForm();

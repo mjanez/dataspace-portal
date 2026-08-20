@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Inject, Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable, of} from 'rxjs';
 import {catchError, ignoreElements, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -41,6 +42,7 @@ export class OrganizationCreatePageStateImpl {
     private toast: ToastService,
     private actions$: Actions,
     private errorService: ErrorService,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -58,14 +60,14 @@ export class OrganizationCreatePageStateImpl {
     ctx.patchState({email: action.request.userEmail});
     return this.apiService.registerOrganization(action.request).pipe(
       tap((res) => {
-        this.toast.showSuccess(`Successfully registered.`);
+        this.toast.showSuccess(this.translate.instant('TOASTS.REGISTERED'));
         ctx.patchState({state: 'success'});
         ctx.patchState({id: res.id ?? ''});
         action.success();
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
       this.errorService.toastRegistrationErrorRxjs(
-        'Registration failed due to an unknown error',
+        this.translate.instant('TOASTS.FAILED_REGISTRATION'),
         () => {
           ctx.patchState({state: 'error'});
           action.enableForm();

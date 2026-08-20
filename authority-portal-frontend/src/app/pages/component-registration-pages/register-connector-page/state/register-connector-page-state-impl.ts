@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -42,6 +43,7 @@ export class RegisterConnectorPageStateImpl {
     private toast: ToastService,
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -74,7 +76,9 @@ export class RegisterConnectorPageStateImpl {
         switch (res.status) {
           case 'OK':
             this.toast.showSuccess(
-              `Connector ${action.request.name} was successfully registered`,
+              this.translate.instant('TOASTS.CONNECTOR_REGISTERED', {
+                name: action.request.name,
+              }),
             );
             ctx.patchState({state: 'success'});
             action.success();
@@ -82,14 +86,15 @@ export class RegisterConnectorPageStateImpl {
           case 'WARNING':
             this.toast.showWarning(
               res?.message ||
-                'A problem occurred while registering the connector.',
+                this.translate.instant('TOASTS.CONNECTOR_REGISTER_WARNING'),
             );
             ctx.patchState({state: 'success'});
             action.success();
             break;
           case 'ERROR':
             this.toast.showDanger(
-              res?.message || 'Failed registering connector',
+              res?.message ||
+                this.translate.instant('TOASTS.FAILED_REGISTER_CONNECTOR'),
             );
             ctx.patchState({state: 'error'});
             action.enableForm();
@@ -97,7 +102,9 @@ export class RegisterConnectorPageStateImpl {
         }
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
-      this.errorService.toastFailureRxjs('Failed registering connector', () => {
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_REGISTER_CONNECTOR'),
+        () => {
         ctx.patchState({state: 'error'});
         action.enableForm();
       }),

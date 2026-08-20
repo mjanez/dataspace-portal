@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -56,6 +57,7 @@ export class ConfigureProvidedConnectorPageStateImpl {
     private toast: ToastService,
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -105,27 +107,34 @@ export class ConfigureProvidedConnectorPageStateImpl {
         });
         switch (res.status) {
           case 'OK':
-            this.toast.showSuccess(`Connector was successfully configured`);
+            this.toast.showSuccess(
+              this.translate.instant('TOASTS.CONNECTOR_CONFIGURED'),
+            );
             ctx.patchState({state: 'success'});
             action.success();
             break;
           case 'WARNING':
             this.toast.showWarning(
               res?.message ||
-                'A problem occurred while providing the connector.',
+                this.translate.instant('TOASTS.CONNECTOR_PROVIDE_WARNING'),
             );
             ctx.patchState({state: 'success'});
             action.success();
             break;
           case 'ERROR':
-            this.toast.showDanger(res?.message || 'Failed providing connector');
+            this.toast.showDanger(
+              res?.message ||
+                this.translate.instant('TOASTS.FAILED_PROVIDE_CONNECTOR'),
+            );
             ctx.patchState({state: 'error'});
             action.enableForm();
             break;
         }
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
-      this.errorService.toastFailureRxjs('Failed providing connector', () => {
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_PROVIDE_CONNECTOR'),
+        () => {
         ctx.patchState({state: 'error'});
         action.enableForm();
       }),
@@ -144,7 +153,9 @@ export class ConfigureProvidedConnectorPageStateImpl {
         ),
       ),
       map((result) => result.organizations),
-      Fetched.wrap({failureMessage: 'Failed loading organizations'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_ORGANIZATIONS'),
+      }),
       tap((organizations) => this.organizationsRefreshed(ctx, organizations)),
       ignoreElements(),
     );

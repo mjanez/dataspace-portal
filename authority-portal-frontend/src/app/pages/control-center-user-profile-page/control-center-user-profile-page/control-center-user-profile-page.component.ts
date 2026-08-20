@@ -17,6 +17,7 @@
  */
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {GlobalStateUtils} from 'src/app/core/global-state/global-state-utils';
@@ -42,11 +43,17 @@ export class ControlCenterUserProfilePageComponent
     private store: Store,
     private globalStateUtils: GlobalStateUtils,
     private titleService: Title,
-  ) {
-    this.titleService.setTitle('My Profile');
-  }
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit(): void {
+    this.updateTitle();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.updateTitle();
+        this.refresh();
+      });
     this.refresh();
     this.startListeningToState();
     this.startRefreshingOnEnvChange();
@@ -54,6 +61,12 @@ export class ControlCenterUserProfilePageComponent
 
   refresh(): void {
     this.store.dispatch(new Reset(this.ngOnDestroy$));
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('CONTROL_CENTER.MY_PROFILE'),
+    );
   }
 
   startListeningToState(): void {

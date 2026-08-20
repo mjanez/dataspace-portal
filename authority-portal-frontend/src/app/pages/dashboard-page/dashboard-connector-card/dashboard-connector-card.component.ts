@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Component, HostBinding, Input} from '@angular/core';
+import {Component, HostBinding, Input, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {Fetched} from 'src/app/core/utils/fetched';
 import {DonutChartData} from '../donut-chart/donut-chart-data';
 
@@ -38,7 +41,7 @@ export interface ConnectorKpi {
     templateUrl: './dashboard-connector-card.component.html',
     standalone: false
 })
-export class DashboardConnectorCardComponent {
+export class DashboardConnectorCardComponent implements OnInit, OnDestroy {
   @HostBinding('class.flex')
   @HostBinding('class.flex-col')
   @HostBinding('class.items-stretch')
@@ -53,48 +56,75 @@ export class DashboardConnectorCardComponent {
   @HostBinding()
   cls = true;
 
-  allKpis: ConnectorKpi[] = [
-    {
-      label: 'Online',
-      classLed: 'bg-emerald-500',
-      classLedShadow: 'bg-emerald-500/20',
-      chartColor: '#10B981',
-      kpi: (dto) => dto.numOnline,
-    },
-    {
-      label: 'Disturbed',
-      classLed: 'bg-amber-500',
-      classLedShadow: 'bg-amber-500/20',
-      chartColor: '#F59E0B',
-      kpi: (dto) => dto.numDisturbed,
-    },
-    {
-      label: 'Offline',
-      classLed: 'bg-red-500',
-      classLedShadow: 'bg-red-500/20',
-      chartColor: '#EF4444',
-      kpi: (dto) => dto.numOffline,
-    },
-  ];
-
+  allKpis: ConnectorKpi[] = [];
   visibleKpis: ConnectorKpi[] = [];
+  chartData: DonutChartData | null = null;
 
   private _data!: Fetched<ConnectorData>;
+  private readonly ngOnDestroy$ = new Subject<void>();
+
+  constructor(private translate: TranslateService) {}
+
   @Input() set data(value: Fetched<ConnectorData>) {
     this._data = value;
-    this.visibleKpis = value
-      .map((it) => this.allKpis.filter((kp) => kp.kpi(it) > 0))
-      .orElse([]);
-    this.chartData = value
-      .map((it) => this.buildDonutChartData(it, this.visibleKpis))
-      .orElse(null);
+    this.applyData();
   }
 
   get data(): Fetched<ConnectorData> {
     return this._data;
   }
 
-  chartData: DonutChartData | null = null;
+  ngOnInit(): void {
+    this.buildKpis();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        this.buildKpis();
+        if (this._data) {
+          this.applyData();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngOnDestroy$.next();
+    this.ngOnDestroy$.complete();
+  }
+
+  private buildKpis(): void {
+    this.allKpis = [
+      {
+        label: this.translate.instant('PAGES.DASHBOARD.STATUS_ONLINE'),
+        classLed: 'bg-emerald-500',
+        classLedShadow: 'bg-emerald-500/20',
+        chartColor: '#10B981',
+        kpi: (dto) => dto.numOnline,
+      },
+      {
+        label: this.translate.instant('PAGES.DASHBOARD.STATUS_DISTURBED'),
+        classLed: 'bg-amber-500',
+        classLedShadow: 'bg-amber-500/20',
+        chartColor: '#F59E0B',
+        kpi: (dto) => dto.numDisturbed,
+      },
+      {
+        label: this.translate.instant('PAGES.DASHBOARD.STATUS_OFFLINE'),
+        classLed: 'bg-red-500',
+        classLedShadow: 'bg-red-500/20',
+        chartColor: '#EF4444',
+        kpi: (dto) => dto.numOffline,
+      },
+    ];
+  }
+
+  private applyData(): void {
+    this.visibleKpis = this._data
+      .map((it) => this.allKpis.filter((kp) => kp.kpi(it) > 0))
+      .orElse([]);
+    this.chartData = this._data
+      .map((it) => this.buildDonutChartData(it, this.visibleKpis))
+      .orElse(null);
+  }
 
   buildDonutChartData(
     dto: ConnectorData,
@@ -103,6 +133,10 @@ export class DashboardConnectorCardComponent {
     if (!kpis?.length) {
       return null;
     }
+
+    const connectorsLabel = this.translate.instant(
+      'PAGES.DASHBOARD.REPORT_CONNECTORS',
+    );
 
     return {
       labels: kpis.map((it) => it.label),
@@ -116,7 +150,7 @@ export class DashboardConnectorCardComponent {
         plugins: {
           tooltip: {
             callbacks: {
-              label: (item) => ` ${item.formattedValue} Connectors`,
+              label: (item) => ` ${item.formattedValue} ${connectorsLabel}`,
             },
           },
         },

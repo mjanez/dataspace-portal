@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -50,6 +51,7 @@ export class ControlCenterOrganizationEditPageStateImpl {
     private formBuilder: FormBuilder,
     private customRxjsOperators: CustomRxjsOperators,
     private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset, {cancelUncompleted: true})
@@ -58,7 +60,9 @@ export class ControlCenterOrganizationEditPageStateImpl {
       switchMap((environmentId) =>
         this.apiService.getOwnOrganizationDetails(environmentId),
       ),
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((organization) => {
         ctx.patchState({
           organization,
@@ -82,7 +86,8 @@ export class ControlCenterOrganizationEditPageStateImpl {
       .pipe(
         this.customRxjsOperators.withBusyLock(ctx),
         this.customRxjsOperators.withToastResultHandling(
-          'Editing own organization',
+          'TOASTS.EDIT_OWN_ORG_SUCCESS',
+          'TOASTS.EDIT_OWN_ORG_FAILED',
         ),
         this.customRxjsOperators.onSuccessRedirect([
           '/control-center/my-organization',
@@ -96,7 +101,7 @@ export class ControlCenterOrganizationEditPageStateImpl {
   ): HeaderBarConfig {
     return {
       title: organization.name,
-      subtitle: 'Edit Your Organization Profile',
+      subtitle: this.translate.instant('PAGES.CONTROL_CENTER.EDIT_ORG_SUBTITLE'),
       headerActions: [],
     };
   }

@@ -1,16 +1,18 @@
 <!-- type EMPTY -->
-<div *ngIf="expression.type === 'EMPTY'" class="italic">Unrestricted</div>
+<div *ngIf="expression.type === 'EMPTY'" class="italic">
+  {{ 'POLICY.UNRESTRICTED' | translate }}
+</div>
 
 <!-- type MULTI -->
 <div *ngIf="expression.type === 'MULTI'" class="flex flex-col gap-1">
   <div
     class="font-medium"
     [matTooltip]="
-      expression.multiExpression!.title +
+      (expression.multiExpression!.titleKey | translate) +
       ': ' +
-      expression.multiExpression!.description
+      (expression.multiExpression!.descriptionKey | translate)
     ">
-    {{ expression.multiExpression!.title }}
+    {{ expression.multiExpression!.titleKey | translate }}
   </div>
   <div
     class="border-solid border-0 border-l-2 border-gray-500 flex flex-col gap-1 ml-2 pl-4">
@@ -39,9 +41,17 @@
 
   <span
     [matTooltip]="
-      expression.operator!.id + ': ' + expression.operator!.description
+      expression.operator!.id +
+      ': ' +
+      (expression.operator!.descriptionKey
+        ? (expression.operator!.descriptionKey | translate)
+        : '')
     ">
-    {{ expression.operator!.title }}
+    {{
+      expression.operator!.titleKey
+        ? (expression.operator!.titleKey | translate)
+        : expression.operator!.title
+    }}
   </span>
 
   <span class="break-all" [matTooltip]="expression.valueJson ?? ''">{{

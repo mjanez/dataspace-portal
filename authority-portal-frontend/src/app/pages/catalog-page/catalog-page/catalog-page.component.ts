@@ -25,9 +25,10 @@ import {
 import {FormControl} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subject, distinctUntilChanged, of, switchMap, tap} from 'rxjs';
-import {finalize, map, take, takeUntil} from 'rxjs/operators';
+import {Subject, distinctUntilChanged, of, switchMap, tap, takeUntil} from 'rxjs';
+import {finalize, map, take} from 'rxjs/operators';
 import {Store} from '@ngxs/store';
 import {
   CatalogDataOffer,
@@ -82,11 +83,19 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
     private globalStateUtils: GlobalStateUtils,
     private deploymentEnvironmentUrlSyncService: DeploymentEnvironmentUrlSyncService,
     private titleService: Title,
+    private translate: TranslateService,
   ) {
     this.setTitle();
   }
 
   ngOnInit(): void {
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        const isMyDataOffers = this.catalogType === 'my-data-offers';
+        this.headerConfig = this.buildHeaderConfig(isMyDataOffers);
+        this.setTitle();
+      });
     this.deploymentEnvironmentUrlSyncService.updateFromUrlOnce(
       this.route,
       this.ngOnDestroy$,
@@ -201,7 +210,9 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
       },
     });
     // BreadcrumbService builds the name from the URL which is nonsensical in case of asset IDs
-    this.titleService.setTitle('Catalog - Data Offer');
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.CATALOG.DATA_OFFER_TITLE'),
+    );
   }
 
   private changeUrlToCatalogRoot() {
@@ -265,22 +276,26 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
   private buildHeaderConfig(isMyDataOffers: boolean): HeaderBarConfig {
     if (isMyDataOffers) {
       return {
-        title: 'My Data Offers',
-        subtitle: `Catalog of your public Data Offers`,
+        title: this.translate.instant('PAGES.CATALOG.MY_DATA_OFFERS_TITLE'),
+        subtitle: this.translate.instant('PAGES.CATALOG.MY_DATA_OFFERS_SUBTITLE'),
         headerActions: [],
       };
     }
 
     return {
-      title: 'Catalog',
-      subtitle: `Catalog of all public Data Offers`,
+      title: this.translate.instant('PAGES.CATALOG.TITLE'),
+      subtitle: this.translate.instant('PAGES.CATALOG.SUBTITLE'),
       headerActions: [],
     };
   }
 
   private setTitle() {
     this.catalogType === 'my-data-offers'
-      ? this.titleService.setTitle('My Data Offers')
-      : this.titleService.setTitle('Catalog');
+      ? this.titleService.setTitle(
+          this.translate.instant('PAGES.CATALOG.MY_DATA_OFFERS_TITLE'),
+        )
+      : this.titleService.setTitle(
+          this.translate.instant('PAGES.CATALOG.TITLE'),
+        );
   }
 }

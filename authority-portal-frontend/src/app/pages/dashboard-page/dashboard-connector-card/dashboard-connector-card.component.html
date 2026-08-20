@@ -1,5 +1,7 @@
 <div class="flex items-center gap-2 justify-between">
-  <h3 class="font-semibold text-sm">Connectors</h3>
+  <h3 class="font-semibold text-sm">
+    {{ 'PAGES.DASHBOARD.REPORT_CONNECTORS' | translate }}
+  </h3>
 </div>
 
 <app-loading-element
@@ -14,7 +16,7 @@
 <div
   *ngIf="data.isReady && !visibleKpis?.length"
   class="flex-1 flex justify-center items-center text-gray-500 text-sm mt-2">
-  <span>No connectors</span>
+  <span>{{ 'PAGES.DASHBOARD.NO_CONNECTORS' | translate }}</span>
 </div>
 
 <div

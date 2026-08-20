@@ -32,7 +32,7 @@ export class PasswordRepeatInputComponent {
   cls = true;
 
   @Input()
-  label = 'Confirm Password';
+  label = '';
 
   @Input()
   ctrl: FormControl<string> = new FormControl();

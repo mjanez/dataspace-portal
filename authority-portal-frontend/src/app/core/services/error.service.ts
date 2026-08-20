@@ -16,13 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, MonoTypeOperatorFunction} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ToastService} from 'src/app/shared/common/toast-notifications/toast.service';
 
 @Injectable({providedIn: 'root'})
 export class ErrorService {
-  constructor(private toastService: ToastService) {}
+  constructor(
+    private toastService: ToastService,
+    private translate: TranslateService,
+  ) {}
 
   toastFailure(failureMessage: string, error?: any) {
     this.toastService.showDanger(failureMessage);
@@ -49,7 +53,7 @@ export class ErrorService {
     return catchError((err) => {
       let errorMessage = genericFailureMessage;
       if (err?.response?.status === 409) {
-        errorMessage = 'A user with this email address already exists.';
+        errorMessage = this.translate.instant('TOASTS.EMAIL_EXISTS');
       }
       this.toastFailure(errorMessage);
       if (onError) {

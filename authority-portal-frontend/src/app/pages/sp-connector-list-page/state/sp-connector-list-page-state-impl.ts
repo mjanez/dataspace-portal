@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {EMPTY, Observable} from 'rxjs';
 import {
   catchError,
@@ -59,6 +60,7 @@ export class SpConnectorListPageStateImpl {
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
     private store: Store,
+    private translate: TranslateService,
   ) {}
 
   @Action(GetProvidedConnectors)
@@ -70,7 +72,9 @@ export class SpConnectorListPageStateImpl {
         this.apiService.getProvidedConnectors(deploymentEnvironmentId),
       ),
       map((result) => result.connectors),
-      Fetched.wrap({failureMessage: 'Failed loading connectors'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_CONNECTORS'),
+      }),
       tap((connectors) => this.connectorsRefreshed(ctx, connectors)),
       ignoreElements(),
     );
@@ -120,12 +124,16 @@ export class SpConnectorListPageStateImpl {
           filter((action) => action instanceof GetProvidedConnectors),
         ),
       ),
-      this.errorService.toastFailureRxjs("Connector wasn't deleted"),
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.CONNECTOR_NOT_DELETED'),
+      ),
       map((result) => result.connectors),
       tap((data) => {
         this.connectorsRefreshed(ctx, Fetched.ready(data));
         this.toast.showSuccess(
-          `Connector ${action.connectorId} was successfully deleted`,
+          this.translate.instant('TOASTS.CONNECTOR_DELETED', {
+            id: action.connectorId,
+          }),
         );
         this.store.dispatch(CloseConnectorDetail);
       }),

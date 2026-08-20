@@ -2,9 +2,9 @@
   <!-- Name -->
   <app-text-input
     class="flex-1"
-    label="Organization Name"
+    label="{{ 'FORMS.ORGANIZATION.LEGAL_NAME' | translate }}"
     ctrlId="formEditLegalName"
-    placeholder="Other Org LLC"
+    placeholder="{{ 'FORMS.ORGANIZATION.LEGAL_NAME_PLACEHOLDER' | translate }}"
     required
     [ctrl]="authorityOrgForm.controls.legalName"></app-text-input>
 </div>
@@ -13,11 +13,13 @@
   <div class="flex gap-4 flex-wrap">
     <!-- ID Type -->
     <div class="flex flex-col flex-1">
-      <label class="w-full mb-2 text-sm">Legal ID Type</label>
+      <label class="w-full mb-2 text-sm">{{
+        'FORMS.ORGANIZATION.LEGAL_ID_TYPE' | translate
+      }}</label>
       <mat-form-field appearance="outline">
         <mat-select [formControl]="authorityOrgForm.controls.legalIdType">
           <mat-option *ngFor="let type of idTypes" [value]="type.value">
-            {{ type.viewValue }}
+            {{ type.viewValueKey | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -27,13 +29,13 @@
     <!-- ID Number -->
     <app-text-input
       class="flex-1"
-      label="Legal ID Number"
+      label="{{ 'FORMS.ORGANIZATION.LEGAL_ID_NUMBER' | translate }}"
       ctrlId="formRegIdNumber"
       required
       [placeholder]="
         authorityOrgForm.controls.legalIdType.value === 'TAX_ID'
-          ? 'Tax ID Number'
-          : 'Commerce Register Number'
+          ? ('FORMS.ORGANIZATION.TAX_ID_PLACEHOLDER' | translate)
+          : ('FORMS.ORGANIZATION.COMMERCE_REGISTER_PLACEHOLDER' | translate)
       "
       [ctrl]="authorityOrgForm.controls.legalId"></app-text-input>
     <!-- ID Number -->
@@ -44,9 +46,11 @@
         authorityOrgForm.controls.legalIdType.value === 'COMMERCE_REGISTER_INFO'
       "
       class="flex-1"
-      label="Commerce Register Location"
+      label="{{ 'FORMS.ORGANIZATION.COMMERCE_REGISTER_LOCATION' | translate }}"
       ctrlId="formRegCommerceRegisterLocation"
-      placeholder="Commerce Register Location"
+      placeholder="{{
+        'FORMS.ORGANIZATION.COMMERCE_REGISTER_LOCATION' | translate
+      }}"
       required
       [ctrl]="
         authorityOrgForm.controls.commerceRegisterLocation

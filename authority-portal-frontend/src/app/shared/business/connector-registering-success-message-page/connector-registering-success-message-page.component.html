@@ -1,12 +1,22 @@
-<h2 class="wizard-end-title">Finish setting up your connector!</h2>
+<h2 class="wizard-end-title">
+  {{ 'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_HEADING' | translate }}
+</h2>
 
 <div class="flex text-left gap-12 overflow-hidden max-w-full">
   <div class="flex w-1/2 flex-col gap-12">
     <!-- Docker Image -->
     <div class="flex flex-col gap-3">
-      <h3 class="wizard-end-subtitle">1. Get Your Connector</h3>
+      <h3 class="wizard-end-subtitle">
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP1_TITLE'
+            | translate
+        }}
+      </h3>
       <div>
-        Ensure you are using the correct version of the sovity EDC CE Connector:
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP1_TEXT'
+            | translate
+        }}
       </div>
       <div class="relative overflow-hidden w-full">
         <div class="absolute top-[0.25rem] right-0">
@@ -28,11 +38,17 @@
 
     <!-- Deployment Guide -->
     <div class="flex flex-col gap-3">
-      <h3 class="wizard-end-subtitle">2. Prepare Your Infrastructure</h3>
+      <h3 class="wizard-end-subtitle">
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP2_TITLE'
+            | translate
+        }}
+      </h3>
       <div>
-        Connector deployments require careful mapping of certain ports and paths
-        while securing others. Please read our productive deployment guide
-        carefully and prepare your infrastructure accordingly:
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP2_TEXT'
+            | translate
+        }}
       </div>
       <a
         class="text-blue-600 hover:text-blue-800 no-underline"
@@ -45,10 +61,17 @@
   <div class="flex w-1/2 flex-col gap-12">
     <!-- Connector Config -->
     <div class="flex flex-col gap-3">
-      <h3 class="wizard-end-subtitle">3. Configure Your Connector</h3>
+      <h3 class="wizard-end-subtitle">
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP3_TITLE'
+            | translate
+        }}
+      </h3>
       <div>
-        To get you started more quickly, we have prepared this configuration for
-        your connector:
+        {{
+          'PAGES.COMPONENT_REGISTRATION.CONNECTOR_SUCCESS_STEP3_TEXT'
+            | translate
+        }}
       </div>
       <div class="relative overflow-hidden">
         <div class="absolute top-0 right-0">

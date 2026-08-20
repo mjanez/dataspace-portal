@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
 import {
   DeploymentEnvironmentDto,
@@ -46,16 +47,29 @@ export class DashboardCsvReportsCardComponent implements OnInit, OnDestroy {
 
   reportLinks: ReportLink[] = [];
 
-  constructor(private globalStateUtils: GlobalStateUtils) {}
+  private lastEnv?: DeploymentEnvironmentDto;
+
+  constructor(
+    private globalStateUtils: GlobalStateUtils,
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit(): void {
     this.startListeningToState();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        if (this.lastEnv) {
+          this.reportLinks = this.buildReportLinks(this.lastEnv);
+        }
+      });
   }
 
   startListeningToState(): void {
     this.globalStateUtils.deploymentEnvironment$
       .pipe(takeUntil(this.ngOnDestroy$))
       .subscribe((env) => {
+        this.lastEnv = env;
         this.reportLinks = this.buildReportLinks(env);
       });
   }
@@ -63,25 +77,25 @@ export class DashboardCsvReportsCardComponent implements OnInit, OnDestroy {
   buildReportLinks(env: DeploymentEnvironmentDto): ReportLink[] {
     return [
       {
-        title: `Connectors`,
+        title: this.translate.instant('PAGES.DASHBOARD.REPORT_CONNECTORS'),
         subTitle: '.csv',
         url: `/api/reporting/connectors?environmentId=${env.environmentId}`,
         roles: ['USER'],
       },
       {
-        title: `Data Offers Report`,
+        title: this.translate.instant('PAGES.DASHBOARD.REPORT_DATA_OFFERS'),
         subTitle: '.csv',
         url: `/api/reporting/data-offers?environmentId=${env.environmentId}`,
         roles: ['USER'],
       },
       {
-        title: `System Stability Report`,
+        title: this.translate.instant('PAGES.DASHBOARD.REPORT_SYSTEM_STABILITY'),
         subTitle: '.csv',
         url: `/api/reporting/system-stability?environmentId=${env.environmentId}`,
         roles: ['USER'],
       },
       {
-        title: 'Users and Roles Report',
+        title: this.translate.instant('PAGES.DASHBOARD.REPORT_USERS_ROLES'),
         subTitle: '.csv',
         url: '/api/reporting/users',
         roles: ['AUTHORITY_ADMIN', 'AUTHORITY_USER'],

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, Inject, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
 import {Observable, Subject, switchMap, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
@@ -42,7 +43,7 @@ export class RequestConnectorPageComponent implements OnInit {
   state = DEFAULT_REQUEST_CONNECTOR_STATE;
   requestConnectorPageForm = this.form.formGroup.controls;
 
-  createActionName = 'Request CaaS';
+  createActionName = '';
   backLink = '/my-organization/connectors/new/choose-provider';
 
   sponsoredCaasAmount = 1;
@@ -56,9 +57,12 @@ export class RequestConnectorPageComponent implements OnInit {
     private apiService: ApiService,
     private globalStateUtils: GlobalStateUtils,
     private router: Router,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
+    this.refreshLabels();
+    this.translate.onLangChange.subscribe(() => this.refreshLabels());
     this.redirectIfOverCaasLimits();
     this.startListeningToState();
     this.store.dispatch(Reset);
@@ -108,6 +112,12 @@ export class RequestConnectorPageComponent implements OnInit {
       .subscribe((state) => {
         this.state = state;
       });
+  }
+
+  private refreshLabels(): void {
+    this.createActionName = this.translate.instant(
+      'PAGES.CONNECTORS.REQUEST_CAAS',
+    );
   }
 
   ngOnDestroy() {

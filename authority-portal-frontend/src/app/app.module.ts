@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {CommonModule} from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {TranslateModule} from '@ngx-translate/core';
+import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -80,6 +85,13 @@ import {SharedModule} from './shared/shared.module';
             executionStrategy: NgxsInZoneExecutionStrategy,
         }),
         NgxsReduxDevtoolsPluginModule.forRoot(),
+        TranslateModule.forRoot({
+          fallbackLang: 'en',
+          loader: provideTranslateHttpLoader({
+            prefix: './assets/i18n/',
+            suffix: '.json',
+          }),
+        }),
         // Authority Portal
         SharedModule,
         // Authority Portal pages

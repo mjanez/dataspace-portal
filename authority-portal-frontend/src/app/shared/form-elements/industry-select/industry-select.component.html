@@ -3,7 +3,7 @@
 }}</label>
 <mat-form-field appearance="outline">
   <mat-select
-    [placeholder]="'Select ' + label"
+    [placeholder]="'FORMS.SELECT_PLACEHOLDER' | translate: {label: label}"
     [id]="ctrlId"
     [formControl]="ctrl">
     <mat-option *ngFor="let industry of industries" [value]="industry">
@@ -15,9 +15,6 @@
       >{{ ctrl.value }}</mat-option
     >
   </mat-select>
-  <mat-error *ngIf="ctrl.hasError('required')" class="text-sm"
-    >Field is required</mat-error
-  >
   <mat-error
     class="text-sm"
     appFormControlError

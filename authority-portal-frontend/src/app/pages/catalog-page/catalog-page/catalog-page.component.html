@@ -14,7 +14,7 @@
           class="centered-input"
           matInput
           autofocus
-          placeholder="Search Data Offers"
+          placeholder="{{ 'PAGES.CATALOG.SEARCH_PLACEHOLDER' | translate }}"
           [formControl]="searchText" />
         <button
           *ngIf="searchText.value"
@@ -73,7 +73,7 @@
           state.fetchedData.isReady && !state.fetchedData.data.dataOffers.length
         "
         class="min-h-[35rem]"
-        emptyMessage="No data offers found."></app-empty-element>
+        emptyMessage="{{ 'PAGES.CATALOG.EMPTY_MESSAGE' | translate }}"></app-empty-element>
       <div
         *ngIf="
           state.fetchedData.isReady && state.fetchedData.data.dataOffers.length
@@ -139,7 +139,7 @@
               class="centered-input"
               matInput
               ngDefaultControl
-              placeholder="Search"
+              placeholder="{{ 'PAGES.CATALOG.FILTER_SEARCH_PLACEHOLDER' | translate }}"
               [ngModel]="filter.model.searchText"
               (ngModelChange)="onSearchTextChange(filter, $event)" />
             <button

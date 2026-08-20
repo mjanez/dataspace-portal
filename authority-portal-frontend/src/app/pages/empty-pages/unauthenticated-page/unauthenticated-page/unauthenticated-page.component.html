@@ -1,14 +1,18 @@
 <div
   class="container mx-auto h-screen flex flex-col justify-center items-center">
+  <div class="fixed top-10 right-10">
+    <app-language-switcher></app-language-switcher>
+  </div>
   <img
     alt="Logo"
     [class]="this.appConfig.brandLogoUnauthenticatedPage.class"
     [attr.src]="this.appConfig.brandLogoUnauthenticatedPage.src" />
   <div class="max-w-2xl mx-auto text-center">
     <p class="full-screen-end-prose max-w-md">
-      If your organization is already participating in the
-      {{ this.appConfig.brandDataspaceName }}, please ask your organization's
-      administrator to invite you.
+      {{
+        'PAGES.UNAUTHENTICATED.INVITE_MESSAGE'
+          | translate: {dataspaceName: this.appConfig.brandDataspaceName}
+      }}
     </p>
     <div class="flex items-center flex-col gap-2">
       <a
@@ -16,14 +20,14 @@
         class="w-[300px] bg-black hover:bg-black text-white font-bold py-2 px-4 rounded active:scale-[0.99]"
         data-testId="btn-login"
         [attr.href]="loginUrl">
-        Log In
+        {{ 'AUTH.LOG_IN' | translate }}
       </a>
       <a
         id="btn-register-organization"
         class="w-[300px] bg-white text-black border border-gray-700 font-bold py-2 px-4 rounded active:scale-[0.99]"
         data-testId="btn-register-organization"
         routerLink="/create-organization">
-        Register Organization
+        {{ 'AUTH.REGISTER_ORGANIZATION' | translate }}
       </a>
     </div>
   </div>

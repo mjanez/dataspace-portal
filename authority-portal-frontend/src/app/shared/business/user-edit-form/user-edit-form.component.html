@@ -3,19 +3,19 @@
     <!-- User First Name -->
     <app-text-input
       class="flex-1"
-      label="First Name"
+      label="{{ 'FORMS.USER.FIRST_NAME' | translate }}"
       ctrlId="formEditFirstName"
       data-testid="formEditFirstName"
-      placeholder="John"
+      placeholder="{{ 'FORMS.USER.FIRST_NAME_PLACEHOLDER' | translate }}"
       required
       [ctrl]="userForm.controls.firstName"></app-text-input>
 
     <!-- User Last Name -->
     <app-text-input
       class="flex-1"
-      label="Last Name"
+      label="{{ 'FORMS.USER.LAST_NAME' | translate }}"
       ctrlId="formEditLastName"
-      placeholder="Doe"
+      placeholder="{{ 'FORMS.USER.LAST_NAME_PLACEHOLDER' | translate }}"
       required
       [ctrl]="userForm.controls.lastName"></app-text-input>
   </div>
@@ -24,27 +24,27 @@
     <!-- User Job Title -->
     <app-text-input
       class="flex-1"
-      label="Job Title"
+      label="{{ 'FORMS.USER.JOB_TITLE' | translate }}"
       ctrlId="formEditJobTitle"
-      placeholder="Analyst"
+      placeholder="{{ 'FORMS.USER.JOB_TITLE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="userForm.controls.jobTitle"></app-text-input>
 
     <!-- User E-Mail -->
     <app-text-input
       class="flex-1"
-      label="E-Mail"
+      label="{{ 'FORMS.USER.EMAIL' | translate }}"
       ctrlId="formEditEmail"
-      placeholder="john.doe@my-org.com"
+      placeholder="{{ 'FORMS.ORGANIZATION.EMAIL_PLACEHOLDER' | translate }}"
       required
       [ctrl]="userForm.controls.email"></app-text-input>
 
     <!-- User PhoneNumber -->
     <app-text-input
       class="flex-1"
-      label="Phone Number"
+      label="{{ 'FORMS.ORGANIZATION.PHONE_NUMBER' | translate }}"
       ctrlId="formEditPhoneNumber"
-      placeholder="+49 1234 567890"
+      placeholder="{{ 'FORMS.ORGANIZATION.PHONE_PLACEHOLDER' | translate }}"
       required
       [ctrl]="userForm.controls.phoneNumber"></app-text-input>
   </div>

@@ -19,27 +19,24 @@ import {UiPolicyExpressionType} from '@sovity.de/authority-portal-client';
 
 export interface PolicyMultiExpressionConfig {
   expressionType: UiPolicyExpressionType;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
 }
 
 export const SUPPORTED_MULTI_EXPRESSIONS: PolicyMultiExpressionConfig[] = [
   {
     expressionType: 'AND',
-    title: 'AND',
-    description:
-      'Conjunction of several expressions. Evaluates to true if and only if all child expressions are true',
+    titleKey: 'POLICY.MULTI.AND',
+    descriptionKey: 'POLICY.MULTI.AND_DESC',
   },
   {
     expressionType: 'OR',
-    title: 'OR',
-    description:
-      'Disjunction of several expressions. Evaluates to true if and only if at least one child expression is true',
+    titleKey: 'POLICY.MULTI.OR',
+    descriptionKey: 'POLICY.MULTI.OR_DESC',
   },
   {
     expressionType: 'XONE',
-    title: 'XONE',
-    description:
-      'XONE operation. Evaluates to true if and only if exactly one child expression is true',
+    titleKey: 'POLICY.MULTI.XONE',
+    descriptionKey: 'POLICY.MULTI.XONE_DESC',
   },
 ];

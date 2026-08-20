@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, takeUntil} from 'rxjs';
 import {ignoreElements, tap} from 'rxjs/operators';
 import {Action, State, StateContext} from '@ngxs/store';
@@ -54,12 +55,15 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
     private userDeleteDialogService: UserDeleteDialogService,
     private router: Router,
     private customRxjsOperators: CustomRxjsOperators,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset, {cancelUncompleted: true})
   onReset(ctx: Ctx, action: Reset): Observable<never> {
     return this.apiService.getUserDetailDto(action.userId).pipe(
-      Fetched.wrap({failureMessage: 'Failed to fetch user details'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant('TOASTS.FAILED_USER_DETAILS'),
+      }),
       tap((user) => {
         user.ifReady((userDetails) => {
           if (userDetails.firstName || userDetails.lastName) {
@@ -101,25 +105,25 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
 
     if (this.globalStateUtils.userId === user.userId) {
       headerActions.push({
-        label: 'Edit',
+        label: this.translate.instant('COMMON.EDIT'),
         action: () => this.router.navigate(['/control-center/my-profile/edit']),
         permissions: [UserRoleDto.User],
       });
       headerActions.push({
-        label: 'Delete user',
+        label: this.translate.instant('PAGES.CONTROL_CENTER.DELETE_USER'),
         action: () => this.onDeleteUserClick(ctx, componentLifetime$),
         permissions: [UserRoleDto.User],
       });
     } else {
       headerActions.push({
-        label: 'Delete user',
+        label: this.translate.instant('PAGES.CONTROL_CENTER.DELETE_USER'),
         action: () => this.onDeleteUserClick(ctx, componentLifetime$),
         permissions: [UserRoleDto.Admin],
       });
 
       if (user.registrationStatus === 'ACTIVE') {
         headerActions.push({
-          label: 'Deactivate user',
+          label: this.translate.instant('PAGES.CONTROL_CENTER.DEACTIVATE_USER'),
           action: () => this.onDeactivateUserClick(ctx, componentLifetime$),
           permissions: [UserRoleDto.Admin],
         });
@@ -127,7 +131,7 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
 
       if (user.registrationStatus === 'DEACTIVATED') {
         headerActions.push({
-          label: 'Reactivate user',
+          label: this.translate.instant('PAGES.CONTROL_CENTER.REACTIVATE_USER'),
           action: () => this.onReactivateUserClick(ctx, componentLifetime$),
           permissions: [UserRoleDto.Admin],
         });
@@ -136,7 +140,9 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
 
     return {
       title: `${user.firstName} ${user.lastName}`,
-      subtitle: `Member Of ${user.organizationName}`,
+      subtitle: this.translate.instant('PAGES.CONTROL_CENTER.MEMBER_OF_SUBTITLE', {
+        organizationName: user.organizationName,
+      }),
       headerActions,
     };
   }
@@ -165,7 +171,10 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
       .reactivateUser(user.userId)
       .pipe(
         this.customRxjsOperators.withBusyLock(ctx),
-        this.customRxjsOperators.withToastResultHandling('Reactivating user'),
+        this.customRxjsOperators.withToastResultHandling(
+          'TOASTS.REACTIVATE_USER_SUCCESS',
+          'TOASTS.REACTIVATE_USER_FAILED',
+        ),
         tap(() => this.refresh(ctx, componentLifetime$)),
         takeUntil(componentLifetime$),
       )
@@ -178,7 +187,10 @@ export class ControlCenterOrganizationMemberDetailPageStateImpl {
       .deactivateUser(user.userId)
       .pipe(
         this.customRxjsOperators.withBusyLock(ctx),
-        this.customRxjsOperators.withToastResultHandling('Deactivating user'),
+        this.customRxjsOperators.withToastResultHandling(
+          'TOASTS.DEACTIVATE_USER_SUCCESS',
+          'TOASTS.DEACTIVATE_USER_FAILED',
+        ),
         tap(() => this.refresh(ctx, componentLifetime$)),
         takeUntil(componentLifetime$),
       )

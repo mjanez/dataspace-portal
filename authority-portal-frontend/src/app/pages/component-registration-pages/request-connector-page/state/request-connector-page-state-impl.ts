@@ -17,6 +17,7 @@
  */
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Action, Actions, State, StateContext, ofAction} from '@ngxs/store';
@@ -44,6 +45,7 @@ export class RequestConnectorPageStateImpl {
     private errorService: ErrorService,
     private globalStateUtils: GlobalStateUtils,
     private router: Router,
+    private translate: TranslateService,
   ) {}
 
   @Action(Reset)
@@ -68,7 +70,9 @@ export class RequestConnectorPageStateImpl {
         switch (res.status) {
           case 'OK':
             this.toast.showSuccess(
-              `Connector ${action.request.connectorTitle} requested successfully. You will receive an E-Mail confirming the deployment in the next few minutes.`,
+              this.translate.instant('TOASTS.CONNECTOR_REQUESTED', {
+                name: action.request.connectorTitle,
+              }),
             );
             ctx.patchState({state: 'success'});
             this.router.navigate(['/', 'my-organization', 'connectors']);
@@ -76,13 +80,14 @@ export class RequestConnectorPageStateImpl {
           case 'WARNING':
             this.toast.showWarning(
               res?.message ||
-                'A problem occurred while requesting the connector.',
+                this.translate.instant('TOASTS.CONNECTOR_REQUEST_WARNING'),
             );
             ctx.patchState({state: 'success'});
             break;
           case 'ERROR':
             this.toast.showDanger(
-              res?.message || 'Failed requesting connector',
+              res?.message ||
+                this.translate.instant('TOASTS.FAILED_REQUEST_CONNECTOR'),
             );
             ctx.patchState({state: 'error'});
             action.enableForm();
@@ -90,7 +95,9 @@ export class RequestConnectorPageStateImpl {
         }
       }),
       takeUntil(this.actions$.pipe(ofAction(Reset))),
-      this.errorService.toastFailureRxjs('Failed requesting connector', () => {
+      this.errorService.toastFailureRxjs(
+        this.translate.instant('TOASTS.FAILED_REQUEST_CONNECTOR'),
+        () => {
         ctx.patchState({state: 'error'});
         action.enableForm();
       }),

@@ -19,6 +19,7 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Subject, interval} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {APP_CONFIG, AppConfig} from 'src/app/core/services/config/app-config';
+import {LocaleService} from 'src/app/core/services/locale.service';
 import {GlobalState} from './core/global-state/global-state';
 import {RefreshUserInfo} from './core/global-state/global-state-actions';
 import {GlobalStateImpl} from './core/global-state/global-state-impl';
@@ -37,9 +38,11 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private store: Store,
+    private localeService: LocaleService,
   ) {}
 
   ngOnInit() {
+    this.localeService.init();
     this.startListeningToGlobalState();
     this.startPollingUserInfo();
     this.setTheme();

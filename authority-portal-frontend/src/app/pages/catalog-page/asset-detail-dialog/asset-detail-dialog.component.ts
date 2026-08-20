@@ -18,6 +18,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Component, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject, isObservable} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {
@@ -59,6 +60,7 @@ export class AssetDetailDialogComponent implements OnDestroy {
     private _data: AssetDetailDialogData | Observable<AssetDetailDialogData>,
     private mailtoLinkBuilder: MailtoLinkBuilder,
     private toastService: ToastService,
+    private translate: TranslateService,
     @Inject(DOCUMENT) private document: Document,
   ) {
     if (isObservable(this._data)) {
@@ -81,11 +83,13 @@ export class AssetDetailDialogComponent implements OnDestroy {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        this.toastService.showSuccess('Data Offer URL copied to clipboard');
+        this.toastService.showSuccess(
+          this.translate.instant('TOASTS.DATA_OFFER_URL_COPIED'),
+        );
       })
       .catch(() => {
         this.toastService.showSuccess(
-          'Failed to copy Data Offer URL to clipboard. Check if your browser permissions allow this action.',
+          this.translate.instant('TOASTS.FAILED_COPY_DATA_OFFER_URL'),
         );
       });
   }
@@ -98,7 +102,7 @@ export class AssetDetailDialogComponent implements OnDestroy {
     const url = this.mailtoLinkBuilder.buildMailtoUrl(
       this.asset.onRequestContactEmail,
       this.asset.onRequestContactEmailSubject ??
-        "I'm interested in your data offer",
+        this.translate.instant('PAGES.CATALOG.ASSET.DEFAULT_CONTACT_SUBJECT'),
     );
     this.document.location.href = url;
   }

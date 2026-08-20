@@ -24,6 +24,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {MatStepper} from '@angular/material/stepper';
+import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subject, takeUntil} from 'rxjs';
 import {Store} from '@ngxs/store';
@@ -65,7 +66,7 @@ export class ConfigureProvidedConnectorPageComponent
 
   edcConfig = EDC_CONFIG;
 
-  createActionName = 'Provide Connector';
+  createActionName = '';
   exitLink = '/service-partner/provided-connectors';
 
   connectorId: string;
@@ -81,12 +82,17 @@ export class ConfigureProvidedConnectorPageComponent
     public globalStateUtils: GlobalStateUtils,
     private route: ActivatedRoute,
     public clipboardUtils: ClipboardUtils,
+    private translate: TranslateService,
   ) {
     const routeParams = this.route.snapshot.params;
     this.connectorId = routeParams['connectorId'];
   }
 
   ngOnInit(): void {
+    this.refreshLabels();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => this.refreshLabels());
     this.store.dispatch(GetOrganizations);
     this.store.dispatch(new GetConnector(this.connectorId));
     this.store.dispatch(Reset);
@@ -170,6 +176,12 @@ export class ConfigureProvidedConnectorPageComponent
       dapsJwksUrl: this.state.connectorData?.environment?.dapsJwksUrl ?? '',
       dapsTokenUrl: this.state.connectorData?.environment?.dapsTokenUrl ?? '',
     });
+  }
+
+  private refreshLabels(): void {
+    this.createActionName = this.translate.instant(
+      'PAGES.CONNECTORS.PROVIDE_CONNECTOR',
+    );
   }
 
   ngOnDestroy() {

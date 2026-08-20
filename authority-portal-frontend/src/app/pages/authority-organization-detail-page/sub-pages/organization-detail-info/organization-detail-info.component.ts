@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Component, Input} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {OrganizationDetailsDto} from '@sovity.de/authority-portal-client';
 import {mapRolesToReadableFormat} from 'src/app/core/utils/user-role-utils';
 
@@ -27,7 +28,9 @@ import {mapRolesToReadableFormat} from 'src/app/core/utils/user-role-utils';
 export class OrganizationDetailInfoComponent {
   @Input() organization!: OrganizationDetailsDto;
 
+  constructor(private translate: TranslateService) {}
+
   mapToReadable(role: string): string {
-    return mapRolesToReadableFormat(role);
+    return mapRolesToReadableFormat(role, (key) => this.translate.instant(key));
   }
 }

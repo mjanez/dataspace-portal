@@ -1,4 +1,6 @@
-<h3 class="font-semibold text-sm">CSV Reports</h3>
+<h3 class="font-semibold text-sm">
+  {{ 'PAGES.DASHBOARD.CSV_REPORTS' | translate }}
+</h3>
 <ul class="divide-y divide-gray-100 rounded-md mt-4" role="list">
   <ng-container *ngFor="let reportLink of reportLinks">
     <li
@@ -29,7 +31,7 @@
           class="font-medium text-black hover:text-brand-highlight"
           target="_blank"
           [attr.href]="reportLink.url"
-          >Download</a
+          >{{ 'PAGES.DASHBOARD.DOWNLOAD' | translate }}</a
         >
       </div>
     </li>

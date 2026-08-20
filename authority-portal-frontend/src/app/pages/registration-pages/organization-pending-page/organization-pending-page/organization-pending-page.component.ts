@@ -17,6 +17,7 @@
  */
 import {Component, Inject} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {TranslateService} from '@ngx-translate/core';
 import {
   APP_CONFIG,
   AppConfig,
@@ -31,7 +32,10 @@ export class OrganizationPendingPageComponent {
   constructor(
     @Inject(APP_CONFIG) public appConfig: AppConfig,
     private titleService: Title,
+    private translate: TranslateService,
   ) {
-    this.titleService.setTitle('Pending');
+    this.titleService.setTitle(
+      this.translate.instant('PAGES.REGISTRATION.PENDING_TITLE'),
+    );
   }
 }

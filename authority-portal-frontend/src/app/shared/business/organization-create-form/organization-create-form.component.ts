@@ -20,11 +20,11 @@ import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {OrganizationCreateFormModel} from './organization-create-form-model';
 
-export const LEGAL_ID_TYPES: {value: string; viewValue: string}[] = [
-  {value: 'TAX_ID', viewValue: 'Tax ID'},
+export const LEGAL_ID_TYPES: {value: string; viewValueKey: string}[] = [
+  {value: 'TAX_ID', viewValueKey: 'FORMS.ORGANIZATION.LEGAL_ID_TYPE_TAX_ID'},
   {
     value: 'COMMERCE_REGISTER_INFO',
-    viewValue: 'Commerce Register Number',
+    viewValueKey: 'FORMS.ORGANIZATION.LEGAL_ID_TYPE_COMMERCE_REGISTER',
   },
 ];
 

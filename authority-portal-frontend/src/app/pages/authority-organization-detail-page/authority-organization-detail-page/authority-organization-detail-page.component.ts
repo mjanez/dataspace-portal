@@ -17,6 +17,7 @@
  */
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Subject, distinctUntilChanged, map, takeUntil, tap} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Store} from '@ngxs/store';
@@ -87,6 +88,7 @@ export class AuthorityOrganizationDetailPageComponent
     private organizationDialogService: OrganizationDeleteDialogService,
     private formatService: FormatService,
     private router: Router,
+    private translate: TranslateService,
   ) {
     this.organizationId = childComponentInput.id;
   }
@@ -102,6 +104,13 @@ export class AuthorityOrganizationDetailPageComponent
     this.startListeningToSlideOverState();
     this.startRefreshingOnEnvChange();
     this.startListeningToUserInfo();
+    this.translate.onLangChange
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(() => {
+        if (this.organization) {
+          this.setupOrganizationTitleBar(this.organization);
+        }
+      });
   }
 
   startListeningToUserInfo() {
@@ -217,13 +226,13 @@ export class AuthorityOrganizationDetailPageComponent
         id: 'actionMenu',
         menuOptions: [
           {
-            label: 'Approve Participant',
+            label: this.translate.instant('PAGES.AUTHORITY.APPROVE_PARTICIPANT'),
             icon: 'check',
             event: () => this.store.dispatch(ApproveOrganization),
             isDisabled: !['PENDING'].includes(organization.registrationStatus),
           },
           {
-            label: 'Reject Participant',
+            label: this.translate.instant('PAGES.AUTHORITY.REJECT_PARTICIPANT'),
             icon: 'close',
             event: () => {
               this.store.dispatch(RejectOrganization);
@@ -232,7 +241,7 @@ export class AuthorityOrganizationDetailPageComponent
             isDisabled: !['PENDING'].includes(organization.registrationStatus),
           },
           {
-            label: 'Edit Organization',
+            label: this.translate.instant('PAGES.AUTHORITY.EDIT_ORGANIZATION'),
             icon: 'edit',
             event: () => {
               this.store.dispatch(CloseOrganizationDetail);
@@ -243,7 +252,7 @@ export class AuthorityOrganizationDetailPageComponent
             isDisabled: !this.isCurrentUserAuthorityAdmin,
           },
           {
-            label: 'Delete Organization',
+            label: this.translate.instant('PAGES.AUTHORITY.DELETE_ORGANIZATION'),
             icon: 'delete',
             event: () =>
               this.organizationDialogService.showDeleteOrganizationModal(
@@ -282,7 +291,7 @@ export class AuthorityOrganizationDetailPageComponent
         id: 'actionMenu',
         menuOptions: [
           {
-            label: 'Re-Activate User',
+            label: this.translate.instant('PAGES.CONTROL_CENTER.REACTIVATE_USER'),
             icon: 'verified',
             event: () =>
               this.store.dispatch(
@@ -294,7 +303,7 @@ export class AuthorityOrganizationDetailPageComponent
               user.userId === this.currentUserId,
           },
           {
-            label: 'Deactivate User',
+            label: this.translate.instant('PAGES.CONTROL_CENTER.DEACTIVATE_USER'),
             icon: 'person_cancel',
             event: () =>
               this.store.dispatch(
@@ -306,7 +315,7 @@ export class AuthorityOrganizationDetailPageComponent
               user.userId === this.currentUserId,
           },
           {
-            label: 'Delete User',
+            label: this.translate.instant('PAGES.CONTROL_CENTER.DELETE_USER'),
             icon: 'delete',
             event: () =>
               this.userDeleteDialogService.showDeleteUserModal(

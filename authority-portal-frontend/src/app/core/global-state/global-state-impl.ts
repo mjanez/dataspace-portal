@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Inject, Injectable, NgZone} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ignoreElements, tap} from 'rxjs/operators';
 import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
@@ -53,6 +54,7 @@ export class GlobalStateImpl implements NgxsOnInit {
     private apiService: ApiService,
     private routeConfigService: RouteConfigService,
     private urlBeforeLoginService: UrlBeforeLoginService,
+    private translate: TranslateService,
   ) {}
 
   ngxsOnInit(ctx: StateContext<any>): void {
@@ -95,7 +97,11 @@ export class GlobalStateImpl implements NgxsOnInit {
     ctx: StateContext<GlobalState>,
   ): Observable<never> {
     return this.apiService.getDeploymentEnvironments().pipe(
-      Fetched.wrap({failureMessage: 'Failed loading deployment environments'}),
+      Fetched.wrap({
+        failureMessage: this.translate.instant(
+          'TOASTS.FAILED_DEPLOYMENT_ENVIRONMENTS',
+        ),
+      }),
       tap((deploymentEnvironment) =>
         this.deploymentEnvironmentRefreshed(ctx, deploymentEnvironment),
       ),
